@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: base(~{::contenido})}">
+
+<head>
+    <title th:text="${proyecto.nombre}"></title>
+</head>
+
+<body>
+    <div th:fragment="contenido">
+        <div
+            class="projects-header projects-hero d-flex justify-content-between align-items-start mb-4 gap-3 flex-wrap">
+            <div>
+                <h2 class="fw-bold h3 mb-1" th:text="${proyecto.nombre}">Proyecto</h2>
+                <p class="text-muted small mb-0" th:text="${proyecto.descripcion}">Tareas del proyecto</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a th:href="@{/proyectos}" class="btn btn-outline-dark rounded-pill px-4 shadow-sm"><i
+                        class="bi bi-arrow-left me-1"></i> Volver a Proyectos</a>
+                <button class="btn btn-primary rounded-pill px-4 shadow-sm" type="button"
+                    onclick="abrirModalTareaUniversal('proyectos', proyectoActivo)">
+                    <i class="bi bi-plus-lg me-1"></i> Crear tarea
+                </button>
+            </div>
+        </div>
+
+        <!-- Tablero Kanban del proyecto-->
+        <div id="tablero-kanban-activo" class="kanban-board kanban-board-proyecto">
+            <div class="kanban-column kanban-column-proyecto">
+                <div class="column-header header-todo kanban-column-head">
+                    <span><i class="bi bi-sun me-1"></i> Por Hacer</span>
+                    <span class="badge rounded-3 bg-white text-dark " th:text="${#lists.size(tareasTodo)}">0</span>
+                </div>
+                <div id="contenedor-proyecto-todo" class="task-list">
+                    <div th:if="${#lists.isEmpty(tareasTodo)}" class="kanban-empty-state">
+                        <div class="fw-semibold mb-1">No hay tareas por hacer</div>
+                        <div class="small text-muted">Agrega una nueva tarea para comenzar.</div>
+                    </div>
+                    <!-- Bucle Thymeleaf: crea una tarjeta por cada tarea pendiente del proyecto. -->
+                    <div th:each="t : ${tareasTodo}">
+                        <article class="tarjeta-tarea kanban-task-card p-3 mb-3" th:data-tarea-id="${t.id}"
+                            data-estado-actual="todo">
+                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                                <div class="flex-grow-1">
+                                    <h6 class="titulo-tarea fw-bold mb-1" th:text="${t.titulo}">Tarea</h6>
+                                    <div class="small text-secondary d-flex align-items-center gap-1">
+                                        <i class="bi bi-folder2-open"></i><span
+                                            th:text="${proyecto.nombre}">Proyecto</span>
+                                    </div>
+                                </div>
+                                <div class="kanban-actions">
+                                    <button type="button"
+                                        class="btn btn-link p-0 border-0 shadow-none boton-cambiar-estado"
+                                        aria-label="Cambiar a En proceso" title="Cambiar a En proceso"
+                                        th:data-tarea-id="${t.id}" data-estado-actual="todo">
+                                        <span class="kanban-state-dot kanban-state-todo"><i
+                                                class="bi bi-play-fill"></i></span>
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-link p-0 text-danger border-0 shadow-none boton-eliminar-tarea"
+                                        aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${t.id}">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="text-secondary mb-3 lh-sm kanban-task-desc" th:text="${t.descripcion}">Descripción
+                            </p>
+                            <div class="meta-etiquetas-tarea">
+                                <span class="badge etiqueta-reducida rounded-pill px-2 py-1 etiqueta-prioridad-alta"
+                                    th:classappend="${t.prioridad == 'Media' || t.prioridad == 'Importante'} ? ' etiqueta-prioridad-media' : (${t.prioridad == 'Baja' || t.prioridad == 'Flexible'} ? ' etiqueta-prioridad-baja' : '')"
+                                    th:text="${t.prioridad == 'Alta' || t.prioridad == 'Urgente'} ? 'Urgente' : (${t.prioridad == 'Media' || t.prioridad == 'Importante'} ? 'Importante' : 'Flexible')">Importante</span>
+                                <span
+                                    class="badge etiqueta-reducida rounded-pill px-2 py-1 etiqueta-estado-tarea etiqueta-estado-pendiente">Por
+                                    hacer</span>
+                                <span
+                                    class="badge etiqueta-reducida rounded-pill border bg-light text-dark px-2 py-1"><i
+                                        class="bi bi-calendar3 me-1"></i><span th:text="${t.fecha}">--</span></span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kanban-column kanban-column-proyecto">
+                <div class="column-header header-progress kanban-column-head">
+                    <span><i class="bi bi-arrow-repeat me-1"></i> En Progreso</span>
+                    <span class="badge rounded-3 bg-white text-dark " th:text="${#lists.size(tareasProgress)}">0</span>
+                </div>
+                <div id="contenedor-proyecto-progreso" class="task-list">
+                    <div th:if="${#lists.isEmpty(tareasProgress)}" class="kanban-empty-state">
+                        <div class="fw-semibold mb-1">No hay tareas en progreso</div>
+                        <div class="small text-muted">Las tareas activas aparecerán aquí.</div>
+                    </div>
+                    <!-- Bucle Thymeleaf: crea una tarjeta por cada tarea en progreso. -->
+                    <div th:each="t : ${tareasProgress}">
+                        <article class="tarjeta-tarea kanban-task-card p-3 mb-3" th:data-tarea-id="${t.id}"
+                            data-estado-actual="progress">
+                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                                <div class="flex-grow-1">
+                                    <h6 class="titulo-tarea fw-bold mb-1" th:text="${t.titulo}">Tarea</h6>
+                                    <div class="small text-secondary d-flex align-items-center gap-1">
+                                        <i class="bi bi-folder2-open"></i><span
+                                            th:text="${proyecto.nombre}">Proyecto</span>
+                                    </div>
+                                </div>
+                                <div class="kanban-actions">
+                                    <button type="button"
+                                        class="btn btn-link p-0 border-0 shadow-none boton-cambiar-estado"
+                                        aria-label="Cambiar a Completada" title="Cambiar a Completada"
+                                        th:data-tarea-id="${t.id}" data-estado-actual="progress">
+                                        <span class="kanban-state-dot kanban-state-progress"><i
+                                                class="bi bi-hourglass-split"></i></span>
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-link p-0 text-danger border-0 shadow-none boton-eliminar-tarea"
+                                        aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${t.id}">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="text-secondary mb-3 lh-sm kanban-task-desc" th:text="${t.descripcion}">Descripción
+                            </p>
+                            <div class="meta-etiquetas-tarea">
+                                <span class="badge etiqueta-reducida rounded-pill px-2 py-1 etiqueta-prioridad-alta"
+                                    th:classappend="${t.prioridad == 'Media' || t.prioridad == 'Importante'} ? ' etiqueta-prioridad-media' : (${t.prioridad == 'Baja' || t.prioridad == 'Flexible'} ? ' etiqueta-prioridad-baja' : '')"
+                                    th:text="${t.prioridad == 'Alta' || t.prioridad == 'Urgente'} ? 'Urgente' : (${t.prioridad == 'Media' || t.prioridad == 'Importante'} ? 'Importante' : 'Flexible')">Importante</span>
+                                <span
+                                    class="badge etiqueta-reducida rounded-pill px-2 py-1 etiqueta-estado-tarea etiqueta-estado-progreso">En
+                                    progreso</span>
+                                <span
+                                    class="badge etiqueta-reducida rounded-pill border bg-light text-dark px-2 py-1"><i
+                                        class="bi bi-calendar3 me-1"></i><span th:text="${t.fecha}">--</span></span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kanban-column kanban-column-proyecto">
+                <div class="column-header header-done kanban-column-head">
+                    <span><i class="bi bi-check-circle me-1"></i> Terminadas</span>
+                    <span class="badge rounded-3 bg-white text-dark" th:text="${#lists.size(tareasDone)}">0</span>
+                </div>
+                <div id="contenedor-proyecto-terminadas" class="task-list">
+                    <div th:if="${#lists.isEmpty(tareasDone)}" class="kanban-empty-state">
+                        <div class="fw-semibold mb-1">No hay tareas terminadas</div>
+                        <div class="small text-muted">Cuando completes tareas se verán aquí.</div>
+                    </div>
+                    <!-- Bucle Thymeleaf: crea una tarjeta por cada tarea finalizada. -->
+                    <div th:each="t : ${tareasDone}">
+                        <article class="tarjeta-tarea tarjeta-tarea-completada kanban-task-card p-3 mb-3"
+                            th:data-tarea-id="${t.id}" data-estado-actual="done">
+                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                                <div class="flex-grow-1">
+                                    <h6 class="titulo-tarea fw-bold mb-1" th:text="${t.titulo}">Tarea</h6>
+                                    <div class="small text-secondary d-flex align-items-center gap-1">
+                                        <i class="bi bi-folder2-open"></i><span
+                                            th:text="${proyecto.nombre}">Proyecto</span>
+                                    </div>
+                                </div>
+                                <div class="kanban-actions">
+                                    <button type="button"
+                                        class="btn btn-link p-0 border-0 shadow-none boton-cambiar-estado"
+                                        aria-label="Reactivar tarea" title="Reactivar tarea" th:data-tarea-id="${t.id}"
+                                        data-estado-actual="done">
+                                        <span class="kanban-state-dot kanban-state-done"><i
+                                                class="bi bi-check-lg"></i></span>
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-link p-0 text-danger border-0 shadow-none boton-eliminar-tarea"
+                                        aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${t.id}">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="text-secondary mb-3 lh-sm kanban-task-desc" th:text="${t.descripcion}">Descripción
+                            </p>
+                            <div class="meta-etiquetas-tarea">
+                                <span class="badge etiqueta-reducida rounded-pill px-2 py-1 etiqueta-prioridad-alta"
+                                    th:classappend="${t.prioridad == 'Media' || t.prioridad == 'Importante'} ? ' etiqueta-prioridad-media' : (${t.prioridad == 'Baja' || t.prioridad == 'Flexible'} ? ' etiqueta-prioridad-baja' : '')"
+                                    th:text="${t.prioridad == 'Alta' || t.prioridad == 'Urgente'} ? 'Urgente' : (${t.prioridad == 'Media' || t.prioridad == 'Importante'} ? 'Importante' : 'Flexible')">Flexible</span>
+                                <span
+                                    class="badge etiqueta-reducida rounded-pill px-2 py-1 etiqueta-estado-tarea etiqueta-estado-terminada">Terminada</span>
+                                <span
+                                    class="badge etiqueta-reducida rounded-pill border bg-light text-dark px-2 py-1"><i
+                                        class="bi bi-calendar3 me-1"></i><span th:text="${t.fecha}">--</span></span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script th:inline="javascript">
+            var moduloActivo = 'proyectos';
+            var proyectoActivo = /*[[${proyectoId}]]*/ null;
+            document.addEventListener('DOMContentLoaded', async function () {
+                if (typeof cargarDatosDesdeServidor === 'function') {
+                    await cargarDatosDesdeServidor();
+                }
+                if (typeof enlazarEventosTareas === 'function') {
+                    enlazarEventosTareas();
+                }
+            });
+        </script>
+
+    </div>
+</body>
+
+</html>

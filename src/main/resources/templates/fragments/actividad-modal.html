@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+    <!-- Modal universal para crear tareas personales, tareas de proyecto o eventos de calendario. -->
+    <div th:fragment="modalActividad" class="modal fade" id="modalActividadUniversal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg modal-rounded">
+                <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                    <h5 class="modal-title fw-bold" id="modalTitulo">Nueva Actividad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <!-- app.js lee estos campos y arma el JSON que envia a /api/actividades/guardar. -->
+                    <form id="formActividadUniversal">
+                        <input type="hidden" id="ctx_proyecto_id" name="idProyecto">
+                        <input type="hidden" id="ctx_es_evento" name="esEvento" value="false">
+
+                        <div class="mb-3 form-floating">
+                            <input type="text" class="form-control shadow-none rounded-3" id="actividadTitulo"
+                                name="titulo" placeholder="Título" required />
+                            <label for="actividadTitulo">¿Qué hay que hacer?</label>
+                        </div>
+
+                        <div class="mb-3 form-floating">
+                            <textarea class="form-control shadow-none rounded-3 textarea-large" id="actividadDesc"
+                                name="descripcion" placeholder="Descripción"></textarea>
+                            <label for="actividadDesc">Descripción (opcional)</label>
+                        </div>
+
+                        <!-- Fecha y prioridad. En calendario se oculta prioridad y fecha ocupa toda la fila. -->
+                        <div id="seccionFecha" class="row g-2 mb-3">
+                            <div class="col-6 form-floating">
+                                <input type="date" class="form-control shadow-none rounded-3" id="actividadFecha"
+                                    name="fecha" required />
+                                <label for="actividadFecha">Fecha limite</label>
+                            </div>
+
+                            <div class="col-6 form-floating">
+                                <select class="form-select shadow-none rounded-3" id="actividadPrioridad"
+                                    name="prioridad">
+                                    <option value="Urgente">Urgente</option>
+                                    <option value="Importante" selected>Importante</option>
+                                    <option value="Flexible">Flexible</option>
+                                </select>
+                                <label for="actividadPrioridad">Prioridad</label>
+                            </div>
+                        </div>
+
+                        <!-- Solo se muestra cuando el contexto es calendario. -->
+                        <div id="seccionHoras" class="row g-2 mb-3 d-none">
+                            <div class="col-6 form-floating">
+                                <input type="time" class="form-control shadow-none rounded-3" id="horaInicio"
+                                    name="horaInicio">
+                                <label for="horaInicio">Hora Inicio</label>
+                            </div>
+                            <div class="col-6 form-floating">
+                                <input type="time" class="form-control shadow-none rounded-3" id="horaFin"
+                                    name="horaFin">
+                                <label for="horaFin">Hora Fin</label>
+                            </div>
+                        </div>
+
+                        <!-- Estado inicial de tareas. En proyectos/calendario se oculta porque el flujo lo decide. -->
+                        <div id="seccionEstado" class="mb-3 form-floating">
+                            <select class="form-select shadow-none rounded-3" id="actividadEstado" name="estado">
+                                <option value="por_hacer">Por hacer</option>
+                                <option value="progreso">En progreso</option>
+                                <option value="completada">Completada</option>
+                            </select>
+                            <label for="actividadEstado">Estado inicial</label>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold"
+                        data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="formActividadUniversal"
+                        class="btn btn-primary rounded-pill px-4 fw-bold text-white">
+                        <i class="bi bi-floppy me-2"></i>Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de exito / confirmar guardado. -->
+    <div th:fragment="modalExito" class="modal fade" id="modalExitoGuardado" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg modal-rounded">
+                <div class="modal-body p-4 text-center">
+                    <div
+                        class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10 modal-icon-large">
+                        <i class="bi bi-check2-circle text-success fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2" id="modalExitoTitulo">Tarea creada</h5>
+                    <p class="text-secondary mb-0" id="modalExitoMensaje">La tarea se guardó correctamente.</p>
+                </div>
+                <div class="modal-footer border-top-0 justify-content-center pt-0 pb-4">
+                    <button type="button" class="btn btn-success rounded-pill px-4 fw-bold" data-bs-dismiss="modal"
+                        id="btnCerrarModalExito">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL REACTIVAR TAREA -->
+    <div th:fragment="modalReactivar" class="modal fade" id="modalReactivarTarea" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg modal-rounded">
+                <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                    <h5 class="modal-title fw-bold" id="tituloReactivacion">¿Reactivar tarea?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <div
+                        class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10 modal-icon-large">
+                        <i class="bi bi-arrow-counterclockwise text-warning fs-1"></i>
+                    </div>
+                    <p class="text-secondary mb-0">Esta tarea se volverá a marcar como "Por hacer" y se eliminará la
+                        opacidad visual.</p>
+                </div>
+                <div class="modal-footer border-top-0 justify-content-center pt-0 pb-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold"
+                        data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning rounded-pill px-4 fw-bold text-white"
+                        id="btnConfirmarReactivar">
+                        Reactivar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMACIÓN DE ACCIÓN -->
+    <!--  para eliminar tareas o proyectos -->
+    <div th:fragment="modalConfirmacionAccion" class="modal fade" id="modalConfirmacionAccion" tabindex="-1"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg modal-rounded">
+                <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                    <h5 class="modal-title fw-bold" id="modalConfirmacionTitulo">Confirmar acción</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <div
+                        class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-danger bg-opacity-10 modal-icon-large">
+                        <i class="bi bi-exclamation-triangle text-danger fs-1"></i>
+                    </div>
+                    <p class="text-secondary mb-0" id="modalConfirmacionMensaje">¿Deseas continuar?</p>
+                </div>
+                <div class="modal-footer border-top-0 justify-content-center pt-0 pb-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold"
+                        data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger rounded-pill px-4 fw-bold text-white"
+                        id="modalConfirmacionBoton">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CREAR PROYECTO -->
+    <div th:fragment="modalCrearProyecto" class="modal fade" id="modalCrearProyecto" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg modal-rounded">
+                <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                    <h5 class="modal-title fw-bold">Nuevo Proyecto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="formProyectoNuevo">
+                        <div class="mb-3 form-floating">
+                            <input type="text" class="form-control shadow-none rounded-3" id="proyectoNombre"
+                                name="nombre" placeholder="Nombre" required />
+                            <label for="proyectoNombre">Nombre del proyecto</label>
+                        </div>
+
+                        <div class="mb-3 form-floating">
+                            <textarea class="form-control shadow-none rounded-3 textarea-xlarge"
+                                id="proyectoDescripcion" name="descripcion" placeholder="Descripción"></textarea>
+                            <label for="proyectoDescripcion">Descripción</label>
+                        </div>
+
+                        <div class="mb-3 form-floating">
+                            <input type="date" class="form-control shadow-none rounded-3" id="proyectoFechaLimite"
+                                name="fechaLimite" required />
+                            <label for="proyectoFechaLimite">Fecha límite</label>
+                        </div>
+
+                        <div class="form-floating">
+                            <input type="color" class="form-control form-control-color input-color-proyecto"
+                                id="proyectoColorIcono" name="colorIcono" value="#0d6efd" />
+                            <label for="proyectoColorIcono">Color de la carpeta</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold"
+                        data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="formProyectoNuevo"
+                        class="btn btn-primary rounded-pill px-4 fw-bold text-white">
+                        <i class="bi bi-floppy me-2"></i>Guardar proyecto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>

@@ -1,0 +1,1700 @@
+:root {
+    --bg-dark: #1e1e1e;
+    --bg-main: #f5f6f8;
+    --col-todo: #ffd7a07a;
+    --col-progress: #87cfeb7c;
+    --col-done: #bcf5bc8a;
+    --card-done-bg: #e6f9e6;
+    --card-terminado-border: #bcf5bc;
+}
+
+.proyecto-card {
+    border-radius: 16px;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.proyecto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid var(--bs-primary);
+}
+
+.tarjeta-proyecto {
+    border-radius: 18px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+
+.tarjeta-proyecto:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08) !important;
+    border-color: #dbe3f0;
+}
+
+.projects-hero {
+    padding: 0.25rem 0 0.5rem;
+}
+
+.proyecto-card {
+    min-height: 200px;
+    display: block;
+    height: auto;
+    overflow: hidden;
+}
+
+.proyecto-card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    min-height: 200px;
+}
+
+.proyecto-icon-box {
+    background: color-mix(in srgb, var(--project-color, #0d6efd) 14%, white);
+    color: var(--project-color, #0d6efd);
+    width: 50px;
+    height: 50px;
+}
+
+.proyecto-desc {
+    line-height: 1.5;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin: 0 0 1rem 0;
+    font-size: 0.95rem;
+}
+
+.proyectos-empty-state {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px dashed #dbe3f0;
+    border-radius: 18px;
+    padding: 1.25rem;
+    color: #475569;
+}
+
+.icon-box-proyecto {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.boton-opciones-proyecto {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+}
+
+.boton-opciones-proyecto:hover {
+    background: #f8fafc;
+    color: #111827;
+    color: #6b7280;
+    border: 1px solid #e5e7eb;
+}
+
+.input-color-proyecto {
+    height: calc(3.5rem + 2px);
+    width: 100% !important;
+    padding: 0.25rem;
+    border-radius: 0.75rem;
+}
+
+.input-color-proyecto::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.input-color-proyecto::-webkit-color-swatch {
+    border: none;
+    border-radius: 0.55rem;
+}
+
+.input-color-proyecto::-moz-color-swatch {
+    border: none;
+    border-radius: 0.55rem;
+}
+
+.icon-box {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Proyectos: ajuste para el tablero Kanban dentro de la vista de proyecto */
+#vista-kanban-proyecto {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Kanban: estilos del tablero */
+.projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.project-tabs {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background-color: white;
+    padding: 5px 15px;
+    border-radius: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background-color: var(--bg-main);
+    color: #000;
+    font-weight: 600;
+}
+
+.search-filter-container {
+    display: flex;
+    gap: 15px;
+}
+
+.search-box {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    padding-left: 10px;
+    background: transparent;
+}
+
+.btn-filter {
+    background-color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-weight: 500;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#tablero-kanban-activo.kanban-board {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+    flex-grow: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+}
+
+.kanban-board-proyecto {
+    align-items: flex-start;
+}
+
+#tablero-kanban-activo .kanban-column {
+    flex: 1 1 0;
+    min-width: 280px;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.kanban-column-proyecto {
+    background: transparent;
+}
+
+.kanban-column-head {
+    min-height: 10px;
+    font-size: 1.02rem;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.kanban-task-card {
+    min-height: 182px;
+}
+
+.kanban-task-desc {
+    min-height: 3rem;
+    font-size: 0.92rem;
+}
+
+.kanban-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-shrink: 0;
+    font-size: 0.9rem;
+}
+
+.kanban-state-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+}
+
+.kanban-state-todo {
+    background: #2563eb;
+    color: #fff;
+}
+
+.kanban-state-progress {
+    background: #f59e0b;
+    color: #fff;
+}
+
+.kanban-state-done {
+    background: #34d399;
+    color: #fff;
+}
+
+.kanban-empty-state {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px dashed #dbe3f0;
+    border-radius: 16px;
+    padding: 1rem;
+    color: #475569;
+}
+
+.kanban-board-proyecto .task-list {
+    min-height: 120px;
+}
+
+#tablero-kanban-activo .kanban-column::-webkit-scrollbar {
+    width: 4px;
+}
+
+#tablero-kanban-activo .kanban-column::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.column-header {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.header-todo {
+    background-color: var(--col-todo);
+    color: #8a601c;
+}
+
+.header-progress {
+    background-color: var(--col-progress);
+    color: #1e5a7d;
+}
+
+.header-done {
+    background-color: var(--col-done);
+    color: #2d7a2d;
+}
+
+@media (max-width: 1199.98px) {
+    #tablero-kanban-activo.kanban-board {
+        justify-content: flex-start;
+        gap: 16px;
+    }
+
+    #tablero-kanban-activo .kanban-column {
+        min-width: 320px;
+        max-width: none;
+        flex: 1 1 calc(50% - 16px);
+    }
+}
+
+@media (max-width: 991.98px) {
+    #tablero-kanban-activo.kanban-board {
+        flex-direction: column;
+        overflow-x: visible;
+        overflow-y: visible;
+        padding-bottom: 0;
+    }
+
+    #tablero-kanban-activo .kanban-column {
+        min-width: 100%;
+        max-width: 100%;
+        flex: 1 1 100%;
+        overflow-y: visible;
+        padding-right: 0;
+    }
+
+    .kanban-board-proyecto .task-list {
+        min-height: auto;
+    }
+
+    .kanban-task-card {
+        min-height: auto;
+    }
+
+    .kanban-actions {
+        gap: 0.4rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .projects-header {
+        align-items: stretch;
+    }
+
+    .projects-header>div:last-child {
+        width: 100%;
+    }
+
+    .projects-header .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .kanban-column-head {
+        justify-content: space-between;
+        text-align: left;
+        font-size: 0.95rem;
+        padding: 0.85rem 1rem;
+    }
+
+    .kanban-task-card {
+        padding: 1rem !important;
+    }
+
+    .kanban-task-card .d-flex.justify-content-between {
+        flex-direction: row;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+    }
+
+    .kanban-actions {
+        width: auto;
+        flex-shrink: 0;
+        justify-content: flex-end;
+        margin-top: 0;
+        flex-wrap: nowrap;
+    }
+
+    .kanban-task-desc {
+        min-height: auto;
+    }
+
+    .kanban-task-card .meta-etiquetas-tarea {
+        gap: 0.4rem;
+    }
+
+    .kanban-task-card .meta-etiquetas-tarea .badge {
+        white-space: normal;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .projects-hero {
+        gap: 0.75rem !important;
+    }
+
+    .projects-header {
+        margin-bottom: 1rem;
+    }
+
+    #tablero-kanban-activo {
+        gap: 12px;
+    }
+
+    .kanban-column-head {
+        border-radius: 14px;
+    }
+
+    .kanban-empty-state {
+        padding: 0.9rem;
+    }
+
+    .tarjeta-tarea .titulo-tarea {
+        font-size: 0.95rem;
+    }
+
+    .tarjeta-tarea .meta-etiquetas-tarea {
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 0.35rem;
+    }
+
+    .tarjeta-tarea .flex-grow-1 {
+        min-width: 0;
+    }
+
+    .tarjeta-tarea .meta-etiquetas-tarea .badge {
+        width: auto;
+        max-width: 100%;
+    }
+}
+
+.btn-create-task {
+    background-color: white;
+    border: 1px solid #ddd;
+    color: #555;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-create-task:hover {
+    background-color: #f8f9fa;
+}
+
+.task-card {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.task-card.done {
+    background-color: var(--card-terminado-bg);
+    border-color: var(--card-terminado-border);
+}
+
+.task-title-group {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.task-checkbox {
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #555;
+    cursor: pointer;
+}
+
+.task-card.done .task-checkbox {
+    color: #198754;
+}
+
+.task-title {
+    font-weight: 600;
+    margin-bottom: 2px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.task-desc {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.task-arrows {
+    color: #888;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    line-height: 0.8;
+    cursor: pointer;
+}
+
+.task-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    align-items: center;
+}
+
+.custom-badge {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.badge-id {
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+.badge-prio-green {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.badge-prio-blue {
+    background-color: #cff4fc;
+    color: #055160;
+}
+
+.badge-prio-red {
+    background-color: #dc3545;
+    color: white;
+}
+
+.badge-date-red {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+/* Tareas: módulo */
+.btn-tab {
+    background-color: transparent;
+    color: #6c757d;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Tareas: grid y tarjetas */
+
+/**
+ * CLASE: tablero-grid-tarea
+ * Contenedor flexible para cada columna de la grilla de tareas
+ */
+.tablero-grid-tarea .col {
+    display: flex;
+}
+
+/**
+ * CLASE: tarjeta-tarea
+ * Estilo base para cada tarjeta de tarea
+ * - Borde sutil con sombra suave
+ * - Altura mínima consistente
+ * - Transición fluida para hover
+ */
+.tarjeta-tarea {
+    /* Card base usada tanto en modulo Tareas como en tablero de Proyecto. */
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.3s ease;
+    min-height: 170px;
+    width: 100%;
+}
+
+.tarjeta-tarea:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.10);
+    border-color: #d1d5db;
+}
+
+/**
+ * CLASE: tarjeta-tarea-completada
+ * Estilos especiales para tareas en estado "done" (terminadas)
+ * - Fondo degradado suave
+ * - Opacidad reducida para indicar estado visual
+ */
+.tarjeta-tarea.tarjeta-tarea-completada {
+    background: linear-gradient(180deg, #f3fbf4 0%, #ffffff 100%);
+    opacity: 0.6;
+}
+
+/**
+ * CLASE: titulo-tarea
+ * Estilos para el título principal de la tarea
+ */
+.tarjeta-tarea .titulo-tarea {
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+/**
+ * CLASE: meta-etiquetas-tarea
+ * Contenedor flexible para las etiquetas/badges de metadata
+ */
+.tarjeta-tarea .meta-etiquetas-tarea {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+/**
+ * CLASE: etiqueta-reducida
+ * Reduce tamaño y elimina borde de las etiquetas/badges
+ * - Font size más pequeño
+ * - Padding reducido
+ * - Sin borde visible
+ */
+.badge.etiqueta-reducida {
+    font-size: 0.75rem !important;
+    padding: 0.35rem 0.6rem !important;
+    border: none !important;
+}
+
+/**
+ * CLASE: etiqueta-id-oculta
+ * Oculta la etiqueta del ID (no se muestra en la tarjeta)
+ */
+.etiqueta-id-oculta {
+    display: none !important;
+}
+
+/* Prioridad: etiquetas */
+
+/**
+ * CLASE: etiqueta-prioridad-alta
+ * Badge rojo para prioridad ALTA
+ */
+.etiqueta-prioridad-alta {
+    background-color: #fee2e2 !important;
+    color: #b42318 !important;
+    border: 1px solid #fca5a5 !important;
+}
+
+/**
+ * CLASE: etiqueta-prioridad-media
+ * Badge amarillo para prioridad MEDIA
+ */
+.etiqueta-prioridad-media {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
+    border: 1px solid #fcd34d !important;
+}
+
+/**
+ * CLASE: etiqueta-prioridad-baja
+ * Badge verde para prioridad BAJA
+ */
+.etiqueta-prioridad-baja {
+    background-color: #dcfce7 !important;
+    color: #166534 !important;
+    border: 1px solid #86efac !important;
+}
+
+/* Estado: etiquetas */
+
+/**
+ * CLASE: etiqueta-estado-pendiente
+ * Badge azul claro para estado "Por hacer"
+ */
+.etiqueta-estado-pendiente {
+    background-color: #e0f2fe !important;
+    color: #075985 !important;
+    border: 1px solid #7dd3fc !important;
+}
+
+/**
+ * CLASE: etiqueta-estado-progreso
+ * Badge púrpura para estado "En proceso"
+ */
+.etiqueta-estado-progreso {
+    background-color: #ede9fe !important;
+    color: #5b21b6 !important;
+    border: 1px solid #c4b5fd !important;
+}
+
+/**
+ * CLASE: etiqueta-estado-terminada
+ * Badge verde para estado "Terminada"
+ */
+.etiqueta-estado-terminada {
+    background-color: #dcfce7 !important;
+    color: #166534 !important;
+    border: 1px solid #86efac !important;
+}
+
+/**
+ * CLASE: etiqueta-estado-retrasada
+ * Badge rojo para tareas "Retrasadas"
+ */
+.etiqueta-estado-retrasada {
+    background-color: #fee2e2 !important;
+    color: #b91c1c !important;
+    border: 1px solid #fca5a5 !important;
+}
+
+/* Estado: vacío */
+
+/**
+ * CLASE: contenedor-estado-vacio
+ * Estilos para pantalla cuando no hay tareas en una sección
+ */
+.contenedor-estado-vacio {
+    border: 1px dashed #d1d5db;
+    border-radius: 18px;
+    background: #fafafa;
+    color: #6b7280;
+    min-height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.25rem;
+}
+
+
+
+/* Generales: otros estilos */
+.dashboard-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.dashboard-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* Inicio: iconos KPI */
+.dashboard-icon.todo {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.dashboard-icon.progreso {
+    background-color: #eff6ff;
+    color: #2563eb;
+}
+
+.dashboard-icon.completada {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.dashboard-icon.retrasada {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+/* Pantalla de carga global */
+.pantalla-carga-overlay {
+    background-color: #1E1E1E;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.spinner-large {
+    width: 4rem;
+    height: 4rem;
+}
+
+/* Modales */
+.modal-rounded {
+    border-radius: 20px;
+}
+
+.modal-icon-large {
+    width: 64px;
+    height: 64px;
+}
+
+/* Textareas específicas */
+.textarea-large {
+    height: 100px;
+}
+
+.textarea-xlarge {
+    height: 110px;
+}
+
+/* Search compact */
+.search-input-compact {
+    max-width: 250px;
+}
+
+.table-custom {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    border: 1px solid #eee;
+}
+
+.table-custom th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #eee;
+    color: #555;
+    font-weight: 600;
+}
+
+/* Calendario: módulo */
+.calendar-table {
+    /* Tabla usada por las vistas mensual y semanal del calendario. */
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+
+.calendar-table th {
+    background: #f8f9fa;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    color: #777;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+}
+
+.calendar-day {
+    height: 128px;
+    padding: 7px;
+    vertical-align: top;
+    border: 1px solid #f1f5f9;
+    transition: background .1s ease;
+    cursor: pointer;
+}
+
+.calendar-day:hover {
+    background: #f8fafc;
+}
+
+.calendar-day.other-month {
+    background: #fafafa;
+    color: #d1d5db;
+}
+
+.day-number {
+    font-weight: 700;
+    font-size: 0.82rem;
+    margin-bottom: 4px;
+    display: inline-block;
+}
+
+.event-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    display: block;
+    border-left: 3px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Animación de carga para módulos */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Login: estilos */
+.login-body {
+    background-color: var(--bg-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.login-card {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header i {
+    font-size: 60px;
+    color: var(--bg-dark);
+    margin-bottom: 15px;
+}
+
+.login-header h2 {
+    font-weight: 800;
+    color: var(--bg-dark);
+    margin-bottom: 10px;
+}
+
+.login-header p {
+    color: #666;
+    font-size: 14px;
+}
+
+.login-info {
+    text-align: center;
+    padding-top: 15px;
+}
+
+/* ==========================================================================
+   VARIABLES EXCLUSIVAS DEL CALENDARIO
+   (Aisladas para no pisar tu paleta global)
+========================================================================== */
+:root {
+    /* Prioridades calendario */
+    --cal-urgente-bg: #fee2e2;
+    --cal-urgente-color: #b91c1c;
+    --cal-urgente-border: #ef4444;
+
+    --cal-importante-bg: #fef3c7;
+    --cal-importante-color: #92400e;
+    --cal-importante-border: #f59e0b;
+
+    --cal-flexible-bg: #dcfce7;
+    --cal-flexible-color: #166534;
+    --cal-flexible-border: #22c55e;
+
+    /* Tipo evento */
+    --cal-propio-bg: #ede9fe;
+    --cal-propio-color: #6b21a8;
+    --cal-externo-bg: #e0f2fe;
+    --cal-externo-color: #075985;
+
+    /* Panel lateral */
+    --panel-width: 280px;
+}
+
+/* ==========================================================================
+   CALENDARIO — TITULOS Y CONTROLES DE VISTA
+========================================================================== */
+.calendar-title {
+    font-size: 1.5rem;
+}
+
+.calendar-subtitle {
+    font-size: .8rem;
+}
+
+.btn-vista-activo {
+    background: #0d6efd !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+.btn-vista-inactivo {
+    background: #fff !important;
+    color: #666 !important;
+    border: 1px solid #ddd !important;
+}
+
+/* Ocultar vista de forma segura */
+.vista-oculta {
+    display: none !important;
+}
+
+/*CALENDARIO — PESTAÑAS DE TEMPORALIDAD Y FILTROS COMBINADOS*/
+.cal-tabs-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 6px 10px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.cal-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.cal-tab-btn:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.cal-tab-btn.active {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.cal-tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0 5px;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.cal-tab-btn.active .cal-tab-count {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+}
+
+.cal-tab-count-hoy {
+    background: #fef9c3;
+    color: #a16207;
+}
+
+.cal-tab-btn.active .cal-tab-count-hoy {
+    background: rgba(255, 255, 255, 0.35);
+    color: #fff;
+}
+
+.cal-tab-separator {
+    width: 1px;
+    height: 24px;
+    background: #e5e7eb;
+    margin: 0 4px;
+}
+
+.cal-select-filtro {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background: #f9fafb;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.cal-select-filtro:focus {
+    border-color: #93c5fd;
+}
+
+/*CALENDARIO — LEYENDA PILLS SUPERIORES*/
+.badge-dot {
+    font-size: .45rem;
+}
+
+.badge-urgente-calendar {
+    background: var(--cal-urgente-bg);
+    color: var(--cal-urgente-color);
+    font-size: .72rem;
+}
+
+.badge-importante-calendar {
+    background: var(--cal-importante-bg);
+    color: var(--cal-importante-color);
+    font-size: .72rem;
+}
+
+.badge-flexible-calendar {
+    background: var(--cal-flexible-bg);
+    color: var(--cal-flexible-color);
+    font-size: .72rem;
+}
+
+.badge-propio-calendar {
+    background: var(--cal-propio-bg);
+    color: var(--cal-propio-color);
+    font-size: .72rem;
+}
+
+.badge-externo-calendar {
+    background: var(--cal-externo-bg);
+    color: var(--cal-externo-color);
+    font-size: .72rem;
+}
+
+/* CALENDARIO — LAYOUT PRINCIPAL CON PANEL LATERAL */
+.cal-layout {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.cal-main {
+    flex: 1;
+    min-width: 0;
+    /* evita overflow en flex */
+}
+
+/* CALENDARIO — BASE Y VISTA MES */
+.calendar-table {
+    /* Tabla usada por las vistas mensual y semanal del calendario. */
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+
+.calendar-table th {
+    background: #f8f9fa;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    color: #777;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+}
+
+/* ─── Días (mes) ─── */
+.calendar-day {
+    height: 128px;
+    padding: 7px;
+    vertical-align: top;
+    border: 1px solid #f1f5f9;
+    transition: background .1s ease;
+    cursor: pointer;
+}
+
+.calendar-day:hover {
+    background: #f8fafc;
+}
+
+.calendar-day.other-month {
+    background: #fafafa;
+    color: #d1d5db;
+}
+
+.calendar-day.dia-hoy {
+    background: #eff6ff;
+    border: 2px solid #0d6efd !important;
+}
+
+.calendar-day.dia-pasado {
+    background: #fafafa;
+}
+
+.calendar-day.dia-seleccionado {
+    background: #f0f7ff;
+    border: 2px solid #93c5fd !important;
+}
+
+/* ─── Número del día ─── */
+.day-number {
+    font-weight: 700;
+    font-size: 0.82rem;
+    margin-bottom: 4px;
+    display: inline-block;
+}
+
+.day-number-hoy {
+    color: #0d6efd;
+}
+
+/* ─── Badge "HOY" ─── */
+.badge-hoy {
+    font-size: 7px;
+    padding: 2px 4px;
+    margin-left: 5px;
+    border-radius: 999px;
+    background: #0d6efd;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+/* ─── Texto "+N más" ─── */
+.calendar-mas-eventos {
+    font-size: 10px;
+    color: #94a3b8;
+    padding-left: 4px;
+}
+
+/* CALENDARIO — BADGES DE EVENTO INYECTADOS EN CELDAS */
+.event-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    display: block;
+    border-left: 3px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: filter 0.15s;
+}
+
+.event-badge:hover {
+    filter: brightness(0.93);
+}
+
+/* Prioridad */
+.event-badge-urgente {
+    background: var(--cal-urgente-bg);
+    color: var(--cal-urgente-color);
+    border-left-color: var(--cal-urgente-border);
+}
+
+.event-badge-importante {
+    background: var(--cal-importante-bg);
+    color: var(--cal-importante-color);
+    border-left-color: var(--cal-importante-border);
+}
+
+.event-badge-flexible {
+    background: var(--cal-flexible-bg);
+    color: var(--cal-flexible-color);
+    border-left-color: var(--cal-flexible-border);
+}
+
+/* Tipo externo: borde derecho adicional */
+.event-badge-externo {
+    border-right: 3px solid #0ea5e9;
+}
+
+/* Pasados: semitransparentes */
+.event-badge-pasado {
+    opacity: 0.55;
+}
+
+/* CALENDARIO — VISTA SEMANA */
+.calendar-hour-column {
+    width: 72px;
+}
+
+.calendar-week-hour {
+    font-size: .72rem;
+    font-weight: 700;
+    background: #f8f9fa;
+    text-align: center;
+    vertical-align: top;
+    padding-top: 8px;
+    color: #888;
+}
+
+.calendar-week-cell {
+    height: 68px;
+    vertical-align: top;
+    padding: 3px;
+    border: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: background .1s ease;
+}
+
+.calendar-week-cell:hover {
+    background: #f8fafc;
+}
+
+.calendar-week-cell.celda-hoy {
+    background: #eff6ff;
+    border: 2px solid #0d6efd !important;
+}
+
+.calendar-week-cell.dia-seleccionado {
+    background: #f0f7ff;
+    border: 2px solid #93c5fd !important;
+}
+
+/* CALENDARIO — PANEL LATERAL DE DETALLE */
+.cal-panel {
+    width: var(--panel-width);
+    flex-shrink: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: sticky;
+    top: 16px;
+    max-height: 85vh;
+}
+
+.cal-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #f1f5f9;
+    background: #f8fafc;
+}
+
+.cal-panel-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #0f172a;
+    text-transform: capitalize;
+    line-height: 1.3;
+}
+
+.cal-panel-subtitle {
+    font-size: 0.72rem;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.cal-panel-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    background: #0d6efd;
+    color: #fff;
+    border-radius: 999px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cal-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cal-panel-body::-webkit-scrollbar {
+    width: 3px;
+}
+
+.cal-panel-body::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 4px;
+}
+
+/* Estado vacío del panel */
+.cal-panel-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 28px 16px;
+    color: #94a3b8;
+    gap: 8px;
+}
+
+.cal-panel-empty-icon {
+    font-size: 2rem;
+    opacity: 0.5;
+}
+
+.cal-panel-empty p {
+    font-size: 0.8rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ─── Tarjeta de evento en panel ─── */
+.cal-panel-card {
+    border-radius: 12px;
+    padding: 10px 12px;
+    border-left: 4px solid #e5e7eb;
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.cal-panel-card:hover {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    transform: translateY(-1px);
+}
+
+.cal-panel-card-urgente {
+    border-left: 4px solid var(--cal-urgente-border) !important;
+    background: #fff8f8;
+}
+
+.cal-panel-card-importante {
+    border-left: 4px solid var(--cal-importante-border) !important;
+    background: #fffdf0;
+}
+
+.cal-panel-card-flexible {
+    border-left: 4px solid var(--cal-flexible-border) !important;
+    background: #f6fff8;
+}
+
+.cal-panel-card-pasado {
+    opacity: 0.65;
+}
+
+.cal-panel-card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.cal-panel-card-icon {
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.cal-panel-card-titulo {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #0f172a;
+    flex: 1;
+    line-height: 1.3;
+}
+
+.cal-panel-card-tipo {
+    font-size: 0.75rem;
+    color: #64748b;
+    flex-shrink: 0;
+}
+
+.cal-panel-card-hora {
+    font-size: 0.72rem;
+    color: #64748b;
+    margin-bottom: 5px;
+}
+
+.cal-panel-card-desc {
+    font-size: 0.75rem;
+    color: #475569;
+    margin-bottom: 6px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cal-panel-card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+/* Pills dentro del panel */
+.cal-pill {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+}
+
+.cal-pill-urgente {
+    background: var(--cal-urgente-bg);
+    color: var(--cal-urgente-color);
+    border-color: var(--cal-urgente-border);
+}
+
+.cal-pill-importante {
+    background: var(--cal-importante-bg);
+    color: var(--cal-importante-color);
+    border-color: var(--cal-importante-border);
+}
+
+.cal-pill-flexible {
+    background: var(--cal-flexible-bg);
+    color: var(--cal-flexible-color);
+    border-color: var(--cal-flexible-border);
+}
+
+.cal-pill-tipo-propio {
+    background: var(--cal-propio-bg);
+    color: var(--cal-propio-color);
+}
+
+.cal-pill-tipo-externo {
+    background: var(--cal-externo-bg);
+    color: var(--cal-externo-color);
+}
+
+.cal-pill-pasado {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.cal-pill-hoy {
+    background: #fef9c3;
+    color: #a16207;
+}
+
+/* Acciones editar/eliminar en panel */
+.cal-panel-card-acciones {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+.cal-accion-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    color: #64748b;
+}
+
+.cal-accion-editar:hover {
+    background: #eff6ff;
+    color: #0d6efd;
+    border-color: #93c5fd;
+}
+
+.cal-accion-eliminar:hover {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fca5a5;
+}
+
+/* Footer del panel (resumen global) */
+.cal-panel-footer {
+    padding: 10px 14px;
+    border-top: 1px solid #f1f5f9;
+    background: #f8fafc;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cal-resumen-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-direction: column;
+    text-align: center;
+}
+
+.cal-resumen-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.cal-dot-futuros {
+    background: #0d6efd;
+}
+
+.cal-dot-hoy {
+    background: #f59e0b;
+}
+
+.cal-dot-pasados {
+    background: #94a3b8;
+}
+
+.cal-resumen-label {
+    font-size: 0.62rem;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.cal-resumen-num {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1;
+}
+
+/* CALENDARIO — RESPONSIVE MÓVIL  */
+@media (max-width: 900px) {
+    .cal-layout {
+        flex-direction: column;
+    }
+
+    .cal-panel {
+        width: 100%;
+        position: static;
+        max-height: 400px;
+    }
+
+    .cal-tabs-bar {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+}

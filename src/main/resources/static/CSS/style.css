@@ -1,0 +1,259 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--color-secundario);
+    font-family: Montserrat, Poppins;
+    overflow-x: hidden;
+
+}
+
+:root {
+    --color-primario: #1E1E1E;
+    --color-secundario: #F5F6F8;
+    --color-fondo: #f5f5f5;
+    --color-texto: #2B3445;
+    --color-blanco: #fff;
+    --sidebar-width: 80px;
+    --header-height: 56px;
+
+}
+
+.contenedor-main {
+    display: flex;
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+}
+
+.contenido-dinamico {
+    width: 100%;
+    min-width: 0;
+    min-height: calc(100vh - var(--header-height));
+    padding: 1rem 2rem;
+}
+
+.efc-hover:hover {
+    opacity: 0.9;
+}
+
+.navbar {
+    background: #0F0F16;
+    height: var(--header-height);
+    width: 100%;
+    margin-top: 0 !important;
+}
+
+header {
+    width: calc(100% - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+
+}
+
+.btn-menu-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+}
+
+.contenedor-icono {
+    cursor: pointer;
+}
+
+.user-avatar {
+    min-width: 35px;
+    min-height: 30px;
+    background-color: var(--color-blanco);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.btn-dropdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    margin: 0 0 0 30px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-dropdown a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    height: 100%;
+    width: 100%;
+}
+
+
+.btn-dropdown:hover i,
+.btn-dropdown:hover {
+    color: #1E1E1E;
+    background-color: #fff;
+}
+
+.btn-dropdown i {
+    color: #fff;
+}
+
+.icono-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 40px;
+    margin: 0 0 0 5px;
+    border-radius: 5px;
+}
+
+.btn-nav {
+    width: 45px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.btn-nav-i {
+    color: #fff;
+    font-size: 2rem;
+}
+
+.icono-menu:hover,
+.btn-nav:hover {
+    background: #2e2e2e;
+}
+
+
+.txt-codigo {
+    font-size: 12px;
+    opacity: .8;
+    line-height: 1.8;
+    text-align: end;
+}
+
+.txt-usuario {
+    font-size: 13px;
+    opacity: .97;
+}
+
+.menu-lateral {
+    /* Sidebar (escritorio) */
+    background-color: #0F0F16;
+    height: 100vh;
+    width: var(--sidebar-width);
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.nav-itemm {
+    transition: all 0.4s;
+}
+
+.txt-menu-lt {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.nav-itemm:hover {
+    background: var(--color-secundario);
+    border-left: 3px solid #E4695A;
+}
+
+.nav-itemm:hover i,
+.nav-itemm:hover span {
+    color: #0F0F16 !important;
+}
+
+.nav-itemm.activo {
+    background: var(--color-secundario);
+    border-left: 3px solid #E4695A;
+}
+
+.nav-itemm.activo i,
+.nav-itemm.activo span {
+    color: #1E1E1E !important;
+}
+
+
+#menuSidebar {
+    background-color: #0F0F16;
+    width: 255px;
+    color: white;
+}
+
+.offcanvas,
+.offcanvas-backdrop {
+    display: none !important;
+}
+
+
+.sidebar-head {
+    height: 56px;
+}
+
+.btn-sidebar {
+    height: 65px;
+    display: flex;
+    align-items: center;
+    padding-left: 25px;
+    cursor: pointer;
+}
+
+.btn-cerrar-sidebar {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    outline: none;
+}
+
+.btn-menu-ocultar {
+    display: none;
+}
+
+
+@media screen and (max-width: 620px) {
+    .ocultar-res {
+        display: none !important;
+    }
+
+    .btn-menu-ocultar {
+        display: flex;
+        margin-right: .5rem;
+    }
+
+    header {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .contenedor-main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .contenido-dinamico {
+        width: 100%;
+    }
+
+    .menu-lateral {
+        display: none;
+    }
+
+    #menuSidebar,
+    .offcanvas-backdrop {
+        display: flex !important;
+    }
+
+
+
+}

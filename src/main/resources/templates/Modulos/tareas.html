@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: base(~{::contenido})}">
+
+<head>
+    <title>UTPManager | Tareas</title>
+</head>
+
+<body>
+    <div th:fragment="contenido">
+
+        <div class="d-flex justify-content-between align-items-center mb-3 mt-2">
+            <h2 class="fw-bold h3 mb-0">Todas mis Tareas</h2>
+
+            <div class="d-flex gap-2 align-items-center">
+                <div
+                    class="input-group input-group-sm bg-white rounded-pill border px-2 py-1 shadow-sm search-input-compact">
+                    <span class="input-group-text bg-transparent border-0 text-muted pe-1"><i
+                            class="bi bi-search"></i></span>
+                    <input type="text" class="form-control border-0 shadow-none bg-transparent" id="buscadorTareas"
+                        placeholder="Buscar...">
+                </div>
+                <div class="dropdown">
+                    <button
+                        class="btn bg-white border shadow-sm btn-sm px-3 py-1 rounded-pill d-flex align-items-center gap-2 text-dark fw-medium dropdown-toggle"
+                        type="button" id="btnFiltroPrioridad" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-sliders text-muted"></i> Filtrar
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 py-2"
+                        aria-labelledby="btnFiltroPrioridad">
+                        <li><button class="dropdown-item filtro-prioridad-opcion d-flex align-items-center"
+                                type="button" data-prioridad="">
+                                <span class="rounded-circle me-2 flex-shrink-0"
+                                    style="width: 8px; height: 8px; background: #adb5bd;"></span>
+                                Todas
+                            </button></li>
+                        <li><button class="dropdown-item filtro-prioridad-opcion d-flex align-items-center"
+                                type="button" data-prioridad="urgente">
+                                <span class="rounded-circle me-2 flex-shrink-0"
+                                    style="width: 8px; height: 8px; background: #dc3545;"></span>
+                                Urgente
+                            </button></li>
+                        <li><button class="dropdown-item filtro-prioridad-opcion d-flex align-items-center"
+                                type="button" data-prioridad="importante">
+                                <span class="rounded-circle me-2 flex-shrink-0"
+                                    style="width: 8px; height: 8px; background: #ffc107;"></span>
+                                Importante
+                            </button></li>
+                        <li><button class="dropdown-item filtro-prioridad-opcion d-flex align-items-center"
+                                type="button" data-prioridad="flexible">
+                                <span class="rounded-circle me-2 flex-shrink-0"
+                                    style="width: 8px; height: 8px; background: #198754;"></span>
+                                Flexible
+                            </button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <ul class="nav nav-pills d-flex gap-2 mb-0" id="misTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-tab active btn-sm rounded-pill px-4" data-bs-toggle="pill"
+                        data-bs-target="#content-todas" type="button" role="tab">Todas ( <span id="contador-todas">0
+                        </span> )
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-tab btn-sm rounded-pill px-3" data-bs-toggle="pill"
+                        data-bs-target="#content-hacer" type="button" role="tab"><i class="bi bi-sun me-1"></i> Por
+                        Hacer
+                        ( <span id="contador-hacer">0</span> )
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-tab btn-sm rounded-pill px-3" data-bs-toggle="pill"
+                        data-bs-target="#content-progreso" type="button" role="tab"><i class="bi bi-sun me-1"></i>
+                        En
+                        Progreso ( <span id="contador-progreso">0</span> )
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-tab btn-sm rounded-pill px-3" data-bs-toggle="pill"
+                        data-bs-target="#content-completadas" type="button" role="tab"><i
+                            class="bi bi-check-circle me-1"></i>
+                        Completadas ( <span id="contador-completadas">0</span> )
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-tab btn-sm rounded-pill px-3 text-danger etiqueta-estado-retrasada"
+                        data-bs-toggle="pill" data-bs-target="#content-retrasadas" type="button" role="tab"><i
+                            class="bi bi-exclamation-triangle me-1"></i> Retrasadas (<span
+                            id="contador-retrasadas">0</span>)
+                    </button>
+                </li>
+            </ul>
+
+            <button class="btn btn-primary btn-sm px-4 py-2 rounded-pill fw-medium"
+                onclick="abrirModalTareaUniversal('tareas')">
+                <i class="bi bi-plus-lg me-1"></i> Crear tarea
+            </button>
+        </div>
+
+        <!-- Contenedores vacíos, moduloTareas.js inyecta aquí las tarjetas según estado. -->
+        <div class="tab-content flex-grow-1" id="misTabsContent">
+            <div class="tab-pane fade show active" id="content-todas" role="tabpanel">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3" id="lista-tareas-todas"></div>
+            </div>
+
+            <div class="tab-pane fade" id="content-hacer" role="tabpanel">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3" id="lista-tareas-hacer"></div>
+            </div>
+            <div class="tab-pane fade" id="content-progreso" role="tabpanel">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3" id="lista-tareas-progreso"></div>
+            </div>
+            <div class="tab-pane fade" id="content-completadas" role="tabpanel">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3" id="lista-tareas-completadas"></div>
+            </div>
+            <div class="tab-pane fade" id="content-retrasadas" role="tabpanel">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3" id="lista-tareas-retrasadas"></div>
+            </div>
+        </div>
+
+        <!-- Inicializa la carga REST y render de tarjetas al entrar al modulo. -->
+        <script>
+            var moduloActivo = 'tareas';
+            document.addEventListener('DOMContentLoaded', function () { if (typeof iniciarModuloTareas === 'function') iniciarModuloTareas(); });
+        </script>
+
+    </div>
+</body>
+
+</html>

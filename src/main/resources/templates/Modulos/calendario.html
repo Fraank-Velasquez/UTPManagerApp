@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: base(~{::contenido})}">
+
+<head>
+    <title>UTPManager</title>
+</head>
+
+<body>
+    <div th:fragment="contenido">
+
+        <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+
+            <div>
+                <h2 class="fw-bold mb-0 calendar-title" id="calendarTitle"></h2>
+                <p class="text-muted mb-0 calendar-subtitle">
+                    <span class="text-muted">Workspace</span>
+                    <span class="mx-1">/</span>
+                    <span class="fw-bold text-primary">Calendario Académico 2026</span>
+                </p>
+            </div>
+
+            <div class="d-flex gap-2 align-items-center flex-wrap">
+
+                <button class="btn btn-sm px-3 rounded-pill fw-bold bg-white border" id="btnHoy">
+                    Hoy
+                </button>
+
+                <div class="btn-group shadow-sm">
+                    <button class="btn btn-sm btn-light border" id="btnPrev">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light border" id="btnNext">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="d-flex gap-1">
+                    <button class="btn btn-sm px-3 rounded-pill fw-bold btn-vista-activo" id="btnMes">
+                        Mes
+                    </button>
+                    <button class="btn btn-sm px-3 rounded-pill fw-bold btn-vista-inactivo" id="btnSemana">
+                        Semana
+                    </button>
+                </div>
+
+                <button class="btn btn-sm px-4 rounded-pill fw-bold text-white bg-primary border-0"
+                    onclick="abrirModalTareaUniversal('calendario')">
+                    <i class="bi bi-plus-lg me-1"></i>
+                    Nuevo evento
+                </button>
+
+            </div>
+        </div>
+
+        <div class="cal-tabs-bar mb-3">
+
+            <button class="cal-tab-btn active" data-tab="todos">
+                <i class="bi bi-calendar3 me-1"></i>
+                Todos
+                <span class="cal-tab-count" id="contador-todos">0</span>
+            </button>
+
+            <button class="cal-tab-btn" data-tab="futuros">
+                <i class="bi bi-calendar-event me-1"></i>
+                Próximos
+                <span class="cal-tab-count" id="contador-futuros">0</span>
+            </button>
+
+            <button class="cal-tab-btn" data-tab="hoy">
+                <i class="bi bi-star-fill me-1"></i>
+                Hoy
+                <span class="cal-tab-count cal-tab-count-hoy" id="contador-hoy">0</span>
+            </button>
+
+            <button class="cal-tab-btn" data-tab="pasados">
+                <i class="bi bi-calendar-check me-1"></i>
+                Pasados
+                <span class="cal-tab-count" id="contador-pasados">0</span>
+            </button>
+
+            <div class="cal-tab-separator"></div>
+
+            <select class="cal-select-filtro" id="filtroPrioridad">
+                <option value="">Todas las prioridades</option>
+                <option value="urgente">🔴 Urgente</option>
+                <option value="importante">🟡 Importante</option>
+                <option value="flexible">🟢 Flexible</option>
+            </select>
+
+            <select class="cal-select-filtro" id="filtroTipo">
+                <option value="">Todos los tipos</option>
+                <option value="propio">Evento Propio</option>
+                <option value="externo">Evento Externo</option>
+            </select>
+
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+
+            <span class="badge rounded-pill px-3 py-2 badge-urgente-calendar">
+                <i class="bi bi-circle-fill me-1 badge-dot"></i>Urgente
+            </span>
+            <span class="badge rounded-pill px-3 py-2 badge-importante-calendar">
+                <i class="bi bi-circle-fill me-1 badge-dot"></i>Importante
+            </span>
+            <span class="badge rounded-pill px-3 py-2 badge-flexible-calendar">
+                <i class="bi bi-circle-fill me-1 badge-dot"></i>Flexible
+            </span>
+            <span class="badge rounded-pill px-3 py-2 badge-propio-calendar">
+                <i class="bi bi-person-fill me-1 badge-dot"></i>Propio
+            </span>
+            <span class="badge rounded-pill px-3 py-2 badge-externo-calendar">
+                <i class="bi bi-globe me-1 badge-dot"></i>Externo
+            </span>
+
+        </div>
+
+        <div class="cal-layout">
+
+            <div class="cal-main">
+
+                <div id="vistasMes" class="table-responsive rounded-3 shadow-sm">
+                    <table class="calendar-table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Lunes</th>
+                                <th>Martes</th>
+                                <th>Miércoles</th>
+                                <th>Jueves</th>
+                                <th>Viernes</th>
+                                <th>Sábado</th>
+                                <th>Domingo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="monthBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="vistaSemana" class="table-responsive rounded-3 shadow-sm vista-oculta">
+                    <table class="calendar-table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="calendar-hour-column">Hora</th>
+                                <th>Lunes<br><small id="wDay0" class="fw-normal text-muted"></small></th>
+                                <th>Martes<br><small id="wDay1" class="fw-normal text-muted"></small></th>
+                                <th>Miércoles<br><small id="wDay2" class="fw-normal text-muted"></small></th>
+                                <th>Jueves<br><small id="wDay3" class="fw-normal text-muted"></small></th>
+                                <th>Viernes<br><small id="wDay4" class="fw-normal text-muted"></small></th>
+                                <th>Sábado<br><small id="wDay5" class="fw-normal text-muted"></small></th>
+                                <th>Domingo<br><small id="wDay6" class="fw-normal text-muted"></small></th>
+                            </tr>
+                        </thead>
+                        <tbody id="weekBody"></tbody>
+                    </table>
+                </div>
+
+            </div>
+            <aside class="cal-panel" id="calPanel">
+
+                <div class="cal-panel-header">
+                    <div>
+                        <div class="cal-panel-title" id="panelFechaTitulo">Selecciona un día</div>
+                        <div class="cal-panel-subtitle" id="panelFechaSubtitulo"></div>
+                    </div>
+                    <span class="cal-panel-badge" id="panelContadorEventos"></span>
+                </div>
+
+                <div class="cal-panel-body" id="panelEventosList">
+                    <div class="cal-panel-empty">
+                        <i class="bi bi-calendar2-x cal-panel-empty-icon"></i>
+                        <p>Haz clic en un día<br>para ver sus eventos</p>
+                    </div>
+                </div>
+
+                <div class="cal-panel-footer">
+                    <div class="cal-resumen-item">
+                        <span class="cal-resumen-dot cal-dot-futuros"></span>
+                        <span class="cal-resumen-label">Próximos</span>
+                        <span class="cal-resumen-num" id="resumenNumFuturos">0</span>
+                    </div>
+                    <div class="cal-resumen-item">
+                        <span class="cal-resumen-dot cal-dot-hoy"></span>
+                        <span class="cal-resumen-label">Hoy</span>
+                        <span class="cal-resumen-num" id="resumenNumHoy">0</span>
+                    </div>
+                    <div class="cal-resumen-item">
+                        <span class="cal-resumen-dot cal-dot-pasados"></span>
+                        <span class="cal-resumen-label">Pasados</span>
+                        <span class="cal-resumen-num" id="resumenNumPasados">0</span>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+
+        <script>
+            var moduloActivo = 'calendario';
+            document.addEventListener('DOMContentLoaded', function () {
+                if (typeof iniciarModuloCalendario === 'function') {
+                    iniciarModuloCalendario();
+                }
+            });
+        </script>
+    </div>
+</body>
+
+</html>

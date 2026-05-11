@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: base(~{::contenido})}">
+
+<head>
+    <title>UTPManager | inicio</title>
+</head>
+
+<body>
+    <div th:fragment="contenido">
+
+        <!-- Encabezado principal del tablero. -->
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">Bienvenido a UTPManager</h2>
+                <p class="text-muted mb-0">Organizate y dale seguimiento a tus tareas, proyectos y eventos </p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge rounded-pill px-3 py-2 bg-primary-subtle text-primary-emphasis border"
+                    id="inicioBadgeProyectos">0 proyectos activos</span>
+                <span class="badge rounded-pill px-3 py-2 bg-warning-subtle text-warning-emphasis border"
+                    id="inicioBadgeEventos">0 eventos programados</span>
+            </div>
+        </div>
+
+        <!-- KPI del tablero. -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="dashboard-card h-100">
+                    <div class="dashboard-icon todo"><i class="bi bi-list-task"></i></div>
+                    <div>
+                        <h3 class="mb-0 fw-bold" id="inicioTotalTareas">0</h3>
+                        <div class="text-muted small">Total tareas</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="dashboard-card h-100">
+                    <div class="dashboard-icon progreso"><i class="bi bi-arrow-repeat"></i></div>
+                    <div>
+                        <h3 class="mb-0 fw-bold" id="inicioTotalEnProgreso">0</h3>
+                        <div class="text-muted small">En progreso</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="dashboard-card h-100">
+                    <div class="dashboard-icon completada"><i class="bi bi-check-circle"></i></div>
+                    <div>
+                        <h3 class="mb-0 fw-bold" id="inicioTotalCompletadas">0</h3>
+                        <div class="text-muted small">Completadas</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="dashboard-card h-100">
+                    <div class="dashboard-icon retrasada"><i class="bi bi-exclamation-triangle"></i></div>
+                    <div>
+                        <h3 class="mb-0 fw-bold" id="inicioTotalRetrasadas">0</h3>
+                        <div class="text-muted small">Retrasadas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Listas dinamicas -->
+        <div class="row g-3">
+            <div class="col-12 col-xl-7">
+                <div class="bg-white border rounded-4 shadow-sm h-100">
+                    <div class="d-flex justify-content-between align-items-center p-3 p-md-4 border-bottom">
+                        <div>
+                            <h5 class="fw-bold mb-1">Actividad reciente</h5>
+                            <div class="text-muted small">Últimos registros guardados desde el backend</div>
+                        </div>
+                        <span class="badge rounded-pill bg-light text-dark border" id="inicioContadorActividad">0
+                            registros</span>
+                    </div>
+                    <div id="inicioActividadReciente"></div>
+                </div>
+            </div>
+
+            <div class="col-12 col-xl-5">
+                <div class="bg-white border rounded-4 shadow-sm h-100">
+                    <div class="d-flex justify-content-between align-items-center p-3 p-md-4 border-bottom">
+                        <div>
+                            <h5 class="fw-bold mb-1">Eventos próximos</h5>
+                            <div class="text-muted small">Eventos programados y visibles en el calendario</div>
+                        </div>
+                        <span class="badge rounded-pill bg-light text-dark border" id="inicioContadorEventos">0
+                            eventos</span>
+                    </div>
+                    <div id="inicioEventosProximos"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arranque del modulo Inicio cuando el fragmento ya esta disponible en el DOM. -->
+        <script>
+            var moduloActivo = 'inicio';
+            document.addEventListener('DOMContentLoaded', function () { if (typeof iniciarModuloInicio === 'function') iniciarModuloInicio(); });
+        </script>
+
+    </div>
+</body>
+
+</html>
