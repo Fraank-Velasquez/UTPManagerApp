@@ -267,17 +267,17 @@
     font-size: 0.85rem;
 }
 
-.kanban-state-todo {
+.kanban-state-por-hacer {
     background: #2563eb;
     color: #fff;
 }
 
-.kanban-state-progress {
+.kanban-state-progreso {
     background: #f59e0b;
     color: #fff;
 }
 
-.kanban-state-done {
+.kanban-state-completada {
     background: #34d399;
     color: #fff;
 }
@@ -313,17 +313,17 @@
     justify-content: center;
 }
 
-.header-todo {
+.header-por-hacer {
     background-color: var(--col-todo);
     color: #8a601c;
 }
 
-.header-progress {
+.header-progreso {
     background-color: var(--col-progress);
     color: #1e5a7d;
 }
 
-.header-done {
+.header-completada {
     background-color: var(--col-done);
     color: #2d7a2d;
 }

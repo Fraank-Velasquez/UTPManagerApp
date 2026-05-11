@@ -12,16 +12,17 @@ import java.util.List;
 
 @Service
 public class ProyectoService {
-    /* Ruta del archivo JSON de proyectos*/
+    /* Ruta del archivo JSON de proyectos */
     @Value("${ruta.proyectos.datos}")
     private String rutaArchivo;
 
-    /* Mapper  para leer y escribir objetos Proyecto como JSON */
+    /* Mapper para leer y escribir objetos Proyecto como JSON */
     private final ObjectMapper mapper = new ObjectMapper();
 
     /*
      * Lee todos los proyectos.
-     * Si el archivo no existe, se usa una lista vacia para que el modulo no reviente.
+     * Si el archivo no existe, se usa una lista vacia para que el modulo no
+     * reviente.
      */
     public List<Proyecto> obtenerTodos() throws Exception {
         File archivo = new File(rutaArchivo);
@@ -32,7 +33,7 @@ public class ProyectoService {
         });
     }
 
-    /*Busca un proyecto por ID */
+    /* Busca un proyecto por ID */
     public Proyecto obtenerPorId(Long id) throws Exception {
         return obtenerTodos().stream()
                 .filter(proyecto -> proyecto.getId().equals(id))
@@ -42,7 +43,6 @@ public class ProyectoService {
 
     /*
      * Guarda un proyecto nuevo.
-     * Se conserva el arreglo actual, se agrega el registro y se reescribe el JSON completo.
      */
     public void guardar(Proyecto nuevo) throws Exception {
         List<Proyecto> lista = obtenerTodos();
@@ -53,7 +53,8 @@ public class ProyectoService {
 
     /*
      * Elimina un proyecto por ID.
-     * no elimina automaticamente tareas asociadas; esas tareas quedan con idProyecto antiguo.
+     * no elimina automaticamente tareas asociadas; esas tareas quedan con
+     * idProyecto antiguo.
      */
     public void eliminar(Long id) throws Exception {
         List<Proyecto> lista = obtenerTodos();

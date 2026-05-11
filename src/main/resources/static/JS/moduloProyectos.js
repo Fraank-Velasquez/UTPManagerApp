@@ -47,7 +47,6 @@ function solicitarEliminarProyecto(proyectoId, nombreProyecto = '') {
                 if (!respuesta.ok) {
                     throw new Error('Error al eliminar proyecto');
                 }
-
                 window.location.href = '/proyectos';
             } catch (error) {
                 console.error('No se pudo eliminar el proyecto:', error);

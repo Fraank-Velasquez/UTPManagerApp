@@ -1,4 +1,3 @@
-
 let terminoBusquedaTareas = '';
 let filtroPrioridadTareas = '';
 
@@ -86,9 +85,6 @@ function renderizarModuloTareas() {
  */
 function normalizarEstado(estado) {
     const valor = (estado || 'por_hacer').toString().trim().toLowerCase();
-    if (valor === 'todo') return 'por_hacer';
-    if (valor === 'progress') return 'progreso';
-    if (valor === 'done') return 'completada';
     return valor;
 }
 
@@ -496,9 +492,9 @@ function eliminarTarjetaProyectoDePantalla(idTarea) {
 
 function obtenerContenedorProyectoPorEstado(estado) {
     const estadoNormalizado = normalizarEstado(estado);
-    if (estadoNormalizado === 'progreso') return document.getElementById('contenedor-proyecto-progreso');
+    if (estadoNormalizado === 'progreso') return document.getElementById('contenedor-proyecto-en-progreso');
     if (estadoNormalizado === 'completada') return document.getElementById('contenedor-proyecto-terminadas');
-    return document.getElementById('contenedor-proyecto-todo');
+    return document.getElementById('contenedor-proyecto-por-hacer');
 }
 
 function limpiarEstadoVacioProyecto(contenedor) {
@@ -506,8 +502,8 @@ function limpiarEstadoVacioProyecto(contenedor) {
 }
 
 function actualizarEstadosVaciosProyecto() {
-    agregarEstadoVacioProyecto('contenedor-proyecto-todo', 'No hay tareas por hacer', 'Agrega una nueva tarea para comenzar.');
-    agregarEstadoVacioProyecto('contenedor-proyecto-progreso', 'No hay tareas en progreso', 'Las tareas activas aparecerán aquí.');
+    agregarEstadoVacioProyecto('contenedor-proyecto-por-hacer', 'No hay tareas por hacer', 'Agrega una nueva tarea para comenzar.');
+    agregarEstadoVacioProyecto('contenedor-proyecto-en-progreso', 'No hay tareas en progreso', 'Las tareas activas aparecerán aquí.');
     agregarEstadoVacioProyecto('contenedor-proyecto-terminadas', 'No hay tareas terminadas', 'Cuando completes tareas se verán aquí.');
 }
 
@@ -534,8 +530,8 @@ function agregarEstadoVacioProyecto(idContenedor, titulo, descripcion) {
 }
 
 function actualizarContadoresProyecto() {
-    actualizarContadorColumnaProyecto('contenedor-proyecto-todo');
-    actualizarContadorColumnaProyecto('contenedor-proyecto-progreso');
+    actualizarContadorColumnaProyecto('contenedor-proyecto-por-hacer');
+    actualizarContadorColumnaProyecto('contenedor-proyecto-en-progreso');
     actualizarContadorColumnaProyecto('contenedor-proyecto-terminadas');
 }
 
@@ -555,9 +551,9 @@ function obtenerTituloBotonEstadoProyecto(estado) {
 
 function obtenerClaseIndicadorProyecto(estado) {
     const estadoNormalizado = normalizarEstado(estado);
-    if (estadoNormalizado === 'progreso') return 'kanban-state-progress';
-    if (estadoNormalizado === 'completada') return 'kanban-state-done';
-    return 'kanban-state-todo';
+    if (estadoNormalizado === 'progreso') return 'kanban-state-progreso';
+    if (estadoNormalizado === 'completada') return 'kanban-state-completada';
+    return 'kanban-state-por-hacer';
 }
 
 function obtenerIconoEstadoProyecto(estado) {

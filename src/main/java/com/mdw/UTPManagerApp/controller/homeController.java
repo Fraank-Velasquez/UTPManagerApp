@@ -49,8 +49,6 @@ public class homeController {
             RedirectAttributes redirectAttributes) {
         if ("admin".equals(usuario) && "admin".equals(password)) {
             session.setAttribute("usuario", "admin");
-            /* Mantiene la sesión activa hasta cerrar sesión. */
-            session.setMaxInactiveInterval(-1);
             return "redirect:/inicio";
         }
         redirectAttributes.addFlashAttribute("error", "Credenciales inválidas");
@@ -58,12 +56,15 @@ public class homeController {
     }
 
     @GetMapping({ "/", "/inicio" })
-    public String inicio(Model model, HttpSession session, RedirectAttributes redirectAttributes) throws Exception {
+    public String inicio(Model model/* , HttpSession session, RedirectAttributes redirectAttributes */)
+            throws Exception {
         /* Bloquea acceso sin sesión. */
-        if (session.getAttribute("usuario") == null) {
-            redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
-            return "redirect:/login";
-        }
+        /*
+         * if (session.getAttribute("usuario") == null) {
+         * redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
+         * return "redirect:/login";
+         * }
+         */
 
         List<Actividad> tareas = actividadService.obtenerTodas();
         List<Proyecto> proyectos = proyectoService.obtenerTodos();
@@ -76,11 +77,16 @@ public class homeController {
     }
 
     @GetMapping("/tareas")
-    public String tareas(Model model, HttpSession session, RedirectAttributes redirectAttributes) throws Exception {
-        if (session.getAttribute("usuario") == null) {
-            redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
-            return "redirect:/login";
-        }
+    public String tareas(Model model/* , HttpSession session, RedirectAttributes redirectAttributes */)
+            throws Exception {
+
+        /*
+         * if (session.getAttribute("usuario") == null) {
+         * redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
+         * return "redirect:/login";
+         * }
+         */
+
         model.addAttribute("tareas", actividadService.obtenerTodas());
         model.addAttribute("moduloActivo", "tareas");
         model.addAttribute("pageTitle", "UTPManager | Tareas");
@@ -88,11 +94,14 @@ public class homeController {
     }
 
     @GetMapping("/proyectos")
-    public String proyectos(Model model, HttpSession session, RedirectAttributes redirectAttributes) throws Exception {
-        if (session.getAttribute("usuario") == null) {
-            redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
-            return "redirect:/login";
-        }
+    public String proyectos(Model model/* , HttpSession session, RedirectAttributes redirectAttributes */)
+            throws Exception {
+        /*
+         * if (session.getAttribute("usuario") == null) {
+         * redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
+         * return "redirect:/login";
+         * }
+         */
 
         List<Proyecto> proyectos = proyectoService.obtenerTodos();
         List<Actividad> todasActividades = actividadService.obtenerTodas();
@@ -128,12 +137,16 @@ public class homeController {
     }
 
     @GetMapping("/proyectos/{id}")
-    public String proyectoDetalle(@PathVariable Long id, Model model, HttpSession session,
-            RedirectAttributes redirectAttributes) throws Exception {
-        if (session.getAttribute("usuario") == null) {
-            redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
-            return "redirect:/login";
-        }
+    public String proyectoDetalle(@PathVariable Long id, Model model/*
+                                                                     * , HttpSession session,
+                                                                     * RedirectAttributes redirectAttributes
+                                                                     */) throws Exception {
+        /*
+         * if (session.getAttribute("usuario") == null) {
+         * redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
+         * return "redirect:/login";
+         * }
+         */
 
         List<Actividad> todas = actividadService.obtenerTodas();
         Proyecto proyecto = proyectoService.obtenerPorId(id);
@@ -144,24 +157,24 @@ public class homeController {
 
         java.util.function.Predicate<Actividad> esPorHacer = a -> {
             String estado = a.getEstado() == null ? "por_hacer" : a.getEstado().trim().toLowerCase();
-            return "por_hacer".equals(estado) || "todo".equals(estado);
+            return "por_hacer".equals(estado);
         };
 
         java.util.function.Predicate<Actividad> esProgreso = a -> {
             String estado = a.getEstado() == null ? "por_hacer" : a.getEstado().trim().toLowerCase();
-            return "progreso".equals(estado) || "progress".equals(estado);
+            return "progreso".equals(estado);
         };
 
         java.util.function.Predicate<Actividad> esCompletada = a -> {
             String estado = a.getEstado() == null ? "por_hacer" : a.getEstado().trim().toLowerCase();
-            return "completada".equals(estado) || "done".equals(estado);
+            return "completada".equals(estado);
         };
 
-        model.addAttribute("tareasTodo", tareasProyecto.stream()
+        model.addAttribute("tareasPorHacer", tareasProyecto.stream()
                 .filter(esPorHacer).collect(Collectors.toList()));
-        model.addAttribute("tareasProgress",
+        model.addAttribute("tareasEnProgreso",
                 tareasProyecto.stream().filter(esProgreso).collect(Collectors.toList()));
-        model.addAttribute("tareasDone",
+        model.addAttribute("tareasCompletadas",
                 tareasProyecto.stream().filter(esCompletada).collect(Collectors.toList()));
         model.addAttribute("proyecto", proyecto);
         model.addAttribute("proyectoId", id);
@@ -171,11 +184,8 @@ public class homeController {
     }
 
     @GetMapping("/calendario")
-    public String calendario(Model model, HttpSession session, RedirectAttributes redirectAttributes) throws Exception {
-        if (session.getAttribute("usuario") == null) {
-            redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
-            return "redirect:/login";
-        }
+    public String calendario(Model model) throws Exception {
+
         model.addAttribute("tareas", actividadService.obtenerTodas());
         model.addAttribute("moduloActivo", "calendario");
         model.addAttribute("pageTitle", "UTPManager | Calendario");

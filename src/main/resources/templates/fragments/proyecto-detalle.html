@@ -26,19 +26,19 @@
         <!-- Tablero Kanban del proyecto-->
         <div id="tablero-kanban-activo" class="kanban-board kanban-board-proyecto">
             <div class="kanban-column kanban-column-proyecto">
-                <div class="column-header header-todo kanban-column-head">
+                <div class="column-header header-por-hacer kanban-column-head">
                     <span><i class="bi bi-sun me-1"></i> Por Hacer</span>
-                    <span class="badge rounded-3 bg-white text-dark " th:text="${#lists.size(tareasTodo)}">0</span>
+                    <span class="badge rounded-3 bg-white text-dark " th:text="${#lists.size(tareasPorHacer)}">0</span>
                 </div>
-                <div id="contenedor-proyecto-todo" class="task-list">
-                    <div th:if="${#lists.isEmpty(tareasTodo)}" class="kanban-empty-state">
+                <div id="contenedor-proyecto-por-hacer" class="task-list">
+                    <div th:if="${#lists.isEmpty(tareasPorHacer)}" class="kanban-empty-state">
                         <div class="fw-semibold mb-1">No hay tareas por hacer</div>
                         <div class="small text-muted">Agrega una nueva tarea para comenzar.</div>
                     </div>
                     <!-- Bucle Thymeleaf: crea una tarjeta por cada tarea pendiente del proyecto. -->
-                    <div th:each="t : ${tareasTodo}">
+                    <div th:each="t : ${tareasPorHacer}">
                         <article class="tarjeta-tarea kanban-task-card p-3 mb-3" th:data-tarea-id="${t.id}"
-                            data-estado-actual="todo">
+                            data-estado-actual="por_hacer">
                             <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
                                 <div class="flex-grow-1">
                                     <h6 class="titulo-tarea fw-bold mb-1" th:text="${t.titulo}">Tarea</h6>
@@ -51,8 +51,8 @@
                                     <button type="button"
                                         class="btn btn-link p-0 border-0 shadow-none boton-cambiar-estado"
                                         aria-label="Cambiar a En proceso" title="Cambiar a En proceso"
-                                        th:data-tarea-id="${t.id}" data-estado-actual="todo">
-                                        <span class="kanban-state-dot kanban-state-todo"><i
+                                        th:data-tarea-id="${t.id}" data-estado-actual="por_hacer">
+                                        <span class="kanban-state-dot kanban-state-por-hacer"><i
                                                 class="bi bi-play-fill"></i></span>
                                     </button>
                                     <button type="button"
@@ -81,19 +81,20 @@
             </div>
 
             <div class="kanban-column kanban-column-proyecto">
-                <div class="column-header header-progress kanban-column-head">
+                <div class="column-header header-progreso kanban-column-head">
                     <span><i class="bi bi-arrow-repeat me-1"></i> En Progreso</span>
-                    <span class="badge rounded-3 bg-white text-dark " th:text="${#lists.size(tareasProgress)}">0</span>
+                    <span class="badge rounded-3 bg-white text-dark "
+                        th:text="${#lists.size(tareasEnProgreso)}">0</span>
                 </div>
-                <div id="contenedor-proyecto-progreso" class="task-list">
-                    <div th:if="${#lists.isEmpty(tareasProgress)}" class="kanban-empty-state">
+                <div id="contenedor-proyecto-en-progreso" class="task-list">
+                    <div th:if="${#lists.isEmpty(tareasEnProgreso)}" class="kanban-empty-state">
                         <div class="fw-semibold mb-1">No hay tareas en progreso</div>
                         <div class="small text-muted">Las tareas activas aparecerán aquí.</div>
                     </div>
                     <!-- Bucle Thymeleaf: crea una tarjeta por cada tarea en progreso. -->
-                    <div th:each="t : ${tareasProgress}">
+                    <div th:each="t : ${tareasEnProgreso}">
                         <article class="tarjeta-tarea kanban-task-card p-3 mb-3" th:data-tarea-id="${t.id}"
-                            data-estado-actual="progress">
+                            data-estado-actual="progreso">
                             <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
                                 <div class="flex-grow-1">
                                     <h6 class="titulo-tarea fw-bold mb-1" th:text="${t.titulo}">Tarea</h6>
@@ -106,8 +107,8 @@
                                     <button type="button"
                                         class="btn btn-link p-0 border-0 shadow-none boton-cambiar-estado"
                                         aria-label="Cambiar a Completada" title="Cambiar a Completada"
-                                        th:data-tarea-id="${t.id}" data-estado-actual="progress">
-                                        <span class="kanban-state-dot kanban-state-progress"><i
+                                        th:data-tarea-id="${t.id}" data-estado-actual="progreso">
+                                        <span class="kanban-state-dot kanban-state-progreso"><i
                                                 class="bi bi-hourglass-split"></i></span>
                                     </button>
                                     <button type="button"
@@ -136,19 +137,20 @@
             </div>
 
             <div class="kanban-column kanban-column-proyecto">
-                <div class="column-header header-done kanban-column-head">
+                <div class="column-header header-completada kanban-column-head">
                     <span><i class="bi bi-check-circle me-1"></i> Terminadas</span>
-                    <span class="badge rounded-3 bg-white text-dark" th:text="${#lists.size(tareasDone)}">0</span>
+                    <span class="badge rounded-3 bg-white text-dark"
+                        th:text="${#lists.size(tareasCompletadas)}">0</span>
                 </div>
                 <div id="contenedor-proyecto-terminadas" class="task-list">
-                    <div th:if="${#lists.isEmpty(tareasDone)}" class="kanban-empty-state">
+                    <div th:if="${#lists.isEmpty(tareasCompletadas)}" class="kanban-empty-state">
                         <div class="fw-semibold mb-1">No hay tareas terminadas</div>
                         <div class="small text-muted">Cuando completes tareas se verán aquí.</div>
                     </div>
                     <!-- Bucle Thymeleaf: crea una tarjeta por cada tarea finalizada. -->
-                    <div th:each="t : ${tareasDone}">
+                    <div th:each="t : ${tareasCompletadas}">
                         <article class="tarjeta-tarea tarjeta-tarea-completada kanban-task-card p-3 mb-3"
-                            th:data-tarea-id="${t.id}" data-estado-actual="done">
+                            th:data-tarea-id="${t.id}" data-estado-actual="completada">
                             <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
                                 <div class="flex-grow-1">
                                     <h6 class="titulo-tarea fw-bold mb-1" th:text="${t.titulo}">Tarea</h6>
@@ -161,8 +163,8 @@
                                     <button type="button"
                                         class="btn btn-link p-0 border-0 shadow-none boton-cambiar-estado"
                                         aria-label="Reactivar tarea" title="Reactivar tarea" th:data-tarea-id="${t.id}"
-                                        data-estado-actual="done">
-                                        <span class="kanban-state-dot kanban-state-done"><i
+                                        data-estado-actual="completada">
+                                        <span class="kanban-state-dot kanban-state-completada"><i
                                                 class="bi bi-check-lg"></i></span>
                                     </button>
                                     <button type="button"
