@@ -1,9 +1,7 @@
-
 // Variable global para almacenar los datos temporalmente en memoria
 let datosGlobalesActividades = [];
 let datosGlobalesProyectos = [];
 let accionConfirmacionPendiente = null;
-
 
 // cerrar sesión / solicitar al servidor invalidar la sesión
 const btnCerrarSesion = document.getElementById('btnCerrarSesion');
@@ -13,11 +11,9 @@ if (btnCerrarSesion) {
         window.location.href = '/logout';
     });
 }
-
 // Listener para el formulario único del modal actividad
 document.getElementById('formActividadUniversal')?.addEventListener('submit', function (e) {
     e.preventDefault();
-
 
     // Recolectar datos  
     const datosActividad = {
@@ -46,7 +42,6 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
         .then(res => res.json())
         .then(async () => {
             const modalEl = document.getElementById('modalActividadUniversal');
-
             const modalFormulario = bootstrap.Modal.getInstance(modalEl);
             if (modalFormulario) {
                 modalFormulario.hide();

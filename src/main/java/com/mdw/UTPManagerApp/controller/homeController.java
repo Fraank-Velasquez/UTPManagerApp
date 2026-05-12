@@ -8,18 +8,17 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mdw.UTPManagerApp.model.Actividad;
 import com.mdw.UTPManagerApp.model.Proyecto;
 import com.mdw.UTPManagerApp.service.ActividadService;
 import com.mdw.UTPManagerApp.service.ProyectoService;
-
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class homeController {
@@ -32,39 +31,24 @@ public class homeController {
     @Autowired
     private ProyectoService proyectoService;
 
-    /* Redirige al inicio si ya hay sesión. */
-    @GetMapping("/login")
-    public String login(HttpSession session) {
-        if (session.getAttribute("usuario") != null) {
-            return "redirect:/inicio";
-        }
+    @GetMapping({ "/", "/login" })
+    public String login() {
         return "Modulos/login";
     }
 
-    /* Valida credenciales y crea la sesión. */
+    /* Validar credenciales */
     @PostMapping("/login")
-    public String loginPost(@RequestParam(name = "nombre-usuario-login") String usuario,
-            @RequestParam(name = "password-usuario-login") String password,
-            HttpSession session,
-            RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Void> loginPost(@RequestParam(name = "nombre-usuario-login") String usuario,
+            @RequestParam(name = "password-usuario-login") String password) {
         if ("admin".equals(usuario) && "admin".equals(password)) {
-            session.setAttribute("usuario", "admin");
-            return "redirect:/inicio";
+            return ResponseEntity.ok().build();
         }
-        redirectAttributes.addFlashAttribute("error", "Credenciales inválidas");
-        return "redirect:/login";
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @GetMapping({ "/", "/inicio" })
-    public String inicio(Model model/* , HttpSession session, RedirectAttributes redirectAttributes */)
+    @GetMapping("/inicio")
+    public String inicio(Model model)
             throws Exception {
-        /* Bloquea acceso sin sesión. */
-        /*
-         * if (session.getAttribute("usuario") == null) {
-         * redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
-         * return "redirect:/login";
-         * }
-         */
 
         List<Actividad> tareas = actividadService.obtenerTodas();
         List<Proyecto> proyectos = proyectoService.obtenerTodos();
@@ -77,15 +61,8 @@ public class homeController {
     }
 
     @GetMapping("/tareas")
-    public String tareas(Model model/* , HttpSession session, RedirectAttributes redirectAttributes */)
+    public String tareas(Model model)
             throws Exception {
-
-        /*
-         * if (session.getAttribute("usuario") == null) {
-         * redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
-         * return "redirect:/login";
-         * }
-         */
 
         model.addAttribute("tareas", actividadService.obtenerTodas());
         model.addAttribute("moduloActivo", "tareas");
@@ -94,14 +71,7 @@ public class homeController {
     }
 
     @GetMapping("/proyectos")
-    public String proyectos(Model model/* , HttpSession session, RedirectAttributes redirectAttributes */)
-            throws Exception {
-        /*
-         * if (session.getAttribute("usuario") == null) {
-         * redirectAttributes.addFlashAttribute("msg", "Debe iniciar sesión");
-         * return "redirect:/login";
-         * }
-         */
+    public String proyectos(Model model) throws Exception {
 
         List<Proyecto> proyectos = proyectoService.obtenerTodos();
         List<Actividad> todasActividades = actividadService.obtenerTodas();
@@ -193,9 +163,7 @@ public class homeController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        /* Invalida la sesion para que las rutas protegidas vuelvan a /login. */
-        session.invalidate();
+    public String logout() {
         return "redirect:/login";
     }
 
