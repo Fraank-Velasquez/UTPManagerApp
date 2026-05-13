@@ -35,7 +35,7 @@
                         <div class="fw-semibold mb-1">No hay tareas por hacer</div>
                         <div class="small text-muted">Agrega una nueva tarea para comenzar.</div>
                     </div>
-                    <!-- Bucle Thymeleaf: crea una tarjeta por cada tarea pendiente del proyecto. -->
+                    <!-- Bucle para crea una tarjeta por cada tarea pendiente del proyecto. -->
                     <div th:each="t : ${tareasPorHacer}">
                         <article class="tarjeta-tarea kanban-task-card p-3 mb-3" th:data-tarea-id="${t.id}"
                             data-estado-actual="por_hacer">
@@ -91,7 +91,7 @@
                         <div class="fw-semibold mb-1">No hay tareas en progreso</div>
                         <div class="small text-muted">Las tareas activas aparecerán aquí.</div>
                     </div>
-                    <!-- Bucle Thymeleaf: crea una tarjeta por cada tarea en progreso. -->
+                    <!-- Bucle para crear una tarjeta por cada tarea en progreso. -->
                     <div th:each="t : ${tareasEnProgreso}">
                         <article class="tarjeta-tarea kanban-task-card p-3 mb-3" th:data-tarea-id="${t.id}"
                             data-estado-actual="progreso">
@@ -147,7 +147,7 @@
                         <div class="fw-semibold mb-1">No hay tareas terminadas</div>
                         <div class="small text-muted">Cuando completes tareas se verán aquí.</div>
                     </div>
-                    <!-- Bucle Thymeleaf: crea una tarjeta por cada tarea finalizada. -->
+                    <!-- Bucle para crea una tarjeta por cada tarea finalizada. -->
                     <div th:each="t : ${tareasCompletadas}">
                         <article class="tarjeta-tarea tarjeta-tarea-completada kanban-task-card p-3 mb-3"
                             th:data-tarea-id="${t.id}" data-estado-actual="completada">
