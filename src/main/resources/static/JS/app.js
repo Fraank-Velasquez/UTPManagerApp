@@ -1,9 +1,7 @@
-// Variable global para almacenar los datos temporalmente en memoria
 let datosGlobalesActividades = [];
 let datosGlobalesProyectos = [];
 let accionConfirmacionPendiente = null;
 
-// cerrar sesión / solicitar al servidor invalidar la sesión
 const btnCerrarSesion = document.getElementById('btnCerrarSesion');
 if (btnCerrarSesion) {
     btnCerrarSesion.addEventListener('click', (e) => {
@@ -33,7 +31,7 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
         datosActividad.estado = null;
     }
 
-    // Enviar al backend: actividadController.guardarActividades().
+    
     fetch('/api/actividades/guardar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -48,7 +46,6 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
             }
 
             mostrarModalExitoGuardado('Tarea creada', 'La tarea se guardó correctamente.', async () => {
-                // Recargar datos desde el servidor sin recargar la página completa
                 await cargarDatosDesdeServidor();
 
                 // Reiniciar el módulo activo según dónde se hizo la acción
@@ -56,7 +53,6 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
                     await cargarProyectosResumenDesdeServidor();
                     renderizarInicio();
                 } else if (moduloActivo === 'tareas') {
-                    /* El modal de éxito tapa el flash: recargamos mientras está visible. */
                     window.location.reload();
                 } else if (moduloActivo === 'proyectos') {
                     if (typeof proyectoActivo !== 'undefined' && proyectoActivo !== null) {
