@@ -33,9 +33,6 @@ async function iniciarModuloCalendario() {
             .filter(a => a && a.esEvento === true);
     }
 
-    /* ══════════════════════════════════════════
-       UTILIDADES DE FECHA
-    ══════════════════════════════════════════ */
 
     function normalizarFecha(fecha) {
         const c = new Date(fecha);
@@ -78,14 +75,7 @@ async function iniciarModuloCalendario() {
         return 'futuros';
     }
 
-    /* ══════════════════════════════════════════
-       NORMALIZACIÓN DE PRIORIDAD Y TIPO
-    ══════════════════════════════════════════ */
 
-    /**
-     * Normaliza prioridad: urgente / importante / flexible
-     * Acepta variantes: alta→urgente, media→importante, baja→flexible
-     */
     function normalizarPrioridad(evento) {
         const p = (evento.prioridad || '').toString().trim().toLowerCase();
         if (p === 'urgente' || p === 'alta') return 'urgente';
@@ -93,19 +83,13 @@ async function iniciarModuloCalendario() {
         return 'flexible';
     }
 
-    /**
-     * Normaliza tipo de evento: propio / externo
-     * Acepta el campo tipoEvento del objeto
-     */
+
     function normalizarTipoEvento(evento) {
         const t = (evento.tipoEvento || evento.tipo || '').toString().trim().toLowerCase();
         if (t === 'externo') return 'externo';
         return 'propio';
     }
 
-    /* ══════════════════════════════════════════
-       FILTRADO DE EVENTOS
-    ══════════════════════════════════════════ */
 
     function eventosPorTab(tab) {
         return eventosCalendario.filter(e => {
@@ -119,10 +103,6 @@ async function iniciarModuloCalendario() {
     function eventosFiltradosActivos() {
         return eventosPorTab(tabActiva);
     }
-
-    /* ══════════════════════════════════════════
-       CONTADORES
-    ══════════════════════════════════════════ */
 
     function actualizarContadoresPestañas() {
         const grupos = {
@@ -144,9 +124,6 @@ async function iniciarModuloCalendario() {
         setNum('resumenNumPasados', eventosCalendario.filter(e => obtenerTemporalidad(e) === 'pasados').length);
     }
 
-    /* ══════════════════════════════════════════
-       CREACIÓN DE BADGES DE EVENTO
-    ══════════════════════════════════════════ */
 
     function clasesBadgePrioridad(evento) {
         const p = normalizarPrioridad(evento);
@@ -180,9 +157,6 @@ async function iniciarModuloCalendario() {
         return badge;
     }
 
-    /* ══════════════════════════════════════════
-       AGRUPACIÓN POR DÍA
-    ══════════════════════════════════════════ */
 
     function agruparEventos(listaEventos) {
         const agrupados = {};
@@ -197,9 +171,6 @@ async function iniciarModuloCalendario() {
         return agrupados;
     }
 
-    /* ══════════════════════════════════════════
-       PANEL LATERAL DE DETALLE
-    ══════════════════════════════════════════ */
 
     function abrirPanelDia(fechaIso) {
         diaSeleccionado = fechaIso;
@@ -295,9 +266,6 @@ async function iniciarModuloCalendario() {
         return card;
     }
 
-    /* ══════════════════════════════════════════
-       ELIMINAR EVENTO (hook para el panel)
-    ══════════════════════════════════════════ */
 
     window.eliminarEventoCalendario = function (idEvento) {
         if (typeof mostrarModalConfirmacionAccion === 'function') {
@@ -325,9 +293,6 @@ async function iniciarModuloCalendario() {
         }
     };
 
-    /* ══════════════════════════════════════════
-       VISTA MES
-    ══════════════════════════════════════════ */
 
     function renderizarVistaMes() {
         const titulo = document.getElementById('calendarTitle');
@@ -420,9 +385,9 @@ async function iniciarModuloCalendario() {
         }
     }
 
-    /* ══════════════════════════════════════════
+    /*
        VISTA SEMANA
-    ══════════════════════════════════════════ */
+     */
 
     function renderizarVistaSemana() {
         const titulo = document.getElementById('calendarTitle');
@@ -499,9 +464,9 @@ async function iniciarModuloCalendario() {
         });
     }
 
-    /* ══════════════════════════════════════════
+    /* 
        COORDINADOR DE VISTAS
-    ══════════════════════════════════════════ */
+     */
 
     function renderizarVista() {
         const vistaMes = document.getElementById('vistasMes');
@@ -529,9 +494,9 @@ async function iniciarModuloCalendario() {
         if (diaSeleccionado) abrirPanelDia(diaSeleccionado);
     }
 
-    /* ══════════════════════════════════════════
+    /* 
     ESCAPE XSS
-    ══════════════════════════════════════════ */
+     */
 
     function escapeHtml(texto) {
         return String(texto)
@@ -542,9 +507,9 @@ async function iniciarModuloCalendario() {
             .replaceAll("'", '&#39;');
     }
 
-    /* ══════════════════════════════════════════
+    /* 
     ENLAZAR CONTROLES
-    ══════════════════════════════════════════ */
+     */
 
     function enlazarControles() {
 

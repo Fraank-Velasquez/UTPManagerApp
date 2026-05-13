@@ -102,12 +102,10 @@ public class homeController {
 
                 LocalDate hoy = LocalDate.now();
 
-                /* Solo actividades que son tareas (no eventos de calendario). */
                 List<Actividad> todasTareas = todasActividades.stream()
                                 .filter(a -> !a.isEsEvento())
                                 .collect(Collectors.toList());
 
-                /* Grupos por estado — mismos valores que usa el JS. */
                 List<Actividad> tareasPorHacer = todasTareas.stream()
                                 .filter(a -> "por_hacer".equalsIgnoreCase(a.getEstado())
                                                 || a.getEstado() == null)
@@ -121,10 +119,6 @@ public class homeController {
                                 .filter(a -> "completada".equalsIgnoreCase(a.getEstado()))
                                 .collect(Collectors.toList());
 
-                /*
-                 * Retrasadas: fecha pasada y no completada. Calculado en Java para no
-                 * depender de lógica de fechas en Thymeleaf.
-                 */
                 List<Actividad> tareasRetrasadas = todasTareas.stream()
                                 .filter(a -> !"completada".equalsIgnoreCase(a.getEstado())
                                                 && a.getFecha() != null
@@ -132,10 +126,6 @@ public class homeController {
                                                 && LocalDate.parse(a.getFecha()).isBefore(hoy))
                                 .collect(Collectors.toList());
 
-                /*
-                 * Mapa idProyecto → nombre para que Thymeleaf pueda mostrar el nombre
-                 * en cada tarjeta sin llamadas JS al servidor.
-                 */
                 Map<Long, String> nombresProyectos = new HashMap<>();
                 for (Proyecto p : proyectos) {
                         nombresProyectos.put(p.getId(), p.getNombre());

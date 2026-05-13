@@ -8,6 +8,35 @@
     --card-terminado-border: #bcf5bc;
 }
 
+/* Indicadores de prioridad */
+.prioridad-indicador {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.prioridad-todas {
+    background: #adb5bd;
+}
+
+.prioridad-urgente {
+    background: #dc3545;
+}
+
+.prioridad-importante {
+    background: #ffc107;
+}
+
+.prioridad-flexible {
+    background: #198754;
+}
+
+/* Texto secundario compacto */
+.texto-secundario-compacto {
+    font-size: 0.9rem;
+    min-height: 2.5rem;
+}
+
 .proyecto-card {
     border-radius: 16px;
     background: #ffffff;
