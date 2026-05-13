@@ -16,9 +16,11 @@
             </div>
             <div class="d-flex flex-wrap gap-2">
                 <span class="badge rounded-pill px-3 py-2 bg-primary-subtle text-primary-emphasis border"
-                    id="inicioBadgeProyectos">0 proyectos activos</span>
+                    id="inicioBadgeProyectos" th:text="${totalProyectos} + ' proyectos activos'">0 proyectos
+                    activos</span>
                 <span class="badge rounded-pill px-3 py-2 bg-warning-subtle text-warning-emphasis border"
-                    id="inicioBadgeEventos">0 eventos programados</span>
+                    id="inicioBadgeEventos" th:text="${totalEventos} + ' eventos programados'">0 eventos
+                    programados</span>
             </div>
         </div>
 
@@ -28,7 +30,7 @@
                 <div class="dashboard-card h-100">
                     <div class="dashboard-icon todo"><i class="bi bi-list-task"></i></div>
                     <div>
-                        <h3 class="mb-0 fw-bold" id="inicioTotalTareas">0</h3>
+                        <h3 class="mb-0 fw-bold" th:text="${totalTareas}">0</h3>
                         <div class="text-muted small">Total tareas</div>
                     </div>
                 </div>
@@ -37,7 +39,7 @@
                 <div class="dashboard-card h-100">
                     <div class="dashboard-icon progreso"><i class="bi bi-arrow-repeat"></i></div>
                     <div>
-                        <h3 class="mb-0 fw-bold" id="inicioTotalEnProgreso">0</h3>
+                        <h3 class="mb-0 fw-bold" th:text="${totalEnProgreso}">0</h3>
                         <div class="text-muted small">En progreso</div>
                     </div>
                 </div>
@@ -46,7 +48,7 @@
                 <div class="dashboard-card h-100">
                     <div class="dashboard-icon completada"><i class="bi bi-check-circle"></i></div>
                     <div>
-                        <h3 class="mb-0 fw-bold" id="inicioTotalCompletadas">0</h3>
+                        <h3 class="mb-0 fw-bold" th:text="${totalCompletadas}">0</h3>
                         <div class="text-muted small">Completadas</div>
                     </div>
                 </div>
@@ -55,7 +57,7 @@
                 <div class="dashboard-card h-100">
                     <div class="dashboard-icon retrasada"><i class="bi bi-exclamation-triangle"></i></div>
                     <div>
-                        <h3 class="mb-0 fw-bold" id="inicioTotalRetrasadas">0</h3>
+                        <h3 class="mb-0 fw-bold" th:text="${totalRetrasadas}">0</h3>
                         <div class="text-muted small">Retrasadas</div>
                     </div>
                 </div>
@@ -69,12 +71,27 @@
                     <div class="d-flex justify-content-between align-items-center p-3 p-md-4 border-bottom">
                         <div>
                             <h5 class="fw-bold mb-1">Actividad reciente</h5>
-                            <div class="text-muted small">Últimos registros guardados desde el backend</div>
+                            <div class="text-muted small">Últimos registros guardados</div>
                         </div>
-                        <span class="badge rounded-pill bg-light text-dark border" id="inicioContadorActividad">0
-                            registros</span>
                     </div>
-                    <div id="inicioActividadReciente"></div>
+                    <div id="inicioActividadReciente">
+                        <div th:each="act : ${actividadReciente}"
+                            class="d-flex align-items-center p-3 border-bottom gap-3">
+                            <div
+                                class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 inicio-lista-icono inicio-lista-icono-actividad">
+                                <i
+                                    th:class="${act.esEvento} ? 'bi bi-calendar-event fs-5' : 'bi bi-list-task fs-5'"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold" th:text="${act.titulo}">Título</div>
+                                <div class="text-muted small" th:text="${act.fecha}">Fecha</div>
+                            </div>
+                        </div>
+                        <!-- Estado vacío si no hay actividades -->
+                        <div th:if="${#lists.isEmpty(actividadReciente)}" class="p-4 text-center text-muted">
+                            Sin actividad reciente.
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -83,12 +100,28 @@
                     <div class="d-flex justify-content-between align-items-center p-3 p-md-4 border-bottom">
                         <div>
                             <h5 class="fw-bold mb-1">Eventos próximos</h5>
-                            <div class="text-muted small">Eventos programados y visibles en el calendario</div>
+                            <div class="text-muted small">Eventos programados </div>
                         </div>
-                        <span class="badge rounded-pill bg-light text-dark border" id="inicioContadorEventos">0
-                            eventos</span>
                     </div>
-                    <div id="inicioEventosProximos"></div>
+                    <div id="inicioEventosProximos">
+                        <div th:each="ev : ${eventosProximos}"
+                            class="d-flex align-items-center p-3 border-bottom gap-3">
+                            <div
+                                class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 inicio-lista-icono inicio-lista-icono-evento">
+                                <i class="bi bi-calendar3 fs-5"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold" th:text="${ev.titulo}">Título</div>
+                                <div class="text-muted small">
+                                    <span th:text="${ev.fecha}">--</span>
+                                    <span th:if="${ev.horaInicio}" th:text="' · ' + ${ev.horaInicio}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${#lists.isEmpty(eventosProximos)}" class="p-4 text-center text-muted">
+                            Sin eventos próximos.
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

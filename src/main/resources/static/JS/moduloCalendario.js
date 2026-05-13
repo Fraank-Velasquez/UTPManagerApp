@@ -1,13 +1,11 @@
 async function iniciarModuloCalendario() {
 
-    /* ── Constantes ── */
     const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     const DIAS_CORTOS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
     const HORAS = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00',
         '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
 
-    /* ── Estado del módulo ── */
     const hoy = normalizarFecha(new Date());
     let fechaVista = new Date(hoy);
     let modoVista = 'mes';
@@ -17,16 +15,15 @@ async function iniciarModuloCalendario() {
     let diaSeleccionado = null;
     let eventosCalendario = [];
 
-    /* ── Inicialización ── */
     await recargarEventos();
     enlazarControles();
     renderizarVista();
     actualizarContadoresPestañas();
     actualizarResumenPanel();
 
-    /* ══════════════════════════════════════════
-       CARGA DE DATOS
-    ══════════════════════════════════════════ */
+
+    // CARGA DE DATOS
+
 
     async function recargarEventos() {
         if (typeof cargarDatosDesdeServidor === 'function') {

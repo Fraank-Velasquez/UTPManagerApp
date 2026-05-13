@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="col d-flex justify-content-start  ">
-                    <a th:href="@{/inicio}"><img th:src="@{/resources-media/UTPManager.png}" height="40"
+                    <a th:href="@{/inicio}"><img th:src="@{/resources-media/UTPManager.png}" height="32"
                             alt="utpManager-logo"></a>
                 </div>
 
@@ -145,10 +145,9 @@
 
         </aside>
 
-        <!-- Aqui se inserta el fragmento contenido de cada modulo: inicio, tareas, proyectos, calendario. -->
         <main class="contenido-dinamico">
             <div th:replace="${contenido}">
-                
+
             </div>
         </main>
 

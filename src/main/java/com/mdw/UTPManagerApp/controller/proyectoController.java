@@ -19,7 +19,7 @@ import com.mdw.UTPManagerApp.service.ProyectoService;
 @RequestMapping("/api/proyectos")
 public class proyectoController {
 
-    /* Servicio para leer y escribir en  proyectos.json. */
+    /* Servicio para leer y escribir en proyectos.json. */
     @Autowired
     private ProyectoService service;
 

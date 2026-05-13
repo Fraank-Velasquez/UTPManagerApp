@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <div th:fragment="contenido" th:with="totalProyectos=${#lists.size(proyectos)}">
+    <div th:fragment="contenido">
 
         <div
             class="projects-header projects-hero d-flex justify-content-between align-items-start mb-4 gap-3 flex-wrap">
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <!-- Galeria de proyectos renderizada por servidor -->
+        <!-- Galeria de proyectos -->
         <div class="row g-4" id="galeria-proyectos" th:if="${!#lists.isEmpty(proyectos)}">
             <div class="col-12 col-md-6 col-lg-4" th:each="proyecto : ${proyectos}">
                 <article class="tarjeta-proyecto proyecto-card text-dark" role="link" tabindex="0"
@@ -49,7 +49,8 @@
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                                     <li>
-                                        <a class="dropdown-item text-danger" href="#"
+                                        <!--  th:data-id="${proyecto.id}" th:data-nombre="${proyecto.nombre}" -->
+                                        <a class="dropdown-item text-danger" href=""
                                             th:attr="data-id=${proyecto.id},data-nombre=${proyecto.nombre}"
                                             onclick="event.stopPropagation(); solicitarEliminarProyecto(this.dataset.id, this.dataset.nombre); return false;">
                                             <i class="bi bi-trash3 me-2"></i>Eliminar proyecto
@@ -65,7 +66,7 @@
                         <div class="mt-auto d-flex justify-content-between align-items-center flex-wrap gap-2">
                             <span class="badge rounded-pill bg-light text-dark border px-3 py-2">
                                 <i class="bi bi-list-task me-1"></i><span
-                                    th:text="${tareasCompletadasPorProyecto[proyecto.id] ?: 0}">0</span>/<span
+                                    th:text="${tareasCompletadasPorProyecto[proyecto.id] ?:  }">0</span>/<span
                                     th:text="${totalTareasPorProyecto[proyecto.id] ?: 0}">0</span> Tareas
                             </span>
                             <span class="text-danger small fw-semibold">

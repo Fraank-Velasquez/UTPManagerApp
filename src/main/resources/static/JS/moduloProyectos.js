@@ -1,13 +1,3 @@
-let proyectoActivo = null;
-/*
- * Navega al tablero de un proyecto.
- * Se usa cuando alguna card o accion necesita abrir /proyectos/{id}.
- */
-function abrirProyecto(proyectoId) {
-    proyectoActivo = Number(proyectoId);
-    window.location.href = `/proyectos/${proyectoId}`;
-}
-
 /*
  * Abre el modal de nuevo proyecto y limpia valores anteriores.
  */

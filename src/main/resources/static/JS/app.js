@@ -47,26 +47,26 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
                 modalFormulario.hide();
             }
 
-            // Recargar datos desde el servidor sin recargar la página completa
-            await cargarDatosDesdeServidor();
+            mostrarModalExitoGuardado('Tarea creada', 'La tarea se guardó correctamente.', async () => {
+                // Recargar datos desde el servidor sin recargar la página completa
+                await cargarDatosDesdeServidor();
 
-            // Reiniciar el módulo activo según dónde se hizo la acción
-            if (moduloActivo === 'inicio' && typeof renderizarInicio === 'function') {
-                await cargarProyectosResumenDesdeServidor();
-                renderizarInicio();
-            } else if (moduloActivo === 'tareas' && typeof iniciarModuloTareas === 'function') {
-                iniciarModuloTareas();
-            } else if (moduloActivo === 'proyectos') {
-                if (typeof proyectoActivo !== 'undefined' && proyectoActivo !== null) {
-                    // En detalle de proyecto, una recarga automática es suficiente y más simple
-                    window.location.reload();
-                } else {
-                    // Estamos en la vista general de proyectos - recargar completo
-                    window.location.reload();
+                // Reiniciar el módulo activo según dónde se hizo la acción
+                if (moduloActivo === 'inicio' && typeof renderizarInicio === 'function') {
+                    await cargarProyectosResumenDesdeServidor();
+                    renderizarInicio();
+                } else if (moduloActivo === 'tareas' && typeof iniciarModuloTareas === 'function') {
+                    iniciarModuloTareas();
+                } else if (moduloActivo === 'proyectos') {
+                    if (typeof proyectoActivo !== 'undefined' && proyectoActivo !== null) {
+                        window.location.reload();
+                    } else {
+                        window.location.reload();
+                    }
+                } else if (moduloActivo === 'calendario' && typeof iniciarModuloCalendario === 'function') {
+                    iniciarModuloCalendario();
                 }
-            } else if (moduloActivo === 'calendario' && typeof iniciarModuloCalendario === 'function') {
-                iniciarModuloCalendario();
-            }
+            });
         })
         .catch(err => console.error("Error al guardar:", err));
 });
@@ -170,7 +170,7 @@ function abrirModalTareaUniversal(contexto, idProyecto = null, fechaPrefijada = 
     const modalElement = document.getElementById('modalActividadUniversal');
 
     if (!modalElement) {
-        console.error("¡ERROR CRÍTICO! No se encontró el modal en el HTML.");
+        console.error("No se encontró el modal en el HTML.");
         return;
     }
 
@@ -249,10 +249,10 @@ function abrirModalTareaUniversal(contexto, idProyecto = null, fechaPrefijada = 
         // Secciones específicas
         secHoras.classList.add('d-none');
         secHoras.style.display = 'none';
-        secEstado.style.display = 'block';  // ✅ MOSTRAR ESTADO para tareas de proyecto
+        secEstado.style.display = 'block';
 
         // Valores por defecto
-        if (inputEstado) inputEstado.value = 'por_hacer';  // Estado inicial: por hacer
+        if (inputEstado) inputEstado.value = 'por_hacer';  // Estado inicial
         document.getElementById('ctx_es_evento').value = "false";
         document.getElementById('ctx_proyecto_id').value = idProyecto || "";
     }

@@ -814,6 +814,21 @@
     color: #dc2626;
 }
 
+.inicio-lista-icono {
+    width: 42px;
+    height: 42px;
+}
+
+.inicio-lista-icono-actividad {
+    background-color: #eff6ff;
+    color: #2563eb;
+}
+
+.inicio-lista-icono-evento {
+    background-color: #f3e8ff;
+    color: #7c3aed;
+}
+
 /* Pantalla de carga global */
 .pantalla-carga-overlay {
     background-color: #1E1E1E;
@@ -848,6 +863,27 @@
 /* Search compact */
 .search-input-compact {
     max-width: 250px;
+}
+
+.filtro-prioridad-dot {
+    width: 8px;
+    height: 8px;
+}
+
+.filtro-prioridad-dot-todas {
+    background: #adb5bd;
+}
+
+.filtro-prioridad-dot-urgente {
+    background: #dc3545;
+}
+
+.filtro-prioridad-dot-importante {
+    background: #ffc107;
+}
+
+.filtro-prioridad-dot-flexible {
+    background: #198754;
 }
 
 .table-custom {

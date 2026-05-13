@@ -3,7 +3,7 @@
 
 <body>
 
-    <!-- Modal universal para crear tareas personales, tareas de proyecto o eventos de calendario. -->
+    <!-- Modal  para crear tareas personales, tareas de proyecto o eventos de calendario -->
     <div th:fragment="modalActividad" class="modal fade" id="modalActividadUniversal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg modal-rounded">
@@ -13,7 +13,6 @@
                 </div>
 
                 <div class="modal-body p-4">
-                    <!-- app.js lee estos campos y arma el JSON que envia a /api/actividades/guardar. -->
                     <form id="formActividadUniversal">
                         <input type="hidden" id="ctx_proyecto_id" name="idProyecto">
                         <input type="hidden" id="ctx_es_evento" name="esEvento" value="false">
@@ -135,8 +134,7 @@
         </div>
     </div>
 
-    <!-- MODAL CONFIRMACIÓN DE ACCIÓN -->
-    <!--  para eliminar tareas o proyectos -->
+    <!--  Modal para confirmar eliminar tareas o proyectos -->
     <div th:fragment="modalConfirmacionAccion" class="modal fade" id="modalConfirmacionAccion" tabindex="-1"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
