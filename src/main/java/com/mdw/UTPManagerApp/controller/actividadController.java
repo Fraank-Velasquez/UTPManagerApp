@@ -20,19 +20,14 @@ import com.mdw.UTPManagerApp.service.ActividadService;
 @RequestMapping("/api/actividades")
 public class actividadController {
 
-    /* Service para centraliza lectura/escritura de actividades.json. */
     @Autowired
     private ActividadService service;
 
-    /*
-     * usado por JS para renderizar inicio, tareas y calendario.
-     */
     @GetMapping
     public List<Actividad> listar() throws Exception {
         return service.obtenerTodas();
     }
 
-    /* recibe JSON desde el modal universal. */
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarActividades(@RequestBody Actividad nuevaActivida) {
         try {
@@ -43,9 +38,6 @@ public class actividadController {
         }
     }
 
-    /**
-     * Actualiza el estado de una tarea existente
-     */
     @PutMapping("/{id}/estado")
     public ResponseEntity<?> actualizarEstado(@PathVariable Long id, @RequestBody ActividadEstadoDto estadoDto) {
         try {
@@ -56,9 +48,6 @@ public class actividadController {
         }
     }
 
-    /**
-     * Elimina una tarea por su ID
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarActividad(@PathVariable Long id) {
         try {
