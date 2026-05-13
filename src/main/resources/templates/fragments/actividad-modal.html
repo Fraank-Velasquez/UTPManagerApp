@@ -62,7 +62,7 @@
                             </div>
                         </div>
 
-                        <!-- Estado inicial de tareas. En proyectos/calendario se oculta porque el flujo lo decide. -->
+                        <!-- Estado inicial de tareas. calendario se oculta -->
                         <div id="seccionEstado" class="mb-3 form-floating">
                             <select class="form-select shadow-none rounded-3" id="actividadEstado" name="estado">
                                 <option value="por_hacer">Por hacer</option>
@@ -119,8 +119,7 @@
                         class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10 modal-icon-large">
                         <i class="bi bi-arrow-counterclockwise text-warning fs-1"></i>
                     </div>
-                    <p class="text-secondary mb-0">Esta tarea se volverá a marcar como "Por hacer" y se eliminará la
-                        opacidad visual.</p>
+                    <p class="text-secondary mb-0">Esta tarea se volverá a marcar como "Por hacer".</p>
                 </div>
                 <div class="modal-footer border-top-0 justify-content-center pt-0 pb-4">
                     <button type="button" class="btn btn-light rounded-pill px-4 fw-bold"
@@ -202,6 +201,32 @@
                         class="btn btn-primary rounded-pill px-4 fw-bold text-white">
                         <i class="bi bi-floppy me-2"></i>Guardar proyecto
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para confirmar el cambio de estado  -->
+    <div th:fragment="modalCambiarEstado" class="modal fade" id="modalCambiarEstado" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg modal-rounded">
+                <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                    <h5 class="modal-title fw-bold" id="modalCambiarEstadoTitulo">Cambiar estado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <div id="modalCambiarEstadoIconoContenedor"
+                        class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 modal-icon-large">
+                        <i id="modalCambiarEstadoIcono" class="bi bi-hourglass-split text-primary fs-1"></i>
+                    </div>
+                    <p class="text-secondary mb-0" id="modalCambiarEstadoMensaje">¿Deseas cambiar el estado de esta
+                        tarea?</p>
+                </div>
+                <div class="modal-footer border-top-0 justify-content-center pt-0 pb-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold"
+                        data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold text-white"
+                        id="modalCambiarEstadoBoton">Confirmar</button>
                 </div>
             </div>
         </div>

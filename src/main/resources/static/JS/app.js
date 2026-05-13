@@ -55,8 +55,9 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
                 if (moduloActivo === 'inicio' && typeof renderizarInicio === 'function') {
                     await cargarProyectosResumenDesdeServidor();
                     renderizarInicio();
-                } else if (moduloActivo === 'tareas' && typeof iniciarModuloTareas === 'function') {
-                    iniciarModuloTareas();
+                } else if (moduloActivo === 'tareas') {
+                    /* El modal de éxito tapa el flash: recargamos mientras está visible. */
+                    window.location.reload();
                 } else if (moduloActivo === 'proyectos') {
                     if (typeof proyectoActivo !== 'undefined' && proyectoActivo !== null) {
                         window.location.reload();

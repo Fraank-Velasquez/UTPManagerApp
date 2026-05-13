@@ -1,17 +1,17 @@
 package com.mdw.UTPManagerApp.controller;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,11 +25,11 @@ import com.mdw.UTPManagerApp.service.ProyectoService;
 @Controller
 public class homeController {
 
-        /* Service para cargar tareas/eventos desde actividades.json. */
+        /* Service para cargar tareas/eventos */
         @Autowired
         private ActividadService actividadService;
 
-        /* Service para cargar proyectos desde proyectos.json. */
+        /* Service para cargar proyectos */
         @Autowired
         private ProyectoService proyectoService;
 
@@ -97,6 +97,56 @@ public class homeController {
         @GetMapping("/tareas")
         public String tareas(Model model) throws Exception {
 
+                List<Actividad> todasActividades = actividadService.obtenerTodas();
+                List<Proyecto> proyectos = proyectoService.obtenerTodos();
+
+                LocalDate hoy = LocalDate.now();
+
+                /* Solo actividades que son tareas (no eventos de calendario). */
+                List<Actividad> todasTareas = todasActividades.stream()
+                                .filter(a -> !a.isEsEvento())
+                                .collect(Collectors.toList());
+
+                /* Grupos por estado — mismos valores que usa el JS. */
+                List<Actividad> tareasPorHacer = todasTareas.stream()
+                                .filter(a -> "por_hacer".equalsIgnoreCase(a.getEstado())
+                                                || a.getEstado() == null)
+                                .collect(Collectors.toList());
+
+                List<Actividad> tareasEnProgreso = todasTareas.stream()
+                                .filter(a -> "progreso".equalsIgnoreCase(a.getEstado()))
+                                .collect(Collectors.toList());
+
+                List<Actividad> tareasCompletadas = todasTareas.stream()
+                                .filter(a -> "completada".equalsIgnoreCase(a.getEstado()))
+                                .collect(Collectors.toList());
+
+                /*
+                 * Retrasadas: fecha pasada y no completada. Calculado en Java para no
+                 * depender de lógica de fechas en Thymeleaf.
+                 */
+                List<Actividad> tareasRetrasadas = todasTareas.stream()
+                                .filter(a -> !"completada".equalsIgnoreCase(a.getEstado())
+                                                && a.getFecha() != null
+                                                && !a.getFecha().isBlank()
+                                                && LocalDate.parse(a.getFecha()).isBefore(hoy))
+                                .collect(Collectors.toList());
+
+                /*
+                 * Mapa idProyecto → nombre para que Thymeleaf pueda mostrar el nombre
+                 * en cada tarjeta sin llamadas JS al servidor.
+                 */
+                Map<Long, String> nombresProyectos = new HashMap<>();
+                for (Proyecto p : proyectos) {
+                        nombresProyectos.put(p.getId(), p.getNombre());
+                }
+
+                model.addAttribute("todasTareas", todasTareas);
+                model.addAttribute("tareasPorHacer", tareasPorHacer);
+                model.addAttribute("tareasEnProgreso", tareasEnProgreso);
+                model.addAttribute("tareasCompletadas", tareasCompletadas);
+                model.addAttribute("tareasRetrasadas", tareasRetrasadas);
+                model.addAttribute("nombresProyectos", nombresProyectos);
                 model.addAttribute("moduloActivo", "tareas");
                 model.addAttribute("pageTitle", "UTPManager | Tareas");
                 return "Modulos/tareas";
@@ -144,7 +194,7 @@ public class homeController {
 
                 List<Actividad> todas = actividadService.obtenerTodas();
                 Proyecto proyecto = proyectoService.obtenerPorId(id);
-                
+
                 /* Filtra solo tareas relacionadas con el proyecto */
                 List<Actividad> tareasProyecto = todas.stream()
                                 .filter(a -> a.getIdProyecto() != null && a.getIdProyecto().equals(id))
