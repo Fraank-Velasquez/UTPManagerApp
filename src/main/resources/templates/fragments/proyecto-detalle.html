@@ -37,7 +37,7 @@
                     </div>
                     <!-- Bucle para crea una tarjeta por cada tarea pendiente del proyecto. -->
                     <div th:each="t : ${tareasPorHacer}">
-                        <article class="tarjeta-tarea kanban-task-card p-3 mb-3" th:data-tarea-id="${t.id}"
+                        <article class="tarjeta-tarea kanban-task-card p-3 mb-3" th:data-tarea-id="${t.idActividad}"
                             data-estado-actual="por_hacer">
                             <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
                                 <div class="flex-grow-1">
@@ -51,13 +51,13 @@
                                     <button type="button"
                                         class="btn btn-link p-0 border-0 shadow-none boton-cambiar-estado"
                                         aria-label="Cambiar a En proceso" title="Cambiar a En proceso"
-                                        th:data-tarea-id="${t.id}" data-estado-actual="por_hacer">
+                                        th:data-tarea-id="${t.idActividad}" data-estado-actual="por_hacer">
                                         <span class="kanban-state-dot kanban-state-por-hacer"><i
                                                 class="bi bi-play-fill"></i></span>
                                     </button>
                                     <button type="button"
                                         class="btn btn-link p-0 text-danger border-0 shadow-none boton-eliminar-tarea"
-                                        aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${t.id}">
+                                        aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${t.idActividad}">
                                         <i class="bi bi-trash3"></i>
                                     </button>
                                 </div>
@@ -93,7 +93,7 @@
                     </div>
                     <!-- Bucle para crear una tarjeta por cada tarea en progreso. -->
                     <div th:each="t : ${tareasEnProgreso}">
-                        <article class="tarjeta-tarea kanban-task-card p-3 mb-3" th:data-tarea-id="${t.id}"
+                        <article class="tarjeta-tarea kanban-task-card p-3 mb-3" th:data-tarea-id="${t.idActividad}"
                             data-estado-actual="progreso">
                             <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
                                 <div class="flex-grow-1">
@@ -107,13 +107,13 @@
                                     <button type="button"
                                         class="btn btn-link p-0 border-0 shadow-none boton-cambiar-estado"
                                         aria-label="Cambiar a Completada" title="Cambiar a Completada"
-                                        th:data-tarea-id="${t.id}" data-estado-actual="progreso">
+                                        th:data-tarea-id="${t.idActividad}" data-estado-actual="progreso">
                                         <span class="kanban-state-dot kanban-state-progreso"><i
                                                 class="bi bi-hourglass-split"></i></span>
                                     </button>
                                     <button type="button"
                                         class="btn btn-link p-0 text-danger border-0 shadow-none boton-eliminar-tarea"
-                                        aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${t.id}">
+                                        aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${t.idActividad}">
                                         <i class="bi bi-trash3"></i>
                                     </button>
                                 </div>
@@ -150,7 +150,7 @@
                     <!-- Bucle para crea una tarjeta por cada tarea finalizada. -->
                     <div th:each="t : ${tareasCompletadas}">
                         <article class="tarjeta-tarea tarjeta-tarea-completada kanban-task-card p-3 mb-3"
-                            th:data-tarea-id="${t.id}" data-estado-actual="completada">
+                            th:data-tarea-id="${t.idActividad}" data-estado-actual="completada">
                             <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
                                 <div class="flex-grow-1">
                                     <h6 class="titulo-tarea fw-bold mb-1" th:text="${t.titulo}">Tarea</h6>
@@ -162,14 +162,14 @@
                                 <div class="kanban-actions">
                                     <button type="button"
                                         class="btn btn-link p-0 border-0 shadow-none boton-cambiar-estado"
-                                        aria-label="Reactivar tarea" title="Reactivar tarea" th:data-tarea-id="${t.id}"
+                                        aria-label="Reactivar tarea" title="Reactivar tarea" th:data-tarea-id="${t.idActividad}"
                                         data-estado-actual="completada">
                                         <span class="kanban-state-dot kanban-state-completada"><i
                                                 class="bi bi-check-lg"></i></span>
                                     </button>
                                     <button type="button"
                                         class="btn btn-link p-0 text-danger border-0 shadow-none boton-eliminar-tarea"
-                                        aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${t.id}">
+                                        aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${t.idActividad}">
                                         <i class="bi bi-trash3"></i>
                                     </button>
                                 </div>

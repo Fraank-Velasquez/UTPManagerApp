@@ -17,7 +17,8 @@
             <th:block
                 th:with="
             estadoRaw=${#strings.toLowerCase(tarea.estado ?: 'por_hacer')},
-            nombreProyecto=${tarea.idProyecto != null and nombresProyectos[tarea.idProyecto] != null ? nombresProyectos[tarea.idProyecto] : 'General'}">
+            idProyecto=${tarea.proyecto != null ? tarea.proyecto.idProyecto : null},
+            nombreProyecto=${idProyecto != null and nombresProyectos[idProyecto] != null ? nombresProyectos[idProyecto] : 'General'}">
                 <th:block th:with="
             prioridadClass=${prioridadRaw == 'urgente' or prioridadRaw == 'alta' ? 'etiqueta-prioridad-alta' : (prioridadRaw == 'importante' or prioridadRaw == 'media' ? 'etiqueta-prioridad-media' : 'etiqueta-prioridad-baja')},
             prioridadLabel=${prioridadRaw == 'urgente' or prioridadRaw == 'alta' ? 'Urgente' : (prioridadRaw == 'importante' or prioridadRaw == 'media' ? 'Importante' : 'Flexible')},
@@ -29,7 +30,7 @@
             claseOpacidad=${estadoRaw == 'completada' ? 'tarjeta-tarea-completada' : ''}">
 
                     <article class="tarjeta-tarea p-3 h-100" th:classappend="${claseOpacidad}"
-                        th:data-tarea-id="${tarea.id}" th:data-estado-actual="${estadoRaw}">
+                        th:data-tarea-id="${tarea.idActividad}" th:data-estado-actual="${estadoRaw}">
 
                         <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
                             <div class="flex-grow-1">
@@ -44,13 +45,13 @@
                                 <!-- Botón cambiar estado -->
                                 <button type="button" class="btn btn-link p-0 border-0 shadow-none boton-cambiar-estado"
                                     th:classappend="${colorIcono}"
-                                    th:attr="aria-label=${titleIcono}, title=${titleIcono}, data-tarea-id=${tarea.id}, data-estado-actual=${estadoRaw}">
+                                    th:attr="aria-label=${titleIcono}, title=${titleIcono}, data-tarea-id=${tarea.idActividad}, data-estado-actual=${estadoRaw}">
                                     <i class="bi fs-5" th:classappend="${iconoEstado}"></i>
                                 </button>
                                 <!-- Botón eliminar -->
                                 <button type="button"
                                     class="btn btn-link p-0 text-danger border-0 shadow-none boton-eliminar-tarea"
-                                    aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${tarea.id}">
+                                    aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${tarea.idActividad}">
                                     <i class="bi bi-trash3 fs-6"></i>
                                 </button>
                             </div>
@@ -63,7 +64,7 @@
 
                         <div class="meta-etiquetas-tarea">
                             <span class="etiqueta-id-oculta badge rounded-pill border bg-light text-secondary px-2 py-1"
-                                th:text="'#' + ${tarea.id}">#id</span>
+                                th:text="'#' + ${tarea.idActividad}">#id</span>
                             <span class="badge etiqueta-reducida rounded-pill px-2 py-1"
                                 th:classappend="${prioridadClass}" th:text="${prioridadLabel}">Prioridad</span>
                             <span class="badge etiqueta-reducida rounded-pill px-2 py-1" th:classappend="${estadoClass}"

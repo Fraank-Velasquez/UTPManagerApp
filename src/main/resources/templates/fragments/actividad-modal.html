@@ -13,28 +13,31 @@
                 </div>
 
                 <div class="modal-body p-4">
-                    <form id="formActividadUniversal">
+                    <form id="formActividadUniversal" novalidate>
                         <input type="hidden" id="ctx_proyecto_id" name="idProyecto">
                         <input type="hidden" id="ctx_es_evento" name="esEvento" value="false">
 
                         <div class="mb-3 form-floating">
                             <input type="text" class="form-control shadow-none rounded-3" id="actividadTitulo"
-                                name="titulo" placeholder="Título" required />
+                                name="titulo" placeholder="Título" />
                             <label for="actividadTitulo">¿Qué hay que hacer?</label>
+                            <div class="invalid-feedback" data-error-for="titulo"></div>
                         </div>
 
                         <div class="mb-3 form-floating">
                             <textarea class="form-control shadow-none rounded-3 textarea-large" id="actividadDesc"
                                 name="descripcion" placeholder="Descripción"></textarea>
                             <label for="actividadDesc">Descripción (opcional)</label>
+                            <div class="invalid-feedback" data-error-for="descripcion"></div>
                         </div>
 
                         <!-- Fecha y prioridad. En calendario se oculta prioridad y fecha ocupa toda la fila. -->
                         <div id="seccionFecha" class="row g-2 mb-3">
                             <div class="col-6 form-floating">
                                 <input type="date" class="form-control shadow-none rounded-3" id="actividadFecha"
-                                    name="fecha" required />
+                                    name="fecha" />
                                 <label for="actividadFecha">Fecha limite</label>
+                                <div class="invalid-feedback" data-error-for="fecha"></div>
                             </div>
 
                             <div class="col-6 form-floating">
@@ -45,6 +48,7 @@
                                     <option value="Flexible">Flexible</option>
                                 </select>
                                 <label for="actividadPrioridad">Prioridad</label>
+                                <div class="invalid-feedback" data-error-for="prioridad"></div>
                             </div>
                         </div>
 
@@ -70,6 +74,7 @@
                                 <option value="completada">Completada</option>
                             </select>
                             <label for="actividadEstado">Estado inicial</label>
+                            <div class="invalid-feedback" data-error-for="estado"></div>
                         </div>
                     </form>
                 </div>
@@ -168,29 +173,33 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form id="formProyectoNuevo">
+                    <form id="formProyectoNuevo" novalidate>
                         <div class="mb-3 form-floating">
                             <input type="text" class="form-control shadow-none rounded-3" id="proyectoNombre"
-                                name="nombre" placeholder="Nombre" required />
+                                name="nombre" placeholder="Nombre" />
                             <label for="proyectoNombre">Nombre del proyecto</label>
+                            <div class="invalid-feedback" data-error-for="nombre"></div>
                         </div>
 
                         <div class="mb-3 form-floating">
                             <textarea class="form-control shadow-none rounded-3 textarea-xlarge"
                                 id="proyectoDescripcion" name="descripcion" placeholder="Descripción"></textarea>
                             <label for="proyectoDescripcion">Descripción</label>
+                            <div class="invalid-feedback" data-error-for="descripcion"></div>
                         </div>
 
                         <div class="mb-3 form-floating">
                             <input type="date" class="form-control shadow-none rounded-3" id="proyectoFechaLimite"
-                                name="fechaLimite" required />
+                                name="fechaLimite" />
                             <label for="proyectoFechaLimite">Fecha límite</label>
+                            <div class="invalid-feedback" data-error-for="fechaLimite"></div>
                         </div>
 
                         <div class="form-floating">
                             <input type="color" class="form-control form-control-color input-color-proyecto"
                                 id="proyectoColorIcono" name="colorIcono" value="#0d6efd" />
                             <label for="proyectoColorIcono">Color de la carpeta</label>
+                            <div class="invalid-feedback" data-error-for="colorIcono"></div>
                         </div>
                     </form>
                 </div>

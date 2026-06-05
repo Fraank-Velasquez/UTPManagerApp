@@ -9,22 +9,81 @@ if (btnCerrarSesion) {
         window.location.href = '/logout';
     });
 }
-// Listener para el formulario único del modal actividad
+
+const camposActividad = {
+    titulo: 'actividadTitulo',
+    descripcion: 'actividadDesc',
+    fecha: 'actividadFecha',
+    prioridad: 'actividadPrioridad',
+    estado: 'actividadEstado'
+};
+
+const camposProyecto = {
+    nombre: 'proyectoNombre',
+    descripcion: 'proyectoDescripcion',
+    fechaLimite: 'proyectoFechaLimite',
+    colorIcono: 'proyectoColorIcono'
+};
+
+function limpiarErroresFormulario(form) {
+    if (!form) return;
+
+    form.querySelectorAll('.is-invalid').forEach(campo => {
+        campo.classList.remove('is-invalid');
+    });
+
+    form.querySelectorAll('[data-error-for]').forEach(mensaje => {
+        mensaje.textContent = '';
+    });
+}
+
+function mostrarErroresFormulario(errores, campos, form) {
+    limpiarErroresFormulario(form);
+
+    Object.entries(errores || {}).forEach(([campo, mensaje]) => {
+        const idCampo = campos[campo];
+        const input = idCampo ? document.getElementById(idCampo) : null;
+        const mensajeError = form?.querySelector(`[data-error-for="${campo}"]`);
+
+        if (input) {
+            input.classList.add('is-invalid');
+        }
+
+        if (mensajeError) {
+            mensajeError.textContent = mensaje;
+        }
+    });
+}
+
+async function leerRespuestaJson(respuesta) {
+    const texto = await respuesta.text();
+    if (!texto) return {};
+
+    try {
+        return JSON.parse(texto);
+    } catch (error) {
+        return { mensaje: texto };
+    }
+}
+
 document.getElementById('formActividadUniversal')?.addEventListener('submit', function (e) {
     e.preventDefault();
+    limpiarErroresFormulario(this);
 
-    // Recolectar datos  
+    const idProyecto = document.getElementById('ctx_proyecto_id').value
+        ? parseInt(document.getElementById('ctx_proyecto_id').value)
+        : null;
+
     const datosActividad = {
         titulo: document.getElementById('actividadTitulo').value,
         descripcion: document.getElementById('actividadDesc').value,
         fecha: document.getElementById('actividadFecha').value,
         prioridad: document.getElementById('actividadPrioridad').value,
-        idProyecto: document.getElementById('ctx_proyecto_id').value ? parseInt(document.getElementById('ctx_proyecto_id').value) : null,
+        proyecto: idProyecto ? { idProyecto } : null,
         esEvento: document.getElementById('ctx_es_evento').value === "true",
         estado: document.getElementById('actividadEstado').value || 'por_hacer'
     };
 
-    //  Si es evento, agregar campos específicos
     if (datosActividad.esEvento) {
         datosActividad.horaInicio = document.getElementById('horaInicio').value;
         datosActividad.horaFin = document.getElementById('horaFin').value;
@@ -37,8 +96,18 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosActividad)
     })
-        .then(res => res.json())
-        .then(async () => {
+        .then(async res => {
+            const data = await leerRespuestaJson(res);
+
+            if (!res.ok) {
+                if (res.status === 400) {
+                    mostrarErroresFormulario(data, camposActividad, this);
+                    return;
+                }
+
+                throw new Error(data?.mensaje || 'Error al guardar la actividad');
+            }
+
             const modalEl = document.getElementById('modalActividadUniversal');
             const modalFormulario = bootstrap.Modal.getInstance(modalEl);
             if (modalFormulario) {
@@ -48,7 +117,6 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
             mostrarModalExitoGuardado('Tarea creada', 'La tarea se guardó correctamente.', async () => {
                 await cargarDatosDesdeServidor();
 
-                // Reiniciar el módulo activo según dónde se hizo la acción
                 if (moduloActivo === 'inicio' && typeof renderizarInicio === 'function') {
                     await cargarProyectosResumenDesdeServidor();
                     renderizarInicio();
@@ -68,9 +136,9 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
         .catch(err => console.error("Error al guardar:", err));
 });
 
-// Listener para el formulario de creación de proyectos
 document.getElementById('formProyectoNuevo')?.addEventListener('submit', function (e) {
     e.preventDefault();
+    limpiarErroresFormulario(this);
 
     /*
      * Crear proyectos desde el modal.
@@ -89,18 +157,26 @@ document.getElementById('formProyectoNuevo')?.addEventListener('submit', functio
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(nuevoProyecto)
     })
-        .then(res => res.json())
-        .then(async () => {
+        .then(async res => {
+            const data = await leerRespuestaJson(res);
+
+            if (!res.ok) {
+                if (res.status === 400) {
+                    mostrarErroresFormulario(data, camposProyecto, this);
+                    return;
+                }
+
+                throw new Error(data?.mensaje || 'Error al guardar proyecto');
+            }
+
             const modalEl = document.getElementById('modalCrearProyecto');
             const modal = bootstrap.Modal.getInstance(modalEl);
             if (modal) {
                 modal.hide();
             }
 
-            // Recargar datos desde el servidor sin recargar la página completa
             await cargarProyectosResumenDesdeServidor();
 
-            // Reiniciar el módulo de proyectos si está activo
             if (moduloActivo === 'proyectos') {
                 if (typeof iniciarModuloProyectos === 'function') {
                     iniciarModuloProyectos();
@@ -114,10 +190,7 @@ document.getElementById('formProyectoNuevo')?.addEventListener('submit', functio
 
 
 
-// COMUNICACIÓN CON EL BACKEND: API REST / FETCH
 
-
-// obtener todas las actividades tareas/eventos para Inicio, Tareas, Proyecto y Calendario. 
 async function cargarDatosDesdeServidor() {
 
     try {
@@ -160,8 +233,6 @@ async function iniciarModuloInicio() {
 }
 
 
-// GESTIÓN DE MODALES E INTERFAZ
-
 function abrirModalTareaUniversal(contexto, idProyecto = null, fechaPrefijada = null) {
 
     const modalElement = document.getElementById('modalActividadUniversal');
@@ -173,8 +244,8 @@ function abrirModalTareaUniversal(contexto, idProyecto = null, fechaPrefijada = 
 
     const form = document.getElementById('formActividadUniversal');
     if (form) form.reset();
+    limpiarErroresFormulario(form);
 
-    // Referencias a elementos que cambian según contexto
     const tituloModal = document.getElementById('modalTitulo');
     const secHoras = document.getElementById('seccionHoras');
     const secEstado = document.getElementById('seccionEstado');
@@ -192,12 +263,10 @@ function abrirModalTareaUniversal(contexto, idProyecto = null, fechaPrefijada = 
     if (campoPrioridad) campoPrioridad.style.display = 'block';
     if (etiquetaFecha) etiquetaFecha.textContent = 'Fecha límite';
 
-    // Limpiar campos ocultos
     document.getElementById('ctx_es_evento').value = "false";
     document.getElementById('ctx_proyecto_id').value = "";
     if (inputFecha) {
         inputFecha.value = fechaPrefijada || '';
-        // Sincroniza el valor en el DOM.
         try {
             inputFecha.setAttribute('value', inputFecha.value || '');
             inputFecha.dispatchEvent(new Event('input', { bubbles: true }));
@@ -207,8 +276,6 @@ function abrirModalTareaUniversal(contexto, idProyecto = null, fechaPrefijada = 
 
     /**
      * CONTEXTO: TAREAS
-     * Campos visibles: título, descripción, fecha, prioridad, estado
-     * Es una tarea personal (esEvento = false, idProyecto = null)
      */
     if (contexto === 'tareas') {
         tituloModal.innerText = 'Nueva Tarea Personal';
@@ -232,7 +299,6 @@ function abrirModalTareaUniversal(contexto, idProyecto = null, fechaPrefijada = 
     /**
      * CONTEXTO: PROYECTOS
      * Campos visibles: título, descripción, fecha, prioridad, ESTADO
-     * Es una tarea vinculada a proyecto (esEvento = false, idProyecto = idProyecto)
      */
     else if (contexto === 'proyectos') {
         tituloModal.innerText = 'Nueva Tarea de Proyecto';
@@ -256,7 +322,6 @@ function abrirModalTareaUniversal(contexto, idProyecto = null, fechaPrefijada = 
     /**
      * CONTEXTO: CALENDARIO
      * Campos visibles: título, descripción, fecha, hora inicio, hora fin
-     * Es un evento (esEvento = true, sin proyecto)
      */
     else if (contexto === 'calendario') {
         tituloModal.innerText = 'Nuevo Evento de Calendario';

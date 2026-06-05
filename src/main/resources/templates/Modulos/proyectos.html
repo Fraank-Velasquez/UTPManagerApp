@@ -29,7 +29,7 @@
         <div class="row g-4" id="galeria-proyectos" th:if="${!#lists.isEmpty(proyectos)}">
             <div class="col-12 col-md-6 col-lg-4" th:each="proyecto : ${proyectos}">
                 <article class="tarjeta-proyecto proyecto-card text-dark" role="link" tabindex="0"
-                    th:data-url="@{/proyectos/{id}(id=${proyecto.id})}"
+                    th:data-url="@{/proyectos/{id}(id=${proyecto.idProyecto})}"
                     onclick="window.location.href = this.dataset.url">
                     <div class=" proyecto-card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3 gap-3">
@@ -49,9 +49,9 @@
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                                     <li>
-                                        <!--  th:data-id="${proyecto.id}" th:data-nombre="${proyecto.nombre}" -->
+                                        <!--  th:data-id="${proyecto.idProyecto}" th:data-nombre="${proyecto.nombre}" -->
                                         <a class="dropdown-item text-danger" href=""
-                                            th:attr="data-id=${proyecto.id},data-nombre=${proyecto.nombre}"
+                                            th:attr="data-id=${proyecto.idProyecto},data-nombre=${proyecto.nombre}"
                                             onclick="event.stopPropagation(); solicitarEliminarProyecto(this.dataset.id, this.dataset.nombre); return false;">
                                             <i class="bi bi-trash3 me-2"></i>Eliminar proyecto
                                         </a>
@@ -66,8 +66,8 @@
                         <div class="mt-auto d-flex justify-content-between align-items-center flex-wrap gap-2">
                             <span class="badge rounded-pill bg-light text-dark border px-3 py-2">
                                 <i class="bi bi-list-task me-1"></i><span
-                                    th:text="${tareasCompletadasPorProyecto[proyecto.id] ?:  }">0</span>/<span
-                                    th:text="${totalTareasPorProyecto[proyecto.id] ?: 0}">0</span> Tareas
+                                    th:text="${tareasCompletadasPorProyecto[proyecto.idProyecto] ?: 0}">0</span>/<span
+                                    th:text="${totalTareasPorProyecto[proyecto.idProyecto] ?: 0}">0</span> Tareas
                             </span>
                             <span class="text-danger small fw-semibold">
                                 <i class="bi bi-calendar3 me-1"></i><span th:text="${proyecto.fechaLimite}">--</span>

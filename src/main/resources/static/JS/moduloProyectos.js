@@ -1,12 +1,10 @@
-/*
- * Abre el modal de nuevo proyecto y limpia valores anteriores.
- */
 function abrirModalProyecto() {
     const modalElement = document.getElementById('modalCrearProyecto');
     if (!modalElement) return;
 
     const form = document.getElementById('formProyectoNuevo');
     if (form) form.reset();
+    limpiarErroresFormulario(form);
 
     const color = document.getElementById('proyectoColorIcono');
     if (color) color.value = '#0d6efd';
@@ -15,10 +13,7 @@ function abrirModalProyecto() {
     modal.show();
 }
 
-/*
- * Pide confirmacion antes de eliminar.
- * La eliminacion  se hace al DELETE /api/proyectos/{id}.
- */
+
 function solicitarEliminarProyecto(proyectoId, nombreProyecto = '') {
     const nombreLimpio = String(nombreProyecto || '').trim();
     const mensajeProyecto = nombreLimpio ? `"${nombreLimpio}"` : 'este proyecto';

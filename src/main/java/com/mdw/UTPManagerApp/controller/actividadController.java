@@ -1,9 +1,15 @@
 package com.mdw.UTPManagerApp.controller;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mdw.UTPManagerApp.model.Actividad;
 import com.mdw.UTPManagerApp.service.ActividadService;
 
+import jakarta.validation.Valid;
+
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
 @RequestMapping("/api/actividades")
 public class actividadController {
@@ -29,10 +38,14 @@ public class actividadController {
     }
 
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarActividades(@RequestBody Actividad nuevaActivida) {
+    public ResponseEntity<?> guardarActividades(@Valid @RequestBody Actividad nuevaActivida, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(obtenerErrores(result));
+        }
+
         try {
             service.guardar(nuevaActivida);
-            return ResponseEntity.ok().body("{\"mensaje\": \"Guardado con exito\"}");
+            return ResponseEntity.ok().body(Map.of("mensaje", "Guardado con exito"));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al guardar JSON");
         }
@@ -58,19 +71,21 @@ public class actividadController {
         }
     }
 
-    /**
-     * DTO auxiliar para actualizar solo el estado
-     */
+    private Map<String, String> obtenerErrores(BindingResult result) {
+        Map<String, String> errores = new HashMap<>();
+
+        result.getFieldErrors().forEach(error ->
+                errores.put(error.getField(), error.getDefaultMessage())
+        );
+
+        return errores;
+    }
+
+    @Setter
+    @Getter
     public static class ActividadEstadoDto {
         private String estado;
 
-        public String getEstado() {
-            return estado;
-        }
-
-        public void setEstado(String estado) {
-            this.estado = estado;
-        }
     }
 
 }

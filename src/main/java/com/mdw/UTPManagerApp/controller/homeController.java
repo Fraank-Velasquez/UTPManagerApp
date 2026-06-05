@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,9 @@ import com.mdw.UTPManagerApp.service.ProyectoService;
 @Controller
 public class homeController {
 
-        /* Service para cargar tareas/eventos */
         @Autowired
         private ActividadService actividadService;
 
-        /* Service para cargar proyectos */
         @Autowired
         private ProyectoService proyectoService;
 
@@ -38,7 +37,6 @@ public class homeController {
                 return "Modulos/login";
         }
 
-        /* Validar credenciales */
         @PostMapping("/login")
         public ResponseEntity<Void> loginPost(@RequestParam(name = "nombre-usuario-login") String usuario,
                         @RequestParam(name = "password-usuario-login") String password) {
@@ -56,25 +54,22 @@ public class homeController {
 
                 LocalDate hoy = LocalDate.now();
 
-                List<Actividad> tareas = actividades.stream()
-                                .filter(a -> !a.isEsEvento()).collect(Collectors.toList());
+                List<Actividad> tareas = actividadService.obtenerTareas();
 
                 List<Actividad> eventos = actividades.stream()
-                                .filter(Actividad::isEsEvento).collect(Collectors.toList());
+                                .filter(Actividad::isEsEvento).toList();
 
                 long enProgreso = tareas.stream().filter(a -> "progreso".equals(a.getEstado())).count();
                 long completadas = tareas.stream().filter(a -> "completada".equals(a.getEstado())).count();
                 long retrasadas = tareas.stream()
                                 .filter(a -> !"completada".equals(a.getEstado()) && a.getFecha() != null
-                                                && LocalDate.parse(a.getFecha()).isBefore(hoy))
+                                                && a.getFecha().isBefore(hoy))
                                 .count();
 
-                // Los 5 más recientes, a mayor id más reciente será
                 List<Actividad> recientes = actividades.stream()
-                                .sorted((a, b) -> Long.compare(b.getId(), a.getId()))
+                                .sorted((a, b) -> Long.compare(b.getIdActividad(), a.getIdActividad()))
                                 .limit(5).collect(Collectors.toList());
 
-                // Próximos eventos ordenados por fecha
                 List<Actividad> eventosProximos = eventos.stream()
                                 .filter(e -> e.getFecha() != null)
                                 .sorted(Comparator.comparing(Actividad::getFecha))
@@ -122,13 +117,12 @@ public class homeController {
                 List<Actividad> tareasRetrasadas = todasTareas.stream()
                                 .filter(a -> !"completada".equalsIgnoreCase(a.getEstado())
                                                 && a.getFecha() != null
-                                                && !a.getFecha().isBlank()
-                                                && LocalDate.parse(a.getFecha()).isBefore(hoy))
+                                                && a.getFecha().isBefore(hoy))
                                 .collect(Collectors.toList());
 
                 Map<Long, String> nombresProyectos = new HashMap<>();
                 for (Proyecto p : proyectos) {
-                        nombresProyectos.put(p.getId(), p.getNombre());
+                        nombresProyectos.put(p.getIdProyecto(), p.getNombre());
                 }
 
                 model.addAttribute("todasTareas", todasTareas);
@@ -154,20 +148,22 @@ public class homeController {
                 for (Proyecto proyecto : proyectos) {
 
                         long total = todasActividades.stream()
-                                        .filter(actividad -> !Boolean.TRUE.equals(actividad.isEsEvento())
-                                                        && actividad.getIdProyecto() != null
-                                                        && actividad.getIdProyecto().equals(proyecto.getId()))
+                                        .filter(actividad -> !actividad.isEsEvento()
+                                                        && actividad.getProyecto() != null
+                                                        && actividad.getProyecto().getIdProyecto()
+                                                                        .equals(proyecto.getIdProyecto()))
                                         .count();
 
                         long completadas = todasActividades.stream()
-                                        .filter(actividad -> !Boolean.TRUE.equals(actividad.isEsEvento())
-                                                        && actividad.getIdProyecto() != null
-                                                        && actividad.getIdProyecto().equals(proyecto.getId())
+                                        .filter(actividad -> !actividad.isEsEvento()
+                                                        && actividad.getProyecto() != null
+                                                        && actividad.getProyecto().getIdProyecto()
+                                                                        .equals(proyecto.getIdProyecto())
                                                         && "completada".equals(actividad.getEstado()))
                                         .count();
 
-                        totalTareasPorProyecto.put(proyecto.getId(), total);
-                        tareasCompletadasPorProyecto.put(proyecto.getId(), completadas);
+                        totalTareasPorProyecto.put(proyecto.getIdProyecto(), total);
+                        tareasCompletadasPorProyecto.put(proyecto.getIdProyecto(), completadas);
                 }
 
                 model.addAttribute("proyectos", proyectos);
@@ -183,12 +179,17 @@ public class homeController {
         public String proyectoDetalle(@PathVariable Long id, Model model) throws Exception {
 
                 List<Actividad> todas = actividadService.obtenerTodas();
-                Proyecto proyecto = proyectoService.obtenerPorId(id);
+                Optional<Proyecto> proyecto = proyectoService.obtenerPorId(id);
 
-                /* Filtra solo tareas relacionadas con el proyecto */
+                if (proyecto.isEmpty()) {
+                        return "redirect:/proyectos";
+                }
+
+                Proyecto proyectoEncontrado = proyecto.get();
+
                 List<Actividad> tareasProyecto = todas.stream()
-                                .filter(a -> a.getIdProyecto() != null && a.getIdProyecto().equals(id))
-                                .collect(Collectors.toList());
+                                .filter(a -> a.getProyecto() != null && a.getProyecto().getIdProyecto().equals(id))
+                                .toList();
 
                 java.util.function.Predicate<Actividad> esPorHacer = a -> {
                         String estado = a.getEstado() == null ? "por_hacer" : a.getEstado().trim().toLowerCase();
@@ -211,10 +212,10 @@ public class homeController {
                                 tareasProyecto.stream().filter(esProgreso).collect(Collectors.toList()));
                 model.addAttribute("tareasCompletadas",
                                 tareasProyecto.stream().filter(esCompletada).collect(Collectors.toList()));
-                model.addAttribute("proyecto", proyecto);
+                model.addAttribute("proyecto", proyectoEncontrado);
                 model.addAttribute("proyectoId", id);
                 model.addAttribute("moduloActivo", "proyectos");
-                model.addAttribute("pageTitle", "UTPManager | " + proyecto.getNombre());
+                model.addAttribute("pageTitle", "UTPManager | " + proyectoEncontrado.getNombre());
 
                 return "fragments/proyecto-detalle";
         }
@@ -229,7 +230,7 @@ public class homeController {
         }
 
         @GetMapping("/logout")
-        public String logout() {
+        public String logout() { 
                 return "redirect:/login";
         }
 

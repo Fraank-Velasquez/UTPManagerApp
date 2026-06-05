@@ -9,11 +9,11 @@ function manejarRespuestaGoogle(response) {
     void picture;
 }
 
-function validarLoginTemporal(event) {
+async function validarLoginTemporal(event) {
     event.preventDefault();
     let usuario = document.getElementById(`email-login`).value;
     let password = document.getElementById(`password-login`).value;
-    // Enviar credenciales al servidor para crear HttpSession
+
     fetch('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -34,7 +34,6 @@ function validarLoginTemporal(event) {
 
 function valiarRegistroUsaario(event) {
     event.preventDefault();
-
     alert(`AUN EN DESARROLLO :/  \t inicia sesión nomas mi king user: admin pass: admin`)
 }
 

@@ -1,25 +1,8 @@
-/* ============================================================
- * moduloTareas.js
- * Rol: Interactividad del módulo de Tareas.
- *
- * Thymeleaf renderiza las tarjetas en el servidor.
- * Este archivo solo gestiona:
- *   1. Buscador y filtro de prioridad (oculta tarjetas con d-none)
- *   2. Botón cambiar estado → modal de confirmación → AJAX → reload
- *   3. Botón eliminar → modal de confirmación → AJAX → reload
- *   4. Botón reactivar (ya tiene su propio modal)
- * ============================================================ */
-
 let terminoBusquedaTareas = '';
 let filtroPrioridadTareas = '';
 
-/**
- * Inicializa el módulo: carga datos globales en memoria, enlaza controles y botones.
- * No renderiza HTML: Thymeleaf ya lo entregó en el DOM.
- */
+
 async function iniciarModuloTareas() {
-    /* Cargamos los datos globales en memoria para que manejarCambioEstado
-       pueda leer el estado actual de la tarea sin buscar en el DOM. */
     if (typeof cargarDatosDesdeServidor === 'function') {
         await cargarDatosDesdeServidor();
     }
@@ -31,17 +14,10 @@ async function iniciarModuloTareas() {
     enlazarEventosTareas();
 }
 
-/* ============================================================
- * FILTRADO POR VISIBILIDAD
- * JS oculta con d-none las tarjetas que no coincidan.
- * No borra ni reconstruye HTML.
- * ============================================================ */
-
 function aplicarFiltrosTareas() {
     const termino = normalizarTextoBusqueda(terminoBusquedaTareas);
     const prioridad = filtroPrioridadTareas;
 
-    /* Todas las tarjetas contenedoras de los tabs */
     document.querySelectorAll('.tablero-grid-tarea').forEach(col => {
         const textoTarjeta = normalizarTextoBusqueda(col.dataset.texto || '');
         const prioridadTarjeta = normalizarPrioridad(col.dataset.prioridad || '');
@@ -55,9 +31,6 @@ function aplicarFiltrosTareas() {
     actualizarContadoresDesdeDOM();
 }
 
-/**
- * Recuenta las tarjetas visibles de cada pestaña y actualiza los spans de contador.
- */
 function actualizarContadoresDesdeDOM() {
     const mapeo = {
         'lista-tareas-todas': 'contador-todas',
@@ -76,10 +49,6 @@ function actualizarContadoresDesdeDOM() {
         contador.textContent = visibles;
     });
 }
-
-/* ============================================================
- * CONTROLES: buscador y filtro de prioridad
- * ============================================================ */
 
 function enlazarControlesTareas() {
     const buscador = document.getElementById('buscadorTareas');
@@ -105,10 +74,6 @@ function enlazarControlesTareas() {
     });
 }
 
-/* ============================================================
- * EVENTOS DE BOTONES EN LAS TARJETAS
- * ============================================================ */
-
 function enlazarEventosTareas() {
     document.querySelectorAll('.boton-cambiar-estado').forEach(boton => {
         boton.addEventListener('click', manejarCambioEstado);
@@ -119,28 +84,16 @@ function enlazarEventosTareas() {
     });
 }
 
-/* ============================================================
- * CAMBIO DE ESTADO
- * ============================================================ */
-
-/**
- * Decide qué modal mostrar según el estado actual de la tarea.
- * - completada → modal reactivar (amarillo, ya existente)
- * - por_hacer / progreso → nuevo modal de confirmación de cambio de estado
- */
 async function manejarCambioEstado(event) {
     event.preventDefault();
 
     const idTarea = this.getAttribute('data-tarea-id');
     const estadoActualDOM = this.getAttribute('data-estado-actual');
 
-    /* Buscar en datos globales para tener el estado más actualizado.
-       Si no está en memoria (carga directa), usamos el valor del DOM. */
-    const tarea = (datosGlobalesActividades || []).find(a => String(a.id) === String(idTarea));
+    const tarea = (datosGlobalesActividades || []).find(a => String(a.idActividad) === String(idTarea));
     const estadoActual = normalizarEstado(tarea?.estado ?? estadoActualDOM);
 
     if (estadoActual === 'completada') {
-        /* Reutiliza el modal de reactivación existente sin cambios. */
         const titulo = tarea?.titulo || 'esta tarea';
         mostrarModalReactivarTarea(idTarea, titulo);
         return;
@@ -150,10 +103,6 @@ async function manejarCambioEstado(event) {
     mostrarModalCambiarEstado(idTarea, estadoActual, nuevoEstado);
 }
 
-/**
- * Muestra el nuevo modal de confirmación de cambio de estado.
- * Adapta ícono y color según el estado destino.
- */
 function mostrarModalCambiarEstado(idTarea, estadoActual, nuevoEstado) {
     const modalElement = document.getElementById('modalCambiarEstado');
     const tituloNodo = document.getElementById('modalCambiarEstadoTitulo');
@@ -181,7 +130,6 @@ function mostrarModalCambiarEstado(idTarea, estadoActual, nuevoEstado) {
         botonNodo.textContent = 'Completar';
     }
 
-    /* Limpiar listener anterior para evitar doble disparo */
     botonNodo.onclick = null;
     botonNodo.onclick = async () => {
         const modal = bootstrap.Modal.getInstance(modalElement);
@@ -192,10 +140,6 @@ function mostrarModalCambiarEstado(idTarea, estadoActual, nuevoEstado) {
     const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
     modal.show();
 }
-
-/* ============================================================
- * ELIMINAR TAREA
- * ============================================================ */
 
 async function EliminarTarea(event) {
     event.preventDefault();
@@ -215,8 +159,6 @@ async function EliminarTarea(event) {
 
                 if (!respuesta.ok) throw new Error('Error al eliminar');
 
-                /* El modal de confirmación ya se está cerrando con su animación.
-                   Aprovechamos ese momento para recargar: el modal tapa el flash. */
                 if (moduloActivo === 'proyectos' && typeof proyectoActivo !== 'undefined' && proyectoActivo !== null) {
                     eliminarTarjetaProyectoDePantalla(idTarea);
                 } else {
@@ -229,10 +171,6 @@ async function EliminarTarea(event) {
     );
 }
 
-/* ============================================================
- * ACTUALIZAR ESTADO EN EL SERVIDOR
- * ============================================================ */
-
 async function actualizarEstadoTarea(idTarea, nuevoEstado) {
     try {
         const respuesta = await fetch(`/api/actividades/${idTarea}/estado`, {
@@ -244,12 +182,10 @@ async function actualizarEstadoTarea(idTarea, nuevoEstado) {
         if (!respuesta.ok) throw new Error('Error al actualizar estado');
 
         if (moduloActivo === 'proyectos' && typeof proyectoActivo !== 'undefined' && proyectoActivo !== null) {
-            /* En el módulo de proyectos (Kanban), el JS mueve la tarjeta sin reload. */
-            const tarea = datosGlobalesActividades.find(a => a.id === parseInt(idTarea));
+            const tarea = datosGlobalesActividades.find(a => a.idActividad === parseInt(idTarea));
             if (tarea) tarea.estado = nuevoEstado;
             actualizarTarjetaProyectoEnPantalla(idTarea, nuevoEstado);
         } else {
-            /* En el módulo de tareas, el modal está cerrándose y tapa el flash del reload. */
             window.location.reload();
         }
     } catch (error) {
@@ -257,10 +193,6 @@ async function actualizarEstadoTarea(idTarea, nuevoEstado) {
         alert('No se pudo actualizar el estado de la tarea');
     }
 }
-
-/* ============================================================
- * MODAL REACTIVAR TAREA (sin cambios, funciona igual que antes)
- * ============================================================ */
 
 function mostrarModalReactivarTarea(idTarea, titulo) {
     const modalElement = document.getElementById('modalReactivarTarea');
@@ -284,13 +216,6 @@ function mostrarModalReactivarTarea(idTarea, titulo) {
     const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
     modal.show();
 }
-
-/* ============================================================
- * FUNCIONES DE APOYO AL MÓDULO DE PROYECTOS (Kanban)
- * Estas funciones son llamadas desde actualizarEstadoTarea y
- * EliminarTarea cuando moduloActivo === 'proyectos'.
- * Se mantienen intactas para no romper el módulo de detalle.
- * ============================================================ */
 
 function actualizarTarjetaProyectoEnPantalla(idTarea, nuevoEstado) {
     const tarjeta = document.querySelector(`article.tarjeta-tarea[data-tarea-id="${idTarea}"]`);
@@ -342,7 +267,7 @@ function eliminarTarjetaProyectoDePantalla(idTarea) {
     const envoltorio = tarjeta.parentElement;
     envoltorio.remove();
 
-    datosGlobalesActividades = datosGlobalesActividades.filter(a => a.id !== parseInt(idTarea));
+    datosGlobalesActividades = datosGlobalesActividades.filter(a => a.idActividad !== parseInt(idTarea));
     actualizarEstadosVaciosProyecto();
     actualizarContadoresProyecto();
 }
@@ -398,10 +323,6 @@ function actualizarContadorColumnaProyecto(idContenedor) {
     const contador = columna?.querySelector('.kanban-column-head .badge');
     if (contador) contador.textContent = contenedor.querySelectorAll('article.tarjeta-tarea').length;
 }
-
-/* ============================================================
- * HELPERS COMPARTIDOS
- * ============================================================ */
 
 function normalizarEstado(estado) {
     return (estado || 'por_hacer').toString().trim().toLowerCase();

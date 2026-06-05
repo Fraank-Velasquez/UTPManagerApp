@@ -22,9 +22,6 @@ async function iniciarModuloCalendario() {
     actualizarResumenPanel();
 
 
-    // CARGA DE DATOS
-
-
     async function recargarEventos() {
         if (typeof cargarDatosDesdeServidor === 'function') {
             await cargarDatosDesdeServidor();
@@ -146,10 +143,8 @@ async function iniciarModuloCalendario() {
 
         badge.className = `event-badge ${clasesBadgePrioridad(evento)}`;
 
-        // Destaca eventos externos.
         if (tipo === 'externo') badge.classList.add('event-badge-externo');
 
-        // opacidad en los eventos pasados.
         if (temp === 'pasados') badge.classList.add('event-badge-pasado');
 
         badge.textContent = etiquetaHoraEvento(evento);
@@ -182,10 +177,8 @@ async function iniciarModuloCalendario() {
 
         if (!panelBody) return;
 
-        // Todos los eventos del día (sin filtro de tab para el panel)
         const eventosDia = (agruparEventos(eventosCalendario))[fechaIso] || [];
 
-        // Fecha bonita
         const fechaObj = normalizarFecha(new Date(`${fechaIso}T00:00:00`));
         const esHoyDia = fechaObj.getTime() === hoy.getTime();
 
@@ -251,12 +244,12 @@ async function iniciarModuloCalendario() {
             </div>
             <div class="cal-panel-card-acciones">
                 <button class="cal-accion-btn cal-accion-editar"
-                        onclick="abrirModalTareaUniversal('calendario', ${evento.id}, '${fechaIso}')"
+                        onclick="abrirModalTareaUniversal('calendario', ${evento.idActividad}, '${fechaIso}')"
                         title="Editar evento">
                     <i class="bi bi-pencil"></i>
                 </button>
                 <button class="cal-accion-btn cal-accion-eliminar"
-                        onclick="eliminarEventoCalendario(${evento.id})"
+                        onclick="eliminarEventoCalendario(${evento.idActividad})"
                         title="Eliminar evento">
                     <i class="bi bi-trash3"></i>
                 </button>
@@ -298,7 +291,6 @@ async function iniciarModuloCalendario() {
         const titulo = document.getElementById('calendarTitle');
         const cuerpo = document.getElementById('monthBody');
 
-        // Filtrar según tab y filtros activos
         const eventosFiltrados = eventosFiltradosActivos();
         const indiceEventos = agruparEventos(eventosFiltrados);
 
@@ -340,13 +332,11 @@ async function iniciarModuloCalendario() {
 
                 td.dataset.fecha = clave;
                 td.addEventListener('click', () => {
-                    // Quitar selección anterior
                     document.querySelectorAll('.dia-seleccionado').forEach(el => el.classList.remove('dia-seleccionado'));
                     td.classList.add('dia-seleccionado');
                     abrirPanelDia(clave);
                 });
 
-                // Encabezado del número de día
                 const encabezado = document.createElement('div');
                 encabezado.className = 'd-flex justify-content-between align-items-center mb-1';
 
@@ -364,7 +354,6 @@ async function iniciarModuloCalendario() {
 
                 td.appendChild(encabezado);
 
-                // Eventos del día (solo en mes actual)
                 if (esMesActual && eventosDia.length) {
                     const LIMITE = 3;
                     eventosDia.slice(0, LIMITE).forEach(ev => td.appendChild(crearBadgeEvento(ev)));
@@ -386,7 +375,7 @@ async function iniciarModuloCalendario() {
     }
 
     /*
-       VISTA SEMANA
+    VISTA SEMANA
      */
 
     function renderizarVistaSemana() {
@@ -406,7 +395,6 @@ async function iniciarModuloCalendario() {
                 : `${semanaInicio.getDate()} ${MESES[semanaInicio.getMonth()]} — ${semanaFin.getDate()} ${MESES[semanaFin.getMonth()]} ${semanaFin.getFullYear()}`;
         }
 
-        // Fechas en encabezados de columna
         for (let i = 0; i < 7; i++) {
             const fd = new Date(semanaInicio);
             fd.setDate(fd.getDate() + i);
@@ -463,11 +451,6 @@ async function iniciarModuloCalendario() {
             cuerpo.appendChild(tr);
         });
     }
-
-    /* 
-       COORDINADOR DE VISTAS
-     */
-
     function renderizarVista() {
         const vistaMes = document.getElementById('vistasMes');
         const vistaSemana = document.getElementById('vistaSemana');
@@ -490,13 +473,8 @@ async function iniciarModuloCalendario() {
             renderizarVistaSemana();
         }
 
-        // Re-abrir panel si hay día seleccionado
         if (diaSeleccionado) abrirPanelDia(diaSeleccionado);
     }
-
-    /* 
-    ESCAPE XSS
-     */
 
     function escapeHtml(texto) {
         return String(texto)
@@ -507,13 +485,8 @@ async function iniciarModuloCalendario() {
             .replaceAll("'", '&#39;');
     }
 
-    /* 
-    ENLAZAR CONTROLES
-     */
-
     function enlazarControles() {
 
-        // Navegación mes/semana
         document.getElementById('btnMes')?.addEventListener('click', () => {
             modoVista = 'mes';
             renderizarVista();
@@ -549,7 +522,6 @@ async function iniciarModuloCalendario() {
             renderizarVista();
         });
 
-        // Pestañas de temporalidad
         document.querySelectorAll('.cal-tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.cal-tab-btn').forEach(b => b.classList.remove('active'));
@@ -560,7 +532,6 @@ async function iniciarModuloCalendario() {
             });
         });
 
-        // Filtros
         document.getElementById('filtroPrioridad')?.addEventListener('change', e => {
             filtroPrioridad = e.target.value;
             renderizarVista();

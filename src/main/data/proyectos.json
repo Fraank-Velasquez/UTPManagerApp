@@ -1,1 +1,29 @@
-[{"id":1778466133017,"nombre":"Design System","descripcion":"Creación de componentes y guía de estilos.","fechaLimite":"2026-05-14","colorIcono":"#4ec346","tareasTotales":0,"tareasCompletadas":0},{"id":1778466191816,"nombre":"Backend API","descripcion":"Desarrollo de la API RESTfull","fechaLimite":"2026-05-22","colorIcono":"#c309a1","tareasTotales":0,"tareasCompletadas":0},{"id":1778646508926,"nombre":"Frontend UI","descripcion":"Diseño e implementacion de la UI de usuario corporativa","fechaLimite":"2026-05-20","colorIcono":"#95dbba","tareasTotales":0,"tareasCompletadas":0}]
+[
+  {
+    "id": 1778466133017,
+    "nombre": "Design System",
+    "descripcion": "Creación de componentes y guía de estilos.",
+    "fechaLimite": "2026-05-14",
+    "colorIcono": "#4ec346",
+    "tareasTotales": 0,
+    "tareasCompletadas": 0
+  },
+  {
+    "id": 1778466191816,
+    "nombre": "Backend API",
+    "descripcion": "Desarrollo de la API RESTfull",
+    "fechaLimite": "2026-05-22",
+    "colorIcono": "#c309a1",
+    "tareasTotales": 0,
+    "tareasCompletadas": 0
+  },
+  {
+    "id": 1778646508926,
+    "nombre": "Frontend UI",
+    "descripcion": "Diseño e implementacion de la UI de usuario corporativa",
+    "fechaLimite": "2026-05-20",
+    "colorIcono": "#95dbba",
+    "tareasTotales": 0,
+    "tareasCompletadas": 0
+  }
+]
