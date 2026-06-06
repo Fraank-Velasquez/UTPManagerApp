@@ -70,6 +70,15 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
     e.preventDefault();
     limpiarErroresFormulario(this);
 
+    // --- BLOQUEO ANTI-DOBLE CLIC ---
+    const botonSubmit = this.querySelector('button[type="submit"]');
+    let textoOriginal = "";
+    if (botonSubmit) {
+        textoOriginal = botonSubmit.innerHTML;
+        botonSubmit.disabled = true;
+        botonSubmit.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...`;
+    }
+
     const idProyecto = document.getElementById('ctx_proyecto_id').value
         ? parseInt(document.getElementById('ctx_proyecto_id').value)
         : null;
@@ -90,7 +99,6 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
         datosActividad.estado = null;
     }
 
-    
     fetch('/api/actividades/guardar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -100,6 +108,11 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
             const data = await leerRespuestaJson(res);
 
             if (!res.ok) {
+                if (botonSubmit) {
+                    botonSubmit.disabled = false;
+                    botonSubmit.innerHTML = textoOriginal;
+                }
+
                 if (res.status === 400) {
                     mostrarErroresFormulario(data, camposActividad, this);
                     return;
@@ -123,26 +136,32 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
                 } else if (moduloActivo === 'tareas') {
                     window.location.reload();
                 } else if (moduloActivo === 'proyectos') {
-                    if (typeof proyectoActivo !== 'undefined' && proyectoActivo !== null) {
-                        window.location.reload();
-                    } else {
-                        window.location.reload();
-                    }
+                    window.location.reload();
                 } else if (moduloActivo === 'calendario' && typeof iniciarModuloCalendario === 'function') {
                     iniciarModuloCalendario();
                 }
             });
         })
-        .catch(err => console.error("Error al guardar:", err));
+        .catch(err => {
+            console.error("Error al guardar:", err);
+            if (botonSubmit) {
+                botonSubmit.disabled = false;
+                botonSubmit.innerHTML = textoOriginal;
+            }
+        });
 });
 
 document.getElementById('formProyectoNuevo')?.addEventListener('submit', function (e) {
     e.preventDefault();
     limpiarErroresFormulario(this);
 
-    /*
-     * Crear proyectos desde el modal.
-     */
+    const botonSubmit = this.querySelector('button[type="submit"]');
+    let textoOriginal = "";
+    if (botonSubmit) {
+        textoOriginal = botonSubmit.innerHTML;
+        botonSubmit.disabled = true;
+        botonSubmit.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...`;
+    }
     const nuevoProyecto = {
         nombre: document.getElementById('proyectoNombre').value,
         descripcion: document.getElementById('proyectoDescripcion').value,
@@ -161,6 +180,11 @@ document.getElementById('formProyectoNuevo')?.addEventListener('submit', functio
             const data = await leerRespuestaJson(res);
 
             if (!res.ok) {
+                if (botonSubmit) {
+                    botonSubmit.disabled = false;
+                    botonSubmit.innerHTML = textoOriginal;
+                }
+
                 if (res.status === 400) {
                     mostrarErroresFormulario(data, camposProyecto, this);
                     return;
@@ -185,7 +209,13 @@ document.getElementById('formProyectoNuevo')?.addEventListener('submit', functio
                 }
             }
         })
-        .catch(err => console.error('Error al guardar proyecto:', err));
+        .catch(err => {
+            console.error('Error al guardar proyecto:', err);
+            if (botonSubmit) {
+                botonSubmit.disabled = false;
+                botonSubmit.innerHTML = textoOriginal;
+            }
+        });
 });
 
 

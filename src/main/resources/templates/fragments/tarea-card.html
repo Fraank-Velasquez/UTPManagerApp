@@ -7,18 +7,16 @@
         Fragmento reutilizable: tarjeta de tarea individual.
         Parámetros:
           - tarea          : objeto Actividad
-          - nombresProyectos : Map<Long, String> id -> nombre del proyecto
         Usado en: Modulos/tareas.html (las 5 pestañas)
     -->
-    <th:block th:fragment="tarjetaTarea(tarea, nombresProyectos)">
+    <th:block th:fragment="tarjetaTarea(tarea)">
 
         <!-- Normalizar prioridad -->
         <th:block th:with="prioridadRaw=${#strings.toLowerCase(tarea.prioridad ?: 'flexible')}">
             <th:block
                 th:with="
             estadoRaw=${#strings.toLowerCase(tarea.estado ?: 'por_hacer')},
-            idProyecto=${tarea.proyecto != null ? tarea.proyecto.idProyecto : null},
-            nombreProyecto=${idProyecto != null and nombresProyectos[idProyecto] != null ? nombresProyectos[idProyecto] : 'General'}">
+            nombreProyecto=${tarea.proyecto != null and !#strings.isEmpty(tarea.proyecto.nombre) ? tarea.proyecto.nombre : 'General'}">
                 <th:block th:with="
             prioridadClass=${prioridadRaw == 'urgente' or prioridadRaw == 'alta' ? 'etiqueta-prioridad-alta' : (prioridadRaw == 'importante' or prioridadRaw == 'media' ? 'etiqueta-prioridad-media' : 'etiqueta-prioridad-baja')},
             prioridadLabel=${prioridadRaw == 'urgente' or prioridadRaw == 'alta' ? 'Urgente' : (prioridadRaw == 'importante' or prioridadRaw == 'media' ? 'Importante' : 'Flexible')},
