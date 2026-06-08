@@ -1,13 +1,10 @@
 package com.mdw.UTPManagerApp.controller;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -159,7 +156,7 @@ public class homeController {
         @GetMapping("/calendario")
         public String calendario(Model model) throws Exception {
 
-                model.addAttribute("tareas", actividadService.obtenerTodas());
+                model.addAttribute("eventos", actividadService.obtenerSoloEventos());
                 model.addAttribute("moduloActivo", "calendario");
                 model.addAttribute("pageTitle", "UTPManager | Calendario");
                 return "Modulos/calendario";

@@ -137,8 +137,12 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
                     window.location.reload();
                 } else if (moduloActivo === 'proyectos') {
                     window.location.reload();
-                } else if (moduloActivo === 'calendario' && typeof iniciarModuloCalendario === 'function') {
-                    iniciarModuloCalendario();
+                } else if (moduloActivo === 'calendario') {
+                    if (typeof refrescarCalendario === 'function') {
+                        await refrescarCalendario(false);
+                    } else if (typeof iniciarModuloCalendario === 'function') {
+                        iniciarModuloCalendario();
+                    }
                 }
             });
         })

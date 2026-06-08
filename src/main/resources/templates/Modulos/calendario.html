@@ -194,8 +194,9 @@
 
         </div>
 
-        <script>
+        <script th:inline="javascript">
             var moduloActivo = 'calendario';
+            var eventosCalendarioIniciales = /*[[${eventos}]]*/[];
             document.addEventListener('DOMContentLoaded', function () {
                 if (typeof iniciarModuloCalendario === 'function') {
                     iniciarModuloCalendario();

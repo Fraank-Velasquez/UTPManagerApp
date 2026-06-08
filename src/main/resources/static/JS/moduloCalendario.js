@@ -16,6 +16,9 @@ async function iniciarModuloCalendario() {
     let eventosCalendario = [];
 
     await recargarEventos();
+    window.refrescarCalendario = async function (recargarDesdeServidor = false) {
+        await sincronizarEventosCalendario(recargarDesdeServidor);
+    };
     enlazarControles();
     renderizarVista();
     actualizarContadoresPestañas();
@@ -23,11 +26,30 @@ async function iniciarModuloCalendario() {
 
 
     async function recargarEventos() {
-        if (typeof cargarDatosDesdeServidor === 'function') {
+        if (Array.isArray(window.eventosCalendarioIniciales)) {
+            eventosCalendario = window.eventosCalendarioIniciales.filter(a => a && a.esEvento === true);
+            return;
+        }
+
+        await sincronizarEventosCalendario(true);
+    }
+
+    async function sincronizarEventosCalendario(recargarDesdeServidor = false) {
+        if (recargarDesdeServidor && typeof cargarDatosDesdeServidor === 'function') {
             await cargarDatosDesdeServidor();
         }
+
         eventosCalendario = (datosGlobalesActividades || [])
             .filter(a => a && a.esEvento === true);
+        window.eventosCalendarioIniciales = eventosCalendario.slice();
+
+        renderizarVista();
+        actualizarContadoresPestañas();
+        actualizarResumenPanel();
+
+        if (diaSeleccionado) {
+            abrirPanelDia(diaSeleccionado);
+        }
     }
 
 
@@ -273,11 +295,7 @@ async function iniciarModuloCalendario() {
                             headers: { 'Content-Type': 'application/json' }
                         });
                         if (!resp.ok) throw new Error('Error al eliminar');
-                        await recargarEventos();
-                        renderizarVista();
-                        actualizarContadoresPestañas();
-                        actualizarResumenPanel();
-                        if (diaSeleccionado) abrirPanelDia(diaSeleccionado);
+                        await sincronizarEventosCalendario(true);
                     } catch (err) {
                         console.error('Error al eliminar evento:', err);
                     }
