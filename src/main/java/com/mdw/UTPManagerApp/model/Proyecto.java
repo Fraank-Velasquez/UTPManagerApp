@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -27,6 +25,7 @@ public class Proyecto {
 
     @NotBlank(message = "El nombre del proyecto es obligatorio")
     @Size(max = 100, message = "El nombre del proyecto no puede superar los 100 caracteres")
+    @Column(nullable = false)
     private String nombre;
 
     private String descripcion;
@@ -34,7 +33,7 @@ public class Proyecto {
     @NotNull(message = "La fecha limite es obligatoria")
     private LocalDate fechaLimite;
 
-    @Size(min = 4,  max = 9)
+    @Size(min = 4, max = 9)
     private String colorIcono;
 
     @Min(value = 0)
