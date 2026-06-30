@@ -18,14 +18,13 @@
             </div>
 
             <div class="d-flex gap-2">
-                <button class="btn btn-primary rounded-pill px-4 shadow-sm" id="botonAccionProyecto" type="button"
+                <button sec:authorize="hasRole('ADMIN')" class="btn btn-primary rounded-pill px-4 shadow-sm" id="botonAccionProyecto" type="button"
                     onclick="abrirModalProyecto()">
                     <i class="bi bi-plus-lg"></i> Nuevo Proyecto
                 </button>
             </div>
         </div>
 
-        <!-- Galeria de proyectos -->
         <div class="row g-4" id="galeria-proyectos" th:if="${!#lists.isEmpty(proyectos)}">
             <div class="col-12 col-md-6 col-lg-4" th:each="proyecto : ${proyectos}">
                 <article class="tarjeta-proyecto proyecto-card text-dark" role="link" tabindex="0"
@@ -41,7 +40,7 @@
                                 <h5 class="fw-bold mb-0 text-truncate" th:text="${proyecto.nombre}">Proyecto</h5>
                             </div>
 
-                            <div class="dropdown" onclick="event.stopPropagation()">
+                            <div sec:authorize="hasRole('ADMIN')" class="dropdown" onclick="event.stopPropagation()">
                                 <button class="btn btn-light btn-sm rounded-circle boton-opciones-proyecto"
                                     type="button" data-bs-toggle="dropdown" aria-expanded="false"
                                     aria-label="Opciones del proyecto">
@@ -49,7 +48,7 @@
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                                     <li>
-                                        <!--  th:data-id="${proyecto.idProyecto}" th:data-nombre="${proyecto.nombre}" -->
+                                        
                                         <a class="dropdown-item text-danger" href=""
                                             th:attr="data-id=${proyecto.idProyecto},data-nombre=${proyecto.nombre}"
                                             onclick="event.stopPropagation(); solicitarEliminarProyecto(this.dataset.id, this.dataset.nombre); return false;">
@@ -78,7 +77,6 @@
             </div>
         </div>
 
-        <!-- Estado vacio cuando proyectos.json no tiene registros. -->
         <div th:if="${#lists.isEmpty(proyectos)}" class="proyectos-empty-state">
             <div class="fw-semibold mb-1">No hay proyectos disponibles</div>
             <div class="small text-muted">Crea un proyecto nuevo para empezar a organizar tu trabajo.</div>

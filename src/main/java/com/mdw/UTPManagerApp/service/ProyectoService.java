@@ -19,6 +19,10 @@ public class ProyectoService {
         return proyectosRepository.findAll();
     }
 
+    public List<Proyecto> obtenerPorPropietario(String username) {
+        return proyectosRepository.findByPropietarioUsername(username);
+    }
+
     public Optional<Proyecto> obtenerPorId(Long id) {
         return proyectosRepository.findById(id);
     }

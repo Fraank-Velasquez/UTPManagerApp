@@ -1,7 +1,6 @@
 let terminoBusquedaTareas = '';
 let filtroPrioridadTareas = '';
 
-
 async function iniciarModuloTareas() {
     if (typeof cargarDatosDesdeServidor === 'function') {
         await cargarDatosDesdeServidor();
@@ -113,7 +112,6 @@ function mostrarModalCambiarEstado(idTarea, estadoActual, nuevoEstado) {
 
     if (!modalElement || !botonNodo) return;
 
-    /* Configurar apariencia según el estado destino */
     if (nuevoEstado === 'progreso') {
         tituloNodo.textContent = 'Iniciar tarea';
         mensajeNodo.textContent = '¿Deseas marcar esta tarea como "En progreso"?';

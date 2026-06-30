@@ -24,7 +24,6 @@ async function iniciarModuloCalendario() {
     actualizarContadoresPestañas();
     actualizarResumenPanel();
 
-
     async function recargarEventos() {
         if (Array.isArray(window.eventosCalendarioIniciales)) {
             eventosCalendario = window.eventosCalendarioIniciales.filter(a => a && a.esEvento === true);
@@ -51,7 +50,6 @@ async function iniciarModuloCalendario() {
             abrirPanelDia(diaSeleccionado);
         }
     }
-
 
     function normalizarFecha(fecha) {
         const c = new Date(fecha);
@@ -94,7 +92,6 @@ async function iniciarModuloCalendario() {
         return 'futuros';
     }
 
-
     function normalizarPrioridad(evento) {
         const p = (evento.prioridad || '').toString().trim().toLowerCase();
         if (p === 'urgente' || p === 'alta') return 'urgente';
@@ -102,13 +99,11 @@ async function iniciarModuloCalendario() {
         return 'flexible';
     }
 
-
     function normalizarTipoEvento(evento) {
         const t = (evento.tipoEvento || evento.tipo || '').toString().trim().toLowerCase();
         if (t === 'externo') return 'externo';
         return 'propio';
     }
-
 
     function eventosPorTab(tab) {
         return eventosCalendario.filter(e => {
@@ -143,7 +138,6 @@ async function iniciarModuloCalendario() {
         setNum('resumenNumPasados', eventosCalendario.filter(e => obtenerTemporalidad(e) === 'pasados').length);
     }
 
-
     function clasesBadgePrioridad(evento) {
         const p = normalizarPrioridad(evento);
         if (p === 'urgente') return 'event-badge-urgente';
@@ -174,7 +168,6 @@ async function iniciarModuloCalendario() {
         return badge;
     }
 
-
     function agruparEventos(listaEventos) {
         const agrupados = {};
         (listaEventos || eventosCalendario).forEach(ev => {
@@ -187,7 +180,6 @@ async function iniciarModuloCalendario() {
         });
         return agrupados;
     }
-
 
     function abrirPanelDia(fechaIso) {
         diaSeleccionado = fechaIso;
@@ -281,7 +273,6 @@ async function iniciarModuloCalendario() {
         return card;
     }
 
-
     window.eliminarEventoCalendario = function (idEvento) {
         if (typeof mostrarModalConfirmacionAccion === 'function') {
             mostrarModalConfirmacionAccion(
@@ -303,7 +294,6 @@ async function iniciarModuloCalendario() {
             );
         }
     };
-
 
     function renderizarVistaMes() {
         const titulo = document.getElementById('calendarTitle');
@@ -392,10 +382,6 @@ async function iniciarModuloCalendario() {
         }
     }
 
-    /*
-    VISTA SEMANA
-     */
-
     function renderizarVistaSemana() {
         const titulo = document.getElementById('calendarTitle');
         const cuerpo = document.getElementById('weekBody');
@@ -455,7 +441,6 @@ async function iniciarModuloCalendario() {
                     abrirPanelDia(clave);
                 });
 
-                // Mostrar eventos filtrados por hora
                 const eventosDeLaHora = eventosDia.filter(ev => {
                     if (!ev.horaInicio) return horaHH === '08';
                     return ev.horaInicio.startsWith(horaHH);

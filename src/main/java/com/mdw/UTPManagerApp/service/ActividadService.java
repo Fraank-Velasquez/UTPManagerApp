@@ -19,51 +19,44 @@ public class ActividadService {
     @Autowired
     IproyectoRepository proyectoRepository;
 
-    public List<Actividad> obtenerTodas() {
-        return actividadRepository.findAll();
+    public List<Actividad> obtenerSoloTareas(String username) {
+        return actividadRepository.findByEsEventoFalseAndPropietarioUsername(username);
     }
 
-    public void guardar(Actividad nueva) {
-        if (nueva.getProyecto() != null && nueva.getProyecto().getIdProyecto() != null) {
-            nueva.setProyecto(proyectoRepository.getReferenceById(nueva.getProyecto().getIdProyecto()));
-        }
-        actividadRepository.save(nueva);
+    public List<Actividad> obtenerSoloEventos(String username) {
+        return actividadRepository.findByEsEventoTrueAndPropietarioUsername(username);
     }
 
-    public List<Actividad> obtenerSoloTareas() {
-        return actividadRepository.findByEsEventoFalse();
+    public List<Actividad> obtener5ActividadesRecientes(String username) {
+        return actividadRepository.findTop5ByPropietarioUsernameOrderByIdActividadDesc(username);
+    }
+
+    public List<Actividad> obtner5ProximosEventos(String username) {
+        return actividadRepository.findTop5ByEsEventoTrueAndFechaIsNotNullAndPropietarioUsernameOrderByFechaAsc(username);
+    }
+
+    public List<Actividad> obtenerTareasPorEstado(String estado, String username) {
+        return actividadRepository.findByEsEventoFalseAndEstadoAndPropietarioUsername(estado, username);
+    }
+
+    public List<Actividad> obtenerTareasRetrasadas(String estado, LocalDate fecha, String username) {
+        return actividadRepository.findByEsEventoFalseAndEstadoNotAndFechaBeforeAndPropietarioUsername(estado, fecha, username);
+    }
+
+    public long contarTaresPorEstado(String estado, String username) {
+        return actividadRepository.countByEsEventoFalseAndEstadoAndPropietarioUsername(estado, username);
+    }
+
+    public long contarTareasRetrasadas(String estado, LocalDate fecha, String username) {
+        return actividadRepository.countByEsEventoFalseAndEstadoNotAndFechaBeforeAndPropietarioUsername(estado, fecha, username);
     }
 
     public List<Actividad> obtenerTareasPorProyecto(long idProyecto) {
         return actividadRepository.findByProyectoIdProyecto(idProyecto);
     }
 
-    public List<Actividad> obtenerSoloEventos() {
-        return actividadRepository.findByEsEventoTrue();
-    }
-
-    public List<Actividad> obtener5ActividadesRecientes() {
-        return actividadRepository.findTop5ByOrderByIdActividadDesc();
-    }
-
-    public List<Actividad> obtner5ProximosEventos() {
-        return actividadRepository.findTop5ByEsEventoTrueAndFechaIsNotNullOrderByFechaAsc();
-    }
-
-    public List<Actividad> obtenerTareasPorEstado(String estado) {
-        return actividadRepository.findByEsEventoFalseAndEstado(estado);
-    }
-
-    public List<Actividad> obtenerTareasRetrasadas(String estado, LocalDate fecha) {
-        return actividadRepository.findByEsEventoFalseAndEstadoNotAndFechaBefore(estado, fecha);
-    }
-
     public List<Actividad> obtenerTareasDeProyectoPorEstado(long idProyecto, String estado) {
         return actividadRepository.findByProyectoIdProyectoAndEsEventoFalseAndEstado(idProyecto, estado);
-    }
-
-    public long contarTaresPorEstado(String estado) {
-        return actividadRepository.countByEsEventoFalseAndEstado(estado);
     }
 
     public long contarTareasPorProyecto(long idProyecto) {
@@ -74,20 +67,18 @@ public class ActividadService {
         return actividadRepository.countByEstadoAndProyectoIdProyecto(estado, idProyecto);
     }
 
-    public long contarTareasRetrasadas(String estado, LocalDate fecha) {
-        return actividadRepository.countByEsEventoFalseAndEstadoNotAndFechaBefore(estado, fecha);
+    public void guardar(Actividad nueva) {
+        if (nueva.getProyecto() != null && nueva.getProyecto().getIdProyecto() != null) {
+            nueva.setProyecto(proyectoRepository.getReferenceById(nueva.getProyecto().getIdProyecto()));
+        }
+        actividadRepository.save(nueva);
     }
 
     public void actualizarEstado(Long id, String nuevoEstado) {
-        List<Actividad> lista = obtenerTodas();
-
-        for (Actividad actividad : lista) {
-            if (actividad.getIdActividad().equals(id)) {
-                actividad.setEstado(nuevoEstado);
-                actividadRepository.save(actividad);
-                return;
-            }
-        }
+        actividadRepository.findById(id).ifPresent(actividad -> {
+            actividad.setEstado(nuevoEstado);
+            actividadRepository.save(actividad);
+        });
     }
 
     public void eliminar(Long id) throws Exception {

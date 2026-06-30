@@ -70,7 +70,6 @@ document.getElementById('formActividadUniversal')?.addEventListener('submit', fu
     e.preventDefault();
     limpiarErroresFormulario(this);
 
-    // --- BLOQUEO ANTI-DOBLE CLIC ---
     const botonSubmit = this.querySelector('button[type="submit"]');
     let textoOriginal = "";
     if (botonSubmit) {
@@ -222,9 +221,6 @@ document.getElementById('formProyectoNuevo')?.addEventListener('submit', functio
         });
 });
 
-
-
-
 async function cargarDatosDesdeServidor() {
 
     try {
@@ -232,7 +228,7 @@ async function cargarDatosDesdeServidor() {
         if (!respuesta.ok) {
             throw new Error(`Error HTTP: ${respuesta.status}`);
         }
-        //variable global para los datos
+        
         datosGlobalesActividades = await respuesta.json();
         return datosGlobalesActividades;
     } catch (error) {
@@ -265,7 +261,6 @@ async function iniciarModuloInicio() {
 
     renderizarInicio();
 }
-
 
 function abrirModalTareaUniversal(contexto, idProyecto = null, fechaPrefijada = null) {
 
@@ -305,62 +300,46 @@ function abrirModalTareaUniversal(contexto, idProyecto = null, fechaPrefijada = 
             inputFecha.setAttribute('value', inputFecha.value || '');
             inputFecha.dispatchEvent(new Event('input', { bubbles: true }));
             inputFecha.dispatchEvent(new Event('change', { bubbles: true }));
-        } catch (e) { /* no crítico */ }
+        } catch (e) {  }
     }
 
-    /**
-     * CONTEXTO: TAREAS
-     */
     if (contexto === 'tareas') {
         tituloModal.innerText = 'Nueva Tarea Personal';
 
-        // Mostrar secciones relevantes
         if (inputTitulo) inputTitulo.parentElement.style.display = 'block';
         if (inputDesc) inputDesc.parentElement.style.display = 'block';
         if (secFecha) secFecha.style.display = 'flex';
         if (campoPrioridad) campoPrioridad.style.display = 'block';
 
-        // Secciones específicas
         secHoras.classList.add('d-none');
         secHoras.style.display = 'none';
         secEstado.style.display = 'block';
 
-        // Valores por defecto
         if (inputEstado) inputEstado.value = 'por_hacer';
         document.getElementById('ctx_es_evento').value = "false";
         document.getElementById('ctx_proyecto_id').value = "";
     }
-    /**
-     * CONTEXTO: PROYECTOS
-     * Campos visibles: título, descripción, fecha, prioridad, ESTADO
-     */
+    
     else if (contexto === 'proyectos') {
         tituloModal.innerText = 'Nueva Tarea de Proyecto';
 
-        // Mostrar secciones relevantes
         if (inputTitulo) inputTitulo.parentElement.style.display = 'block';
         if (inputDesc) inputDesc.parentElement.style.display = 'block';
         if (secFecha) secFecha.style.display = 'flex';
         if (campoPrioridad) campoPrioridad.style.display = 'block';
 
-        // Secciones específicas
         secHoras.classList.add('d-none');
         secHoras.style.display = 'none';
         secEstado.style.display = 'block';
 
-        // Valores por defecto
-        if (inputEstado) inputEstado.value = 'por_hacer';  // Estado inicial
+        if (inputEstado) inputEstado.value = 'por_hacer';  
         document.getElementById('ctx_es_evento').value = "false";
         document.getElementById('ctx_proyecto_id').value = idProyecto || "";
     }
-    /**
-     * CONTEXTO: CALENDARIO
-     * Campos visibles: título, descripción, fecha, hora inicio, hora fin
-     */
+    
     else if (contexto === 'calendario') {
         tituloModal.innerText = 'Nuevo Evento de Calendario';
 
-        // Mostrar secciones relevantes
         if (inputTitulo) inputTitulo.parentElement.style.display = 'block';
         if (inputDesc) inputDesc.parentElement.style.display = 'block';
         if (secFecha) secFecha.style.display = 'flex';
@@ -368,12 +347,10 @@ function abrirModalTareaUniversal(contexto, idProyecto = null, fechaPrefijada = 
         if (campoPrioridad) campoPrioridad.style.display = 'none';
         if (etiquetaFecha) etiquetaFecha.textContent = 'Fecha del evento';
 
-        // Secciones específicas
         secHoras.classList.remove('d-none');
         secHoras.style.display = 'flex';
         secEstado.style.display = 'none';
 
-        // Valores por defecto
         document.getElementById('ctx_es_evento').value = "true";
         document.getElementById('ctx_proyecto_id').value = "";
         if (inputFecha && fechaPrefijada) inputFecha.value = fechaPrefijada;
@@ -419,9 +396,6 @@ function mostrarModalExitoGuardado(titulo, mensaje, alCerrar = null) {
     modal.show();
 }
 
-/**
- * Muestra el modal reutilizable de confirmación.
- */
 function mostrarModalConfirmacionAccion(titulo, mensaje, textoBoton, accionConfirmada) {
     const modalElement = document.getElementById('modalConfirmacionAccion');
     const tituloNodo = document.getElementById('modalConfirmacionTitulo');

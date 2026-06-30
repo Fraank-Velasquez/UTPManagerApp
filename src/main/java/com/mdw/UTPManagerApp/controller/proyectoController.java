@@ -1,5 +1,6 @@
 package com.mdw.UTPManagerApp.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mdw.UTPManagerApp.model.Proyecto;
+import com.mdw.UTPManagerApp.model.Usuario;
 import com.mdw.UTPManagerApp.service.ProyectoService;
+import com.mdw.UTPManagerApp.service.UsuarioService;
 
 import jakarta.validation.Valid;
 
@@ -28,18 +31,23 @@ public class proyectoController {
     @Autowired
     private ProyectoService service;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @GetMapping
-    public List<Proyecto> listar() throws Exception {
-        return service.obtenerTodos();
+    public List<Proyecto> listar(Principal principal) throws Exception {
+        return service.obtenerPorPropietario(principal.getName());
     }
 
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarProyecto(@Valid @RequestBody Proyecto nuevoProyecto, BindingResult result) {
+    public ResponseEntity<?> guardarProyecto(@Valid @RequestBody Proyecto nuevoProyecto, BindingResult result, Principal principal) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(obtenerErrores(result));
         }
 
         try {
+            Usuario propietario = (Usuario) usuarioService.loadUserByUsername(principal.getName());
+            nuevoProyecto.setPropietario(propietario);
             service.guardar(nuevoProyecto);
             return ResponseEntity.ok().body(Map.of("mensaje", "Proyecto guardado con exito"));
         } catch (Exception e) {
@@ -48,9 +56,11 @@ public class proyectoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarProyecto(@PathVariable Long id, @RequestBody Proyecto proyectoActualizado) {
+    public ResponseEntity<?> actualizarProyecto(@PathVariable Long id, @RequestBody Proyecto proyectoActualizado, Principal principal) {
         try {
+            Usuario propietario = (Usuario) usuarioService.loadUserByUsername(principal.getName());
             proyectoActualizado.setIdProyecto(id);
+            proyectoActualizado.setPropietario(propietario);
             service.guardar(proyectoActualizado);
             return ResponseEntity.ok().body("{\"mensaje\": \"Proyecto actualizado con exito\"}");
         } catch (Exception e) {

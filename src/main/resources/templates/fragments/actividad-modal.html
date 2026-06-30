@@ -3,7 +3,6 @@
 
 <body>
 
-    <!-- Modal  para crear tareas personales, tareas de proyecto o eventos de calendario -->
     <div th:fragment="modalActividad" class="modal fade" id="modalActividadUniversal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg modal-rounded">
@@ -31,7 +30,6 @@
                             <div class="invalid-feedback" data-error-for="descripcion"></div>
                         </div>
 
-                        <!-- Fecha y prioridad. En calendario se oculta prioridad y fecha ocupa toda la fila. -->
                         <div id="seccionFecha" class="row g-2 mb-3">
                             <div class="col-6 form-floating">
                                 <input type="date" class="form-control shadow-none rounded-3" id="actividadFecha"
@@ -52,7 +50,6 @@
                             </div>
                         </div>
 
-                        <!-- Solo se muestra cuando el contexto es calendario. -->
                         <div id="seccionHoras" class="row g-2 mb-3 d-none">
                             <div class="col-6 form-floating">
                                 <input type="time" class="form-control shadow-none rounded-3" id="horaInicio"
@@ -66,7 +63,6 @@
                             </div>
                         </div>
 
-                        <!-- Estado inicial de tareas. calendario se oculta -->
                         <div id="seccionEstado" class="mb-3 form-floating">
                             <select class="form-select shadow-none rounded-3" id="actividadEstado" name="estado">
                                 <option value="por_hacer">Por hacer</option>
@@ -91,7 +87,6 @@
         </div>
     </div>
 
-    <!-- Modal de exito / confirmar guardado. -->
     <div th:fragment="modalExito" class="modal fade" id="modalExitoGuardado" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content border-0 shadow-lg modal-rounded">
@@ -111,7 +106,6 @@
         </div>
     </div>
 
-    <!-- MODAL REACTIVAR TAREA -->
     <div th:fragment="modalReactivar" class="modal fade" id="modalReactivarTarea" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content border-0 shadow-lg modal-rounded">
@@ -138,7 +132,6 @@
         </div>
     </div>
 
-    <!--  Modal para confirmar eliminar tareas o proyectos -->
     <div th:fragment="modalConfirmacionAccion" class="modal fade" id="modalConfirmacionAccion" tabindex="-1"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -164,7 +157,6 @@
         </div>
     </div>
 
-    <!-- MODAL CREAR PROYECTO -->
     <div th:fragment="modalCrearProyecto" class="modal fade" id="modalCrearProyecto" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg modal-rounded">
@@ -215,7 +207,6 @@
         </div>
     </div>
 
-    <!-- Modal para confirmar el cambio de estado  -->
     <div th:fragment="modalCambiarEstado" class="modal fade" id="modalCambiarEstado" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content border-0 shadow-lg modal-rounded">

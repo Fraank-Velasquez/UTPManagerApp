@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.mdw.UTPManagerApp.model.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -45,5 +46,9 @@ public class Proyecto {
     @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Actividad> actividadesProy = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "idUsuarioPropietario")
+    private Usuario propietario;
 
 }

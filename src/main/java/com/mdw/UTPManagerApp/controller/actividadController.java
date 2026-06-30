@@ -1,5 +1,6 @@
 package com.mdw.UTPManagerApp.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mdw.UTPManagerApp.model.Actividad;
+import com.mdw.UTPManagerApp.model.Usuario;
 import com.mdw.UTPManagerApp.service.ActividadService;
+import com.mdw.UTPManagerApp.service.UsuarioService;
 
 import jakarta.validation.Valid;
 
@@ -32,18 +35,23 @@ public class actividadController {
     @Autowired
     private ActividadService service;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @GetMapping
-    public List<Actividad> listar() throws Exception {
-        return service.obtenerTodas();
+    public List<Actividad> listar(Principal principal) throws Exception {
+        return service.obtenerSoloTareas(principal.getName());
     }
 
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarActividades(@Valid @RequestBody Actividad nuevaActivida, BindingResult result) {
+    public ResponseEntity<?> guardarActividades(@Valid @RequestBody Actividad nuevaActivida, BindingResult result, Principal principal) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(obtenerErrores(result));
         }
 
         try {
+            Usuario propietario = (Usuario) usuarioService.loadUserByUsername(principal.getName());
+            nuevaActivida.setPropietario(propietario);
             service.guardar(nuevaActivida);
             return ResponseEntity.ok().body(Map.of("mensaje", "Guardado con exito"));
         } catch (Exception e) {

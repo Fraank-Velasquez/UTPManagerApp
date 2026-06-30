@@ -13,7 +13,6 @@ function abrirModalProyecto() {
     modal.show();
 }
 
-
 function solicitarEliminarProyecto(proyectoId, nombreProyecto = '') {
     const nombreLimpio = String(nombreProyecto || '').trim();
     const mensajeProyecto = nombreLimpio ? `"${nombreLimpio}"` : 'este proyecto';

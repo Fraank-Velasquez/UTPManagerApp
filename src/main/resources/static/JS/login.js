@@ -1,14 +1,3 @@
-// AUTENTICACIÓN GOOGLE // PRUEBA
-function manejarRespuestaGoogle(response) {
-
-    const { name, email, picture } = JSON.parse(atob(response.credential.split('.')[1]));
-
-    // Variables disponibles para integracion con backend.
-    void name;
-    void email;
-    void picture;
-}
-
 async function validarLoginTemporal(event) {
     event.preventDefault();
     let usuario = document.getElementById(`email-login`).value;
@@ -31,10 +20,4 @@ async function validarLoginTemporal(event) {
     });
     return;
 }
-
-function valiarRegistroUsaario(event) {
-    event.preventDefault();
-    alert(`AUN EN DESARROLLO :/  \t inicia sesión nomas mi king user: admin pass: admin`)
-}
-
 

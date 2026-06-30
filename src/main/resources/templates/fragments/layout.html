@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="base(contenido)">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="base(contenido)">
 
 <head>
     <meta charset="UTF-8">
@@ -37,47 +40,19 @@
                             alt="utpManager-logo"></a>
                 </div>
 
-                <!-- <div class="col-1 d-flex justify-content-end me-4 ">
-                    <div class="dropdown">
-                        <a class="position-relative" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-bell fs-4 text-white efc-hover"></i>
-                            <span
-                                class="position-absolute top-0 start-50 translate-middle-y px-1 ms-1 bg-danger border border-dark rounded-4 small text-white">2
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow mt-3 rounded-3 border-0">
-                            <li>
-                                <h6 class="dropdown-header fw-bold text-center">Notificaciones</h6>
-                            </li>
-                            <li><a class="dropdown-item py-2 small" href="#"><i
-                                        class="bi bi-check-circle text-success me-2"></i>Tarea
-                                    "A" completada</a></li>
-                            <li><a class="dropdown-item py-2 small" href="#"><i
-                                        class="bi bi-chat-dots text-primary me-2"></i>Nuevo
-                                    comentario en calendario</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item text-center small text-muted" href="#">Ver todas las
-                                    notificaciones</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div> -->
-
                 <div class="ocultar-res text-white d-flex justify-content-end ">
                     <div class="user-avatar">
                         <i class="bi bi-person-fill text-black"></i>
                     </div>
                     <div class="lh-sm ms-2 me-4">
-                        <div class="fw-bold small txt-usuario "><span class="text-white fw-light">Hola,</span>
-                            Usuario
+                        <div class="fw-bold small txt-usuario">
+                            <span class="text-white fw-light">Hola,</span>
+                            <span sec:authentication="name">Usuario</span>
                         </div>
-                        <div class="txt-codigo">U23306060</div>
+                        <div class="txt-codigo"
+                             th:text="${#authentication != null and #authentication.principal instanceof T(com.mdw.UTPManagerApp.model.Usuario)} ? ${#authentication.principal.rol.nombre} : 'ROLE_USER'">Rol</div>
                     </div>
                 </div>
-
 
                 <div class="dropdown">
 
@@ -85,12 +60,16 @@
                         <i class="bi bi-chevron-down fs-5 "></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow mt-3 rounded-3 border-0">
-                        <li><a class="dropdown-item py-2  px-3 text-black small " href="#" id="btnCerrarSesion"><i
-                                    class="bi bi-box-arrow-right me-2 text-danger "></i>Cerrar Sesión</a>
+                        <li>
+                            <form th:action="@{/logout}" method="post" class="d-inline m-0 p-0">
+                                <button type="submit"
+                                        class="dropdown-item py-2 px-3 text-black small border-0 bg-transparent w-100 text-start">
+                                    <i class="bi bi-box-arrow-right me-2 text-danger"></i>Cerrar Sesión
+                                </button>
+                            </form>
                         </li>
                     </ul>
                 </div>
-
 
             </div>
 
@@ -101,7 +80,6 @@
 
         <aside class="menu-lateral">
 
-            <!-- Menu lateral  -->
             <div class="container-sidebar">
                 <ul class="nav">
 
@@ -151,7 +129,6 @@
 
     </div>
 
-    <!-- Menu lateral  para pantallas pequenas. -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="menuSidebar" aria-labelledby="menuSidebarLabel">
         <div class="offcanvas-header sidebar-head">
             <button type="button" data-bs-dismiss="offcanvas" aria-label="Cerrar" class="btn-cerrar-sidebar icono-menu">

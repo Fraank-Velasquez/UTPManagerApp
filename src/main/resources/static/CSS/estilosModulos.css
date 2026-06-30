@@ -8,7 +8,6 @@
     --card-terminado-border: #bcf5bc;
 }
 
-/* Indicadores de prioridad */
 .prioridad-indicador {
     width: 8px;
     height: 8px;
@@ -31,7 +30,6 @@
     background: #198754;
 }
 
-/* Texto secundario compacto */
 .texto-secundario-compacto {
     font-size: 0.9rem;
     min-height: 2.5rem;
@@ -158,12 +156,10 @@
     justify-content: center;
 }
 
-/* Proyectos: ajuste para el tablero Kanban dentro de la vista de proyecto */
 #vista-kanban-proyecto {
     animation: fadeIn 0.4s ease-in-out;
 }
 
-/* Kanban: estilos del tablero */
 .projects-header {
     display: flex;
     justify-content: space-between;
@@ -611,7 +607,6 @@
     color: #842029;
 }
 
-/* Tareas: módulo */
 .btn-tab {
     background-color: transparent;
     color: #6c757d;
@@ -619,25 +614,12 @@
     transition: all 0.2s ease-in-out;
 }
 
-/* Tareas: grid y tarjetas */
-
-/**
- * CLASE: tablero-grid-tarea
- * Contenedor flexible para cada columna de la grilla de tareas
- */
 .tablero-grid-tarea .col {
     display: flex;
 }
 
-/**
- * CLASE: tarjeta-tarea
- * Estilo base para cada tarjeta de tarea
- * - Borde sutil con sombra suave
- * - Altura mínima consistente
- * - Transición fluida para hover
- */
 .tarjeta-tarea {
-    /* Card base usada tanto en modulo Tareas como en tablero de Proyecto. */
+    
     border: 1px solid #e5e7eb;
     border-radius: 18px;
     background: #fff;
@@ -653,30 +635,16 @@
     border-color: #d1d5db;
 }
 
-/**
- * CLASE: tarjeta-tarea-completada
- * Estilos especiales para tareas en estado "done" (terminadas)
- * - Fondo degradado suave
- * - Opacidad reducida para indicar estado visual
- */
 .tarjeta-tarea.tarjeta-tarea-completada {
     background: linear-gradient(180deg, #f3fbf4 0%, #ffffff 100%);
     opacity: 0.6;
 }
 
-/**
- * CLASE: titulo-tarea
- * Estilos para el título principal de la tarea
- */
 .tarjeta-tarea .titulo-tarea {
     font-size: 1rem;
     line-height: 1.2;
 }
 
-/**
- * CLASE: meta-etiquetas-tarea
- * Contenedor flexible para las etiquetas/badges de metadata
- */
 .tarjeta-tarea .meta-etiquetas-tarea {
     display: flex;
     flex-wrap: wrap;
@@ -684,107 +652,58 @@
     margin-top: auto;
 }
 
-/**
- * CLASE: etiqueta-reducida
- * Reduce tamaño y elimina borde de las etiquetas/badges
- * - Font size más pequeño
- * - Padding reducido
- * - Sin borde visible
- */
 .badge.etiqueta-reducida {
     font-size: 0.75rem !important;
     padding: 0.35rem 0.6rem !important;
     border: none !important;
 }
 
-/**
- * CLASE: etiqueta-id-oculta
- * Oculta la etiqueta del ID (no se muestra en la tarjeta)
- */
 .etiqueta-id-oculta {
     display: none !important;
 }
 
-/* Prioridad: etiquetas */
-
-/**
- * CLASE: etiqueta-prioridad-alta
- * Badge rojo para prioridad ALTA
- */
 .etiqueta-prioridad-alta {
     background-color: #fee2e2 !important;
     color: #b42318 !important;
     border: 1px solid #fca5a5 !important;
 }
 
-/**
- * CLASE: etiqueta-prioridad-media
- * Badge amarillo para prioridad MEDIA
- */
 .etiqueta-prioridad-media {
     background-color: #fef3c7 !important;
     color: #92400e !important;
     border: 1px solid #fcd34d !important;
 }
 
-/**
- * CLASE: etiqueta-prioridad-baja
- * Badge verde para prioridad BAJA
- */
 .etiqueta-prioridad-baja {
     background-color: #dcfce7 !important;
     color: #166534 !important;
     border: 1px solid #86efac !important;
 }
 
-/* Estado: etiquetas */
-
-/**
- * CLASE: etiqueta-estado-pendiente
- * Badge azul claro para estado "Por hacer"
- */
 .etiqueta-estado-pendiente {
     background-color: #e0f2fe !important;
     color: #075985 !important;
     border: 1px solid #7dd3fc !important;
 }
 
-/**
- * CLASE: etiqueta-estado-progreso
- * Badge púrpura para estado "En proceso"
- */
 .etiqueta-estado-progreso {
     background-color: #ede9fe !important;
     color: #5b21b6 !important;
     border: 1px solid #c4b5fd !important;
 }
 
-/**
- * CLASE: etiqueta-estado-terminada
- * Badge verde para estado "Terminada"
- */
 .etiqueta-estado-terminada {
     background-color: #dcfce7 !important;
     color: #166534 !important;
     border: 1px solid #86efac !important;
 }
 
-/**
- * CLASE: etiqueta-estado-retrasada
- * Badge rojo para tareas "Retrasadas"
- */
 .etiqueta-estado-retrasada {
     background-color: #fee2e2 !important;
     color: #b91c1c !important;
     border: 1px solid #fca5a5 !important;
 }
 
-/* Estado: vacío */
-
-/**
- * CLASE: contenedor-estado-vacio
- * Estilos para pantalla cuando no hay tareas en una sección
- */
 .contenedor-estado-vacio {
     border: 1px dashed #d1d5db;
     border-radius: 18px;
@@ -792,15 +711,13 @@
     color: #6b7280;
     min-height: 170px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     padding: 1.25rem;
 }
 
-
-
-/* Generales: otros estilos */
 .dashboard-card {
     background: white;
     border-radius: 12px;
@@ -822,7 +739,6 @@
     font-size: 1.5rem;
 }
 
-/* Inicio: iconos KPI */
 .dashboard-icon.todo {
     background-color: #fef3c7;
     color: #d97706;
@@ -858,7 +774,6 @@
     color: #7c3aed;
 }
 
-/* Pantalla de carga global */
 .pantalla-carga-overlay {
     background-color: #1E1E1E;
     z-index: 9999;
@@ -870,7 +785,6 @@
     height: 4rem;
 }
 
-/* Modales */
 .modal-rounded {
     border-radius: 20px;
 }
@@ -880,7 +794,6 @@
     height: 64px;
 }
 
-/* Textareas específicas */
 .textarea-large {
     height: 100px;
 }
@@ -889,7 +802,6 @@
     height: 110px;
 }
 
-/* Search compact */
 .search-input-compact {
     max-width: 250px;
 }
@@ -930,9 +842,8 @@
     font-weight: 600;
 }
 
-/* Calendario: módulo */
 .calendar-table {
-    /* Tabla usada por las vistas mensual y semanal del calendario. */
+    
     table-layout: fixed;
     border-collapse: collapse;
     width: 100%;
@@ -992,7 +903,6 @@
     text-overflow: ellipsis;
 }
 
-/* Animación de carga para módulos */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -1005,7 +915,6 @@
     }
 }
 
-/* Login: estilos */
 .login-body {
     background-color: var(--bg-dark);
     display: flex;
@@ -1070,12 +979,8 @@
     padding-top: 15px;
 }
 
-/* ==========================================================================
-   VARIABLES EXCLUSIVAS DEL CALENDARIO
-   (Aisladas para no pisar tu paleta global)
-========================================================================== */
 :root {
-    /* Prioridades calendario */
+    
     --cal-urgente-bg: #fee2e2;
     --cal-urgente-color: #b91c1c;
     --cal-urgente-border: #ef4444;
@@ -1088,19 +993,14 @@
     --cal-flexible-color: #166534;
     --cal-flexible-border: #22c55e;
 
-    /* Tipo evento */
     --cal-propio-bg: #ede9fe;
     --cal-propio-color: #6b21a8;
     --cal-externo-bg: #e0f2fe;
     --cal-externo-color: #075985;
 
-    /* Panel lateral */
     --panel-width: 280px;
 }
 
-/* ==========================================================================
-   CALENDARIO — TITULOS Y CONTROLES DE VISTA
-========================================================================== */
 .calendar-title {
     font-size: 1.5rem;
 }
@@ -1121,12 +1021,10 @@
     border: 1px solid #ddd !important;
 }
 
-/* Ocultar vista de forma segura */
 .vista-oculta {
     display: none !important;
 }
 
-/*CALENDARIO — PESTAÑAS DE TEMPORALIDAD Y FILTROS COMBINADOS*/
 .cal-tabs-bar {
     display: flex;
     align-items: center;
@@ -1216,7 +1114,6 @@
     border-color: #93c5fd;
 }
 
-/*CALENDARIO — LEYENDA PILLS SUPERIORES*/
 .badge-dot {
     font-size: .45rem;
 }
@@ -1251,7 +1148,6 @@
     font-size: .72rem;
 }
 
-/* CALENDARIO — LAYOUT PRINCIPAL CON PANEL LATERAL */
 .cal-layout {
     display: flex;
     gap: 16px;
@@ -1261,12 +1157,11 @@
 .cal-main {
     flex: 1;
     min-width: 0;
-    /* evita overflow en flex */
+    
 }
 
-/* CALENDARIO — BASE Y VISTA MES */
 .calendar-table {
-    /* Tabla usada por las vistas mensual y semanal del calendario. */
+    
     table-layout: fixed;
     border-collapse: collapse;
     width: 100%;
@@ -1288,7 +1183,6 @@
     border-bottom: 2px solid #eee;
 }
 
-/* ─── Días (mes) ─── */
 .calendar-day {
     height: 128px;
     padding: 7px;
@@ -1321,7 +1215,6 @@
     border: 2px solid #93c5fd !important;
 }
 
-/* ─── Número del día ─── */
 .day-number {
     font-weight: 700;
     font-size: 0.82rem;
@@ -1333,7 +1226,6 @@
     color: #0d6efd;
 }
 
-/* ─── Badge "HOY" ─── */
 .badge-hoy {
     font-size: 7px;
     padding: 2px 4px;
@@ -1345,14 +1237,12 @@
     letter-spacing: 0.03em;
 }
 
-/* ─── Texto "+N más" ─── */
 .calendar-mas-eventos {
     font-size: 10px;
     color: #94a3b8;
     padding-left: 4px;
 }
 
-/* CALENDARIO — BADGES DE EVENTO INYECTADOS EN CELDAS */
 .event-badge {
     font-size: 0.65rem;
     font-weight: 700;
@@ -1372,7 +1262,6 @@
     filter: brightness(0.93);
 }
 
-/* Prioridad */
 .event-badge-urgente {
     background: var(--cal-urgente-bg);
     color: var(--cal-urgente-color);
@@ -1391,17 +1280,14 @@
     border-left-color: var(--cal-flexible-border);
 }
 
-/* Tipo externo: borde derecho adicional */
 .event-badge-externo {
     border-right: 3px solid #0ea5e9;
 }
 
-/* Pasados: semitransparentes */
 .event-badge-pasado {
     opacity: 0.55;
 }
 
-/* CALENDARIO — VISTA SEMANA */
 .calendar-hour-column {
     width: 72px;
 }
@@ -1439,7 +1325,6 @@
     border: 2px solid #93c5fd !important;
 }
 
-/* CALENDARIO — PANEL LATERAL DE DETALLE */
 .cal-panel {
     width: var(--panel-width);
     flex-shrink: 0;
@@ -1507,7 +1392,6 @@
     border-radius: 4px;
 }
 
-/* Estado vacío del panel */
 .cal-panel-empty {
     display: flex;
     flex-direction: column;
@@ -1530,7 +1414,6 @@
     line-height: 1.5;
 }
 
-/* ─── Tarjeta de evento en panel ─── */
 .cal-panel-card {
     border-radius: 12px;
     padding: 10px 12px;
@@ -1615,7 +1498,6 @@
     margin-bottom: 6px;
 }
 
-/* Pills dentro del panel */
 .cal-pill {
     font-size: 0.65rem;
     font-weight: 700;
@@ -1662,7 +1544,6 @@
     color: #a16207;
 }
 
-/* Acciones editar/eliminar en panel */
 .cal-panel-card-acciones {
     display: flex;
     gap: 6px;
@@ -1696,7 +1577,6 @@
     border-color: #fca5a5;
 }
 
-/* Footer del panel (resumen global) */
 .cal-panel-footer {
     padding: 10px 14px;
     border-top: 1px solid #f1f5f9;
@@ -1746,7 +1626,6 @@
     line-height: 1;
 }
 
-/* CALENDARIO — RESPONSIVE MÓVIL  */
 @media (max-width: 900px) {
     .cal-layout {
         flex-direction: column;

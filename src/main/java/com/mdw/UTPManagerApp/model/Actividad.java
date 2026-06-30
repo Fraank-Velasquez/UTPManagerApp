@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import com.mdw.UTPManagerApp.model.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -57,5 +58,9 @@ public class Actividad {
     @JoinColumn(name = "idProyecto", nullable = true)
     @JsonBackReference
     private Proyecto proyecto;
+
+    @ManyToOne
+    @JoinColumn(name = "idUsuarioPropietario")
+    private Usuario propietario;
 
 }

@@ -3,15 +3,8 @@
 
 <body>
 
-    <!--
-        Fragmento reutilizable: tarjeta de tarea individual.
-        Parámetros:
-          - tarea          : objeto Actividad
-        Usado en: Modulos/tareas.html (las 5 pestañas)
-    -->
     <th:block th:fragment="tarjetaTarea(tarea)">
 
-        <!-- Normalizar prioridad -->
         <th:block th:with="prioridadRaw=${#strings.toLowerCase(tarea.prioridad ?: 'flexible')}">
             <th:block
                 th:with="
@@ -32,23 +25,22 @@
 
                         <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
                             <div class="flex-grow-1">
-                                <h6 class="titulo-tarea fw-bold text-dark mb-1" th:text="${tarea.titulo}">Sin título
-                                </h6>
+                                <h6 class="titulo-tarea fw-bold text-dark mb-1" th:text="${tarea.titulo}">Sin título</h6>
                                 <div class="small text-secondary d-flex align-items-center gap-1">
                                     <i class="bi bi-folder2-open"></i>
                                     <span th:text="${nombreProyecto}">General</span>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center gap-2">
-                                <!-- Botón cambiar estado -->
+                                
                                 <button type="button" class="btn btn-link p-0 border-0 shadow-none boton-cambiar-estado"
                                     th:classappend="${colorIcono}"
                                     th:attr="aria-label=${titleIcono}, title=${titleIcono}, data-tarea-id=${tarea.idActividad}, data-estado-actual=${estadoRaw}">
                                     <i class="bi fs-5" th:classappend="${iconoEstado}"></i>
                                 </button>
-                                <!-- Botón eliminar -->
+                                
                                 <button type="button"
-                                    class="btn btn-link p-0 text-danger border-0 shadow-none boton-eliminar-tarea"
+                                    sec:authorize="hasRole('ADMIN')" class="btn btn-link p-0 text-danger border-0 shadow-none boton-eliminar-tarea"
                                     aria-label="Eliminar tarea" title="Eliminar tarea" th:data-tarea-id="${tarea.idActividad}">
                                     <i class="bi bi-trash3 fs-6"></i>
                                 </button>

@@ -43,10 +43,10 @@
                                 <h2 class="text-center fw-bold mt-2 mb-4 fs-3">Registrarse</h2>
                             </div>
 
-                            <form class="form-contenedor d-flex flex-column justify-content-center">
+                            <form class="form-contenedor d-flex flex-column justify-content-center"
+                                  th:action="@{/registro}" method="post">
 
                                 <div class="contenedor-google">
-
                                     <div class="g_id_signin" data-type="standard" data-shape="pill"
                                         data-theme="filled_black" data-text="continue_with" data-size="large"
                                         data-logo_alignment="left">
@@ -55,73 +55,80 @@
                                 <div class="separator position-relative">
                                     <p class="position-absolute">o</p>
                                 </div>
+
+                                <div th:if="${registroError}" class="alert alert-danger py-2 small text-center mb-2">
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                    El usuario ya existe.
+                                </div>
+
                                 <div class="inputs-contenedor d-flex flex-column gap-1">
-                                    <label class="form-label" for="email-registro"> Email o Nombre de usuario
+                                    <label class="form-label" for="email-registro"> Nombre de usuario
                                         <input type="text" class="form-control" id="email-registro"
-                                            name="nombre-usuario-registro" required>
+                                            name="username" required>
                                     </label>
                                     <label class="form-label" for="password-registro"> Contraseña
                                         <input type="password" class="form-control" id="password-registro"
-                                            name="password-usuario-registro" required>
+                                            name="password" required>
                                     </label>
-                                    <button class="btn btn-summit btn-secondary"
-                                        onclick="valiarRegistroUsaario(event)">Registrarse
+                                    <button type="submit" class="btn btn-summit btn-secondary">Registrarse
                                     </button>
                                 </div>
                                 <div class="info-form text-center mb-3 mt-2">
-                                    <label for="flip-toggle" class="cambio-card">¿ Ya tienes una cuenta
-                                        ?</label>
+                                    <label for="flip-toggle" class="cambio-card">¿ Ya tienes una cuenta ?</label>
                                 </div>
 
                                 <div class="tyc">
-                                    Al registrate aceptas nuestros <a href="#">Terminos</a> y <a
-                                        href="#">condiciones</a>
+                                    Al registrate aceptas nuestros <a href="#">Terminos</a> y <a href="#">condiciones</a>
                                 </div>
 
                             </form>
 
                         </div>
 
-
                         <div class="carta-front">
                             <div class="login-header">
                                 <h2 class="text-center fw-bold mt-2 mb-4 fs-3">Iniciar sesión</h2>
                             </div>
 
-                            <form class="form-contenedor d-flex flex-column justify-content-center">
+                            <form class="form-contenedor d-flex flex-column justify-content-center"
+                                  th:action="@{/login}" method="post">
 
-                                <div class="contenedor-google">
-
-
-                                    <div class="g_id_signin txt-google" data-type="standard" data-shape="pill"
-                                        data-theme="filled_black" data-text="continue_with" data-size="large"
-                                        data-logo_alignment="left">
-                                    </div>
+                                <div th:if="${param.error}" class="alert alert-danger py-2 small text-center mb-2">
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                    Usuario o contraseña incorrectos.
                                 </div>
-                                <div class="separator position-relative">
-                                    <p class="position-absolute">o</p>
+                                
+                                <div th:if="${registroExitoso}" class="alert alert-success py-2 small text-center mb-2">
+                                    <i class="bi bi-check-circle-fill me-1"></i>
+                                    Registro exitoso. ¡Inicia sesión!
                                 </div>
+
+                                <div th:if="${param.logout}" class="alert alert-success py-2 small text-center mb-2">
+                                    <i class="bi bi-check-circle-fill me-1"></i>
+                                    Sesión cerrada correctamente.
+                                </div>
+
                                 <div class="inputs-contenedor d-flex flex-column gap-1">
-                                    <label class="form-label" for="email-login">Nombre de usuario
-                                        <input type="text" class="form-control" id="email-login"
-                                            name="nombre-usuario-login" required>
+                                    <label class="form-label" for="username">Nombre de usuario
+                                        
+                                        <input type="text" class="form-control" id="username"
+                                               name="username" required>
                                     </label>
-                                    <label class="form-label" for="password-login">Contraseña
-                                        <input type="password" class="form-control" id="password-login"
-                                            name="password-usuario-login" required>
+                                    <label class="form-label" for="password">Contraseña
+                                        
+                                        <input type="password" class="form-control" id="password"
+                                               name="password" required>
                                     </label>
-                                    <button class="btn btn-summit btn-secondary"
-                                        onclick="validarLoginTemporal(event)">Iniciar sesión
+                                    <button type="submit" class="btn btn-summit btn-secondary">
+                                        Iniciar sesión
                                     </button>
                                 </div>
                                 <div class="info-form text-center mb-2">
-
                                     <label for="flip-toggle" class="cambio-card">¿ Aún no tienes una cuenta ?</label>
                                 </div>
                                 <div class="tyc">
-                                    Al iniciar aceptas nuestros <a href="#">Terminos</a> y <a href="#">condiciones</a>
+                                    Al iniciar aceptas nuestros <a href="#">Términos</a> y <a href="#">condiciones</a>
                                 </div>
-
                             </form>
 
                         </div>

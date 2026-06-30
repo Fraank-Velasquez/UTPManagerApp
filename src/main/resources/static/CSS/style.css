@@ -94,7 +94,6 @@ header {
     width: 100%;
 }
 
-
 .btn-dropdown:hover i,
 .btn-dropdown:hover {
     color: #1E1E1E;
@@ -131,7 +130,6 @@ header {
     background: #2e2e2e;
 }
 
-
 .txt-codigo {
     font-size: 12px;
     opacity: .8;
@@ -145,7 +143,7 @@ header {
 }
 
 .menu-lateral {
-    /* Sidebar (escritorio) */
+    
     background-color: #0F0F16;
     height: 100vh;
     width: var(--sidebar-width);
@@ -184,7 +182,6 @@ header {
     color: #1E1E1E !important;
 }
 
-
 #menuSidebar {
     background-color: #0F0F16;
     width: 255px;
@@ -195,7 +192,6 @@ header {
 .offcanvas-backdrop {
     display: none !important;
 }
-
 
 .sidebar-head {
     height: 56px;
@@ -219,7 +215,6 @@ header {
 .btn-menu-ocultar {
     display: none;
 }
-
 
 @media screen and (max-width: 620px) {
     .ocultar-res {
@@ -253,7 +248,5 @@ header {
     .offcanvas-backdrop {
         display: flex !important;
     }
-
-
 
 }
