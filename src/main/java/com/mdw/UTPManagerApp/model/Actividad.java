@@ -27,7 +27,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 public class Actividad {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idActividad;
@@ -37,6 +37,7 @@ public class Actividad {
     @Column(nullable = false, length = 100)
     private String titulo;
 
+    @Size(max = 150, message = "max-150 caracteres")
     private String descripcion;
 
     @NotNull(message = "La fecha es obligatoria")
@@ -47,6 +48,7 @@ public class Actividad {
     @Column(nullable = false)
     private String prioridad;
 
+    
     private String estado;
 
     private boolean esEvento;

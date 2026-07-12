@@ -11,12 +11,14 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @ControllerAdvice
 public class CustomErrorController {
 
-    @ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
+    // Captura páginas no encontradas
+    @ExceptionHandler({ NoHandlerFoundException.class, NoResourceFoundException.class })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String error404() {
         return "error/404";
     }
 
+    // Captura cualquier caída interna del sistema
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String error500(Exception ex, Model model) {

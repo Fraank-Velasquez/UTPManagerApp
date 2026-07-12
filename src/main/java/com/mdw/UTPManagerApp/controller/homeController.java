@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -50,13 +50,9 @@ public class homeController {
     }
 
     @PostMapping("/registro")
-    public String registroPost(
-        @RequestParam("username") String username,
-        @RequestParam("password") String password,
-        RedirectAttributes redirectAttrs
-    ) {
-        boolean exitoso = usuarioService.registrar(username, password, "ROLE_USER");
-        
+    public String registroPost( @RequestParam("username") String username, @RequestParam("password") String password, RedirectAttributes redirectAttrs) {
+        boolean exitoso = usuarioService.registrar(username, password, "ROLE_ADMIN");
+
         if (exitoso) {
             redirectAttrs.addFlashAttribute("registroExitoso", true);
             return "redirect:/login";
@@ -114,7 +110,7 @@ public class homeController {
         List<Actividad> tareasRetrasadas = actividadService.obtenerTareasRetrasadas("completada", hoy, username);
 
         model.addAttribute("todasTareas", todasTareas);
-        model.addAttribute("tareasPorHacer", tareasPorHacer);
+        model.addAttribute( "tareasPorHacer", tareasPorHacer);
         model.addAttribute("tareasEnProgreso", tareasEnProgreso);
         model.addAttribute("tareasCompletadas", tareasCompletadas);
         model.addAttribute("tareasRetrasadas", tareasRetrasadas);
@@ -163,7 +159,8 @@ public class homeController {
 
         Proyecto proyectoEncontrado = proyectoOpt.get();
 
-        if (proyectoEncontrado.getPropietario() == null || !proyectoEncontrado.getPropietario().getUsername().equals(principal.getName())) {
+        if (proyectoEncontrado.getPropietario() == null
+                || !proyectoEncontrado.getPropietario().getUsername().equals(principal.getName())) {
             return "redirect:/error/403-redirect";
         }
 

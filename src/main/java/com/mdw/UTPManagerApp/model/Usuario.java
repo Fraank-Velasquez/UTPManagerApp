@@ -41,7 +41,7 @@ public class Usuario implements UserDetails {
         this.password = password;
         this.rol = rol;
     }
-
+//metodos de userDeatils
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(rol.getNombre()));
